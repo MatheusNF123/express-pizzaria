@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from 'jsonwebtoken';
-import CustomError from '../Error/customError';
+import CustomError from '../Error/CustomError';
 
 const secretKey = process.env.JWT_SECRET || 'jwt_secret' as string;
 

@@ -1,8 +1,8 @@
+import { ILogin } from './../../../Interfaces/IUser';
 import * as bcrypt from 'bcryptjs';
-import {IUserRepository} from "../../Repository/IRepository"
-import { ILogin } from "../../Interfaces/IUser"
-import CustomError from "../../Error/CustomError";
-import Token from '../../utils/GenerateToken';
+import { IUserRepository } from '../../../Repository/IRepository';
+import CustomError from '../../../Error/CustomError';
+import Token from '../../../utils/GenerateToken';
 
 export default class MakeLoginService {
   constructor(private userRepository: IUserRepository){}

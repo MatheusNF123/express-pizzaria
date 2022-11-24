@@ -9,5 +9,5 @@ export interface IRepository<T> {
 }
 
 export interface IUserRepository extends IRepository<IUser> {
-  findEmail(email:string):Promise<IUser>;
+  findEmail(email:string):Promise<IUser | null>;
 }

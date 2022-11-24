@@ -1,5 +1,5 @@
 export default interface IPizza {
-  id: string;
+  id?: string;
   flavor: string;
   type: string;
   price: number;
