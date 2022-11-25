@@ -1,5 +1,5 @@
-import MongooseUserRepository from "../../Repository/implementations/MongooseUser.repository";
-import validations from "../../Validations";
+import MongooseUserRepository from "../../../Repository/implementations/MongooseUser.repository";
+import validations from "../../../Validations";
 import CreateUserController from "./CreateUserController";
 import CreateUserService from "./CreateUserService";
 
