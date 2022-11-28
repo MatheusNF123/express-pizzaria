@@ -1,29 +1,42 @@
-import { seedPizzas } from "./utils/dataPizza";
+import "reflect-metadata";
 import "dotenv/config";
-import app from "./App";
-import connectToDatabase from "./Models/Connection";
-import MongoosePizzaRepository from "./Repository/implementations/MongoosePizza.repository";
-import mongoose from "mongoose";
-
-const mongoosePizzaRepository = new MongoosePizzaRepository();
+import express from 'express';
+// import connectToDatabase from "./Models/Connection";
+import { AppDataSource } from "./data-source";
+// import app from "./App";
 
 const PORT = process.env.PORT || 3001;
 
-async function server() {
-  try {
-    await connectToDatabase();
-    const num = await mongoosePizzaRepository.model.countDocuments().exec();
-    if (num === 0) await mongoosePizzaRepository.model.insertMany(seedPizzas);   
-    app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
-  } catch (error) {
-    console.log("Connection with database generated an error:\r\n");
-    console.error(error);
-    console.log("\r\nServer initialization cancelled");
-    process.exit(0);
-  }
-}
+AppDataSource.initialize().then(() => {
+  const app = express()
+  app.get('/', (_req, res)=> res.json('Certo'))
 
-server();
+  app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
+});
+
+// import { seedPizzas } from "./utils/dataPizza";
+// import MongoosePizzaRepository from "./Repository/implementations/MongoosePizza.repository";
+// import App from "./App";
+
+// const mongoosePizzaRepository = new MongoosePizzaRepository();
+
+// const PORT = process.env.PORT || 3001;
+
+// async function server() {
+//   try {
+//     await connectToDatabase();
+//     const num = await mongoosePizzaRepository.model.countDocuments().exec();
+//     if (num === 0) await mongoosePizzaRepository.model.insertMany(seedPizzas);
+//     app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
+//   } catch (error) {
+//     console.log("Connection with database generated an error:\r\n");
+//     console.error(error);
+//     console.log("\r\nServer initialization cancelled");
+//     process.exit(0);
+//   }
+// }
+
+// server();
 
 // connectToDatabase()
 //   .then(() => {
