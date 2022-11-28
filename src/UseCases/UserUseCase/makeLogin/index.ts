@@ -1,10 +1,12 @@
 // import MongooseUserRepository from "../../../Repository/implementations/MongooseUser.repository";
 import MakeLoginService from "./MakeLoginService";
 import MakeLoginController from "./MakeLoginController"
+import TypeormUserRepository from "../../../Repository/implementations/TypeormUserRepository";
+import User from "../../../Database/Entities/User";
+import { AppDataSource } from "../../../data-source";
 
-
-const mongooseUserRepository = new MongooseUserRepository()
-const makeLoginService = new MakeLoginService(mongooseUserRepository)
+const typeormUserRepository = new TypeormUserRepository(AppDataSource.getRepository(User))
+const makeLoginService = new MakeLoginService(typeormUserRepository)
 const makeLoginController = new MakeLoginController(makeLoginService)
 
 export default makeLoginController

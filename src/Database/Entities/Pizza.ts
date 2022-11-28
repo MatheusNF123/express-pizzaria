@@ -1,8 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import IPizza from "../../Interfaces/IPizza";
 
 @Entity("pizzas")
-export default class Pizza {
-  @PrimaryGeneratedColumn({name: "id"})
+export default class Pizza implements IPizza {
+  @PrimaryGeneratedColumn({ name: "id" })
   id: string;
 
   @Column({ type: "text" })
@@ -11,8 +12,8 @@ export default class Pizza {
   @Column({ type: "text" })
   type: string;
 
-  @Column({ type: "text" })
-  price: string;
+  @Column({ type: "number" })
+  price: number;
 
   @Column({ type: "text" })
   ingredients: string[];

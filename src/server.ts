@@ -1,14 +1,18 @@
 import "reflect-metadata";
 import "dotenv/config";
+import express from 'express';
 // import connectToDatabase from "./Models/Connection";
 import { AppDataSource } from "./data-source";
-import app from "./App";
+// import app from "./App";
 
 const PORT = process.env.PORT || 3001;
 
 AppDataSource.initialize().then(() => {
+  const app = express()
+  app.get('/', (_req, res)=> res.json('Certo'))
+
   app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
-})
+});
 
 // import { seedPizzas } from "./utils/dataPizza";
 // import MongoosePizzaRepository from "./Repository/implementations/MongoosePizza.repository";

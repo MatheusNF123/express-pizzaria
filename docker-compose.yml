@@ -23,6 +23,7 @@ services:
       # dentro do diretório /app
       - ./:/app
     # Lista de serviços do qual este serviço depende
+
     depends_on:
       # Precisa do postgres funcionando antes de subir o node
       - postgresdb
@@ -33,14 +34,19 @@ services:
       - 3001:3001
     environment:
       # - MONGO_URI=mongodb://mongodb:27017/pizzaria
-      - DB_HOST=localhost
-      - DB_PORT=27017
+      # env_file:
+      # - .env
+    
+      - DB_HOST=http://localhost
+      - DB_PORT=5432
       - DB_USER=admin
       - DB_PASS=pizzeriapassword
       - DB_NAME=pizzeria
       - PORT=3001
       - TYPEORM_MIGRATIONS=src/Database/Migrations/*ts
       - TYPEORM_MIGRATIONS_DIR=src/Database/Migrations
+
+     
 
   # Serviço que irá rodar o postgresdb
   postgresdb:
@@ -50,11 +56,13 @@ services:
       - ./:/app
     restart: always
     ports:
-      - 27017:27017
+      - 5432:5432
 
     environment:
         POSTGRES_PASSWORD: pizzeriapassword
+        POSTGRES_USER: admin
         POSTGRES_DB: pizzeria
+        
 # Lista de redes que os containeres irão utilizar
 networks:
   # Rede padrão, criada automaticamente
