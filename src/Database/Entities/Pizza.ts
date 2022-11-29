@@ -12,7 +12,7 @@ export default class Pizza implements IPizza {
   @Column({ type: "text" })
   type: string;
 
-  @Column({ type: "number" })
+  @Column({ type: "int" })
   price: number;
 
   @Column({ type: "text" })
