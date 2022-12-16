@@ -37,7 +37,7 @@ services:
       # env_file:
       # - .env
     
-      - DB_HOST=http://localhost
+      - DB_HOST=postgresdb
       - DB_PORT=5432
       - DB_USER=admin
       - DB_PASS=pizzeriapassword
@@ -50,18 +50,18 @@ services:
 
   # Serviço que irá rodar o postgresdb
   postgresdb:
-    image: postgres:15.1
+    image: postgres:latest
     container_name: pizzaria_db
     volumes:
       - ./:/app
     restart: always
-    ports:
-      - 5432:5432
-
     environment:
         POSTGRES_PASSWORD: pizzeriapassword
         POSTGRES_USER: admin
         POSTGRES_DB: pizzeria
+    ports:
+      # Expõe a porta padrão da aplicação: altere aqui caso use outra porta
+      - 5432:5432
         
 # Lista de redes que os containeres irão utilizar
 networks:
@@ -78,3 +78,4 @@ networks:
 # A renomeação da rede padrão é feita pois caso contrário o nome da rede será
 # o nome do diretório onde o arquivo atual se encontra, o que pode dificultar
 # a listagem individual.
+  

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from "typeorm";
 import IPizza from "../../Interfaces/IPizza";
 
 @Entity("pizzas")
@@ -12,7 +12,7 @@ export default class Pizza implements IPizza {
   @Column({ type: "text" })
   type: string;
 
-  @Column({ type: "number" })
+  @Column({ type: "decimal" })
   price: number;
 
   @Column({ type: "text" })
