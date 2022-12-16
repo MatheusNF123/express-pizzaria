@@ -14,11 +14,13 @@ console.log('DB_NAME', DB_NAME);
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: DB_HOST,
-  port: PORT,
-  username: DB_USER || "postgres",
-  password: DB_PASS || "test",
-  database: DB_NAME || 'postgres',
-  entities: [`${__dirname}/**/Database/Entities/*.{ts,js}`],
+  host: process.env.DB_HOST,
+  port: port,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  entities: ["./src/Database/Entities/**/*.ts"],
+
   migrations: [`${__dirname}/**/Database/Migrations/*.{ts,js}`],
+  
 });
