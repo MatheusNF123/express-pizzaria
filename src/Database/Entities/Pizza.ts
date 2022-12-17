@@ -12,6 +12,7 @@ export default class Pizza implements IPizza {
   @Column({ type: "text" })
   type: string;
 
+
   @Column({ type: "decimal" })
   price: number;
 
