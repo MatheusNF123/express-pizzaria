@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import IUser from "../../Interfaces/IUser";
+import {IUser} from "../../Interfaces/IUser";
 
 @Entity("users")
 export default class User implements IUser {

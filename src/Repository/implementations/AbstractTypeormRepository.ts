@@ -14,12 +14,14 @@ export default abstract class AbstractTypeormRepository<T>
     return this._model.find();
   }
 
-  async findOne(id: string): Promise<T | null> {
+  async findById(id: string): Promise<T | null> {
     return this._model.findOne({ where: { id } } as T);
   }
 
   async create(obj: T): Promise<T> {
-    return this._model.create({ ...obj } as unknown as T);
+    const createdObj = await this._model.create({ ...obj } as unknown as T);
+    await this._model.save(createdObj);
+    return createdObj;
   }
 
   async update(obj: T, bodyObj: T): Promise<T | null> {

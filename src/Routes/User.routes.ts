@@ -20,7 +20,7 @@ export default class UseRoutes {
     this.routes.route('/login')
       .post(this.controllers.makeLogin.login)
 
-    this.routes.route('/user')
+    this.routes.route('/register')
       .post(this.controllers.createUser.create)
   }
 }
