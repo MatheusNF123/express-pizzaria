@@ -1,13 +1,13 @@
-import IUser, { ILogin } from "./../../../Interfaces/IUser";
+import { IUser, ILogin, ILoginReturn } from "./../../../Interfaces/IUser";
 import * as bcrypt from "bcryptjs";
 import { IUserRepository } from "../../../Repository/IRepository";
 import CustomError from "../../../Error/CustomError";
 import Token from "../../../utils/GenerateToken";
 
 export default class MakeLoginService {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(private userRepository: IUserRepository<IUser>) {}
 
-  public login = async ({ email, password }: ILogin): Promise<string> => {
+  public login = async ({ email, password }: ILogin): Promise<ILoginReturn> => {
     const user = await this.userRepository.findEmail(email);
     if (!user) throw new CustomError("Incorrect email or password", 401);
 
@@ -17,6 +17,8 @@ export default class MakeLoginService {
 
     const token = Token.generateToken({ id: user.id, email });
 
-    return token;
+    user.password = undefined;
+
+    return { ...user, token };
   };
 }
