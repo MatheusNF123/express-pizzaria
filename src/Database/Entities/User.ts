@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import {IUser} from "../../Interfaces/IUser";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from "typeorm";
+import { IUser } from "../../Interfaces/IUser";
+import Order from "./Order";
 
 @Entity("users")
 export default class User implements IUser {
@@ -20,4 +27,8 @@ export default class User implements IUser {
 
   @Column({ type: "text", unique: true })
   phone: string;
+
+  // @OneToMany(() => Order, (Order) => Order.user)
+  // @JoinColumn({ name: "order_id" })
+  // orders: Order[];
 }

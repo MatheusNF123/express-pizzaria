@@ -1,4 +1,4 @@
-import { userSchema } from "./schemas";
+import { userSchema, orderSchema } from "./schemas";
 import Validations from "./Validations";
 
-export default new Validations({ userSchema });
+export default new Validations({ userSchema, orderSchema });

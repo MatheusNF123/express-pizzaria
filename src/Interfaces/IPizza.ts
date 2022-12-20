@@ -4,4 +4,5 @@ export default interface IPizza {
   type: string;
   price: number;
   ingredients: string[];
+  img: string;
 }

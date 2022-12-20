@@ -7,6 +7,7 @@
     "dev": "nodemon --exec ts-node --files src/server.ts",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/Database/Migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
+    "seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed -d ./src/data-source.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "typeorm": "ts-node-dev node_modules/.bin/typeorm"
   },
@@ -41,6 +42,7 @@
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.10",
+    "typeorm-extension": "^2.4.0",
     "zod": "^3.19.1"
   }
 }
