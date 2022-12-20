@@ -13,7 +13,7 @@ export default class Pizza implements IPizza {
   @Column({ type: "text" })
   type: string;
 
-  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0, })  
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0, })
   price: number;
 
   @Column({ type: "text" })

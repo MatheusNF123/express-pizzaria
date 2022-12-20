@@ -37,7 +37,9 @@ services:
       # env_file:
       # - .env
     
+
       - DB_HOST=postgresdb
+
       - DB_PORT=5432
       - DB_USER=admin
       - DB_PASS=pizzeriapassword
@@ -59,9 +61,11 @@ services:
         POSTGRES_PASSWORD: pizzeriapassword
         POSTGRES_USER: admin
         POSTGRES_DB: pizzeria
+
     ports:
       # Expõe a porta padrão da aplicação: altere aqui caso use outra porta
       - 5432:5432
+
         
 # Lista de redes que os containeres irão utilizar
 networks:
