@@ -25,7 +25,6 @@ export default class CreateUserService {
 
     const totalPrice = orderDTO.pizzas.reduce((acc, curr, i) => {
       let price = pizzas[i].price;
-      console.log("DSDDS", parseFloat(price as unknown as string));
 
       if (curr.border) price + 10;
 
