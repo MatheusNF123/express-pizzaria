@@ -6,7 +6,7 @@ export default class GetPizzaByIdService {
   constructor(private repository: IRepository<IPizza>) {}
 
   public async getById(id: string): Promise<IPizza> {
-    const pizza = await this.repository.findById(id);
+    const pizza = await this.repository.findOne({ id });
     if (!pizza) throw new CustomError("Invalid pizza", 400);
     return pizza;
   }

@@ -7,7 +7,9 @@
     "dev": "nodemon --exec ts-node --files src/server.ts",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/Database/Migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
+    "db:drop": "typeorm-ts-node-commonjs -d ./src/data-source.ts schema:drop",
     "seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed -d ./src/data-source.ts",
+    "db:reset": " npm run db:drop && npm run migration:run && npm run seed",
     "test": "echo \"Error: no test specified\" && exit 1",
     "typeorm": "ts-node-dev node_modules/.bin/typeorm"
   },

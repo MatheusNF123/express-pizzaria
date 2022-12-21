@@ -4,6 +4,7 @@ import ISchemas from "../Interfaces/ISchemas";
 import { IUser } from "../Interfaces/IUser";
 import { IOrderDTO } from "../Interfaces/IOrder";
 import IValidation from "../Interfaces/IValidation";
+import IPizza from "../Interfaces/IPizza";
 
 export default class Validations implements IValidation {
   constructor(private schemas: ISchemas<Schema>) {}
@@ -13,5 +14,9 @@ export default class Validations implements IValidation {
 
   public validateOrderDTO(orderDTO: IOrderDTO): void {
     this.schemas.orderSchema.parse(orderDTO);
+  }
+
+  public validatePizzaDTO(pizzaDTO: IPizza): void {
+    this.schemas.pizzaSchema.parse(pizzaDTO);
   }
 }

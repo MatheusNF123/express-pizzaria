@@ -14,11 +14,11 @@ export default class OrdersPizzas implements IOrdersPizzas {
   @PrimaryGeneratedColumn({ name: "id" })
   id: string;
 
-  @ManyToOne(() => Order)
+  @ManyToOne(() => Order, { eager: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "order_id" })
   order: Order;
 
-  @ManyToOne(() => Pizza)
+  @ManyToOne(() => Pizza, { eager: true, onDelete: "CASCADE" })
   @JoinColumn({ name: "pizza_id" })
   pizza: Pizza;
 

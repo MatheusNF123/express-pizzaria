@@ -13,5 +13,8 @@ export default class OrderRoutes {
 
   private config(): void {
     this.routes.route("/order").post(this.orderControllers.createOrder.create);
+    this.routes
+      .route("/order")
+      .get(this.orderControllers.getAllOrders.getOrders);
   }
 }
