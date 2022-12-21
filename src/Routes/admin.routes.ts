@@ -13,11 +13,16 @@ export default class PizzaRoutes {
 
   private config(): void {
     this.routes
-      .route("/admin/delete/user/:id")
+      .route("/admin/user/:id")
       .delete(this.adminControllers.deleteUser.delete);
 
     this.routes
-      .route("/admin/create/pizza")
-      .post(this.adminControllers.createPizza.create);
+      .route("/admin/pizza/:id")
+      .delete(this.adminControllers.deletePizza.delete);
+
+    this.routes
+      .route("/admin/pizza")
+      .post(this.adminControllers.createPizza.create)
+      .put(this.adminControllers.updatePizza.update);
   }
 }

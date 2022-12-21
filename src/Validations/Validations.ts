@@ -1,5 +1,4 @@
-import { SafeParseError, Schema } from "zod";
-import CustomError from "../Error/CustomError";
+import { Schema } from "zod";
 import ISchemas from "../Interfaces/ISchemas";
 import { IUser } from "../Interfaces/IUser";
 import { IOrderDTO } from "../Interfaces/IOrder";
@@ -12,11 +11,19 @@ export default class Validations implements IValidation {
     this.schemas.userSchema.parse(userDTO);
   }
 
+  public validateUserUpdateDTO(userDTO: IUser): void {
+    this.schemas.userUpdateSchema.parse(userDTO);
+  }
+
   public validateOrderDTO(orderDTO: IOrderDTO): void {
     this.schemas.orderSchema.parse(orderDTO);
   }
 
   public validatePizzaDTO(pizzaDTO: IPizza): void {
     this.schemas.pizzaSchema.parse(pizzaDTO);
+  }
+
+  public validatePizzaUpdateDTO(pizzaDTO: IPizza): void {
+    this.schemas.pizzaUpdateSchema.parse(pizzaDTO);
   }
 }

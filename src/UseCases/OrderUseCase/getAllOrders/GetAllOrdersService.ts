@@ -8,10 +8,14 @@ export default class GetAllOrdersService {
   public async getOrders(token: string) {
     const user = Token.authToken(token);
 
-    const orders = await this.repository.findAll({
-      where: { order: { user } },
-    });
+    const orders = {
+      admin: async () => this.repository.findAll(),
+      customer: async () =>
+        this.repository.findAll({
+          where: { order: { user } },
+        }),
+    };
 
-    return orders;
+    return orders[user.role]();
   }
 }
