@@ -8,6 +8,7 @@ export interface IUser extends ILogin {
   name: string;
   address: string;
   phone: string;
+  role: string;
 }
 
 export interface ILoginReturn extends Omit<IUser, "password"> {

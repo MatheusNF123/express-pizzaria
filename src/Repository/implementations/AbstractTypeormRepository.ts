@@ -10,12 +10,12 @@ export default abstract class AbstractTypeormRepository<T>
     this._model = model;
   }
 
-  async findAll(): Promise<T[]> {
-    return this._model.find();
+  async findAll(value?: object): Promise<T[]> {
+    return this._model.find(value);
   }
 
-  async findById(id: string): Promise<T | null> {
-    return this._model.findOne({ where: { id } } as T);
+  async findOne(value: object | Array<any>): Promise<T | null> {
+    return this._model.findOne({ where: value } as T);
   }
 
   async create(obj: T): Promise<T> {

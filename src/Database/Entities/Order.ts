@@ -15,14 +15,17 @@ export default class Order implements IOrder {
   @PrimaryGeneratedColumn({ name: "id" })
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    eager: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  // @OneToMany(() => OrdersPizzas, (OrdersPizzas) => OrdersPizzas.order)
-  // @JoinColumn({ name: "sale_id" })
-  // sales: OrdersPizzas[];
+  @OneToMany(() => OrdersPizzas, (OrdersPizzas) => OrdersPizzas.order)
+  @JoinColumn({ name: "orders_pizzas_id" })
+  ordersPizzas: OrdersPizzas[];
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0, })
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   totalPrice: number;
 }

@@ -28,7 +28,9 @@ export default class User implements IUser {
   @Column({ type: "text", unique: true })
   phone: string;
 
-  // @OneToMany(() => Order, (Order) => Order.user)
-  // @JoinColumn({ name: "order_id" })
-  // orders: Order[];
+  @Column({ type: "enum", enum: ['customer', 'admin'] })
+  role: string;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

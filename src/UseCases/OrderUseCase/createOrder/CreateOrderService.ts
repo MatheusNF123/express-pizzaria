@@ -1,7 +1,5 @@
 import CustomError from "../../../Error/CustomError";
-import * as bcrypt from "bcryptjs";
-import { IOrder, IOrderDTO } from "../../../Interfaces/IOrder";
-import { IUser } from "../../../Interfaces/IUser";
+import { IOrderDTO } from "../../../Interfaces/IOrder";
 import IValidation from "../../../Interfaces/IValidation";
 import { IOrderRepository } from "../../../Repository/IRepository";
 
@@ -14,12 +12,12 @@ export default class CreateUserService {
   public async create(orderDTO: IOrderDTO) {
     this.validation.validateOrderDTO(orderDTO);
 
-    const user = await this.repository.user.findById(orderDTO.userId);
+    const user = await this.repository.user.findOne({ id: orderDTO.userId });
     if (!user) throw new CustomError("User not found", 404);
 
     const pizzas = await Promise.all(
       orderDTO.pizzas.map(({ pizzaId }) =>
-        this.repository.pizza.findById(pizzaId)
+        this.repository.pizza.findOne({ id: pizzaId })
       )
     );
 
