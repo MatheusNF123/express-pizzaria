@@ -1,4 +1,18 @@
-import { userSchema, orderSchema, pizzaSchema } from "./schemas";
+import {
+  userSchema,
+  userUpdateSchema,
+  orderSchema,
+  pizzaSchema,
+  pizzaUpdateSchema,
+} from "./schemas";
 import Validations from "./Validations";
 
-export default new Validations({ userSchema, orderSchema, pizzaSchema });
+const schemas = {
+  userSchema,
+  userUpdateSchema,
+  orderSchema,
+  pizzaSchema,
+  pizzaUpdateSchema,
+};
+
+export default new Validations(schemas);

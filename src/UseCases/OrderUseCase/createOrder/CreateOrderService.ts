@@ -2,6 +2,7 @@ import CustomError from "../../../Error/CustomError";
 import { IOrderDTO } from "../../../Interfaces/IOrder";
 import IValidation from "../../../Interfaces/IValidation";
 import { IOrderRepository } from "../../../Repository/IRepository";
+import Token from "../../../utils/GenerateToken";
 
 export default class CreateUserService {
   constructor(
@@ -9,10 +10,13 @@ export default class CreateUserService {
     private validation: IValidation
   ) {}
 
-  public async create(orderDTO: IOrderDTO) {
+  public async create(token: string, orderDTO: IOrderDTO) {
+    const { id } = Token.authToken(token);
+
     this.validation.validateOrderDTO(orderDTO);
 
-    const user = await this.repository.user.findOne({ id: orderDTO.userId });
+    const user = await this.repository.user.findOne({ id });
+
     if (!user) throw new CustomError("User not found", 404);
 
     const pizzas = await Promise.all(

@@ -24,7 +24,7 @@ class App {
       res.status(200).json({ ok: true })
     );
     this.router(this.app);
-    this.app.use(MiddleError.errorMidleware);
+    this.app.use(MiddleError.errorMiddleware);
   }
 }
 
