@@ -17,6 +17,10 @@ export default class PizzaRoutes {
       .delete(this.adminControllers.deleteUser.delete);
 
     this.routes
+      .route("/admin/user")
+      .get(this.adminControllers.getAllUsers.getAll);
+
+    this.routes
       .route("/admin/pizza/:id")
       .delete(this.adminControllers.deletePizza.delete);
 
