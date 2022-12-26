@@ -9,6 +9,7 @@ export interface IUser extends ILogin {
   address: string;
   phone: string;
   role: string;
+  img: string;
 }
 
 export interface ILoginReturn extends Omit<IUser, "password"> {

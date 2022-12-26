@@ -23,6 +23,8 @@ class App {
     this.app.get("/", (_req: Request, res: Response) =>
       res.status(200).json({ ok: true })
     );
+
+    this.app.use(express.static(`${__dirname}/public/`));
     this.router(this.app);
     this.app.use(MiddleError.errorMiddleware);
   }

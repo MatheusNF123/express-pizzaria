@@ -29,6 +29,7 @@ export const userUpdateSchema = z
         "Invalid Phone"
       ),
     role: z.enum(["customer", "admin"]),
+    img: z.string(),
   })
   .strict();
 
@@ -43,7 +44,6 @@ const pizzasOrderSchema = z
 
 export const orderSchema = z
   .object({
-    // userId: z.string(),
     pizzas: z.array(pizzasOrderSchema),
   })
   .strict();
@@ -51,7 +51,7 @@ export const orderSchema = z
 export const pizzaSchema = z
   .object({
     flavor: z.string(),
-    type: z.enum(["sweet", "savory"]),
+    type: z.enum(["Doce", "Salgado"]),
     price: z.number(),
     ingredients: z.array(z.string()),
     img: z.string(),
@@ -62,7 +62,7 @@ export const pizzaUpdateSchema = z
   .object({
     id: z.string(),
     flavor: z.string(),
-    type: z.enum(["sweet", "savory"]),
+    type: z.enum(["Doce", "Salgado"]),
     price: z.number(),
     ingredients: z.array(z.string()),
     img: z.string(),

@@ -28,8 +28,11 @@ export default class User implements IUser {
   @Column({ type: "text", unique: true })
   phone: string;
 
-  @Column({ type: "enum", enum: ['customer', 'admin'] })
+  @Column({ type: "enum", enum: ["customer", "admin"] })
   role: string;
+
+  @Column({ type: "text", default: "" })
+  img: string;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];

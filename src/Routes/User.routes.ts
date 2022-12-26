@@ -17,5 +17,7 @@ export default class UseRoutes {
     this.routes.route("/register").post(this.controllers.createUser.create);
 
     this.routes.route("/update").put(this.controllers.updateUser.update);
+
+    this.routes.route("/delete").delete(this.controllers.deleteUser.delete);
   }
 }
