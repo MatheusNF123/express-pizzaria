@@ -39,9 +39,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+// import Image from "next/image";
+import pizzariaLogo from "../images/pizzariaLogo.png";
+import Image from "next/image";
+// import useStyles from "../../styles";
 
-const pages = ["Pizzas", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Home", "Menu"];
+const settings = ["Meus Pedidos", "Configurações", "Sair"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -50,6 +54,8 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  // const classes = useStyles();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -71,11 +77,11 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <Typography
-            variant="h6"
+          {/* <Typography
+            // logo tela grande
+            variant="h5"
+            component="h1"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -87,10 +93,18 @@ function ResponsiveAppBar() {
             }}
           >
             Pizzaria
-          </Typography>
+          </Typography> */}
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
+          </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '80px', height: '80px' }} />
+          </Box>
+
+          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
+              //box menu hambuger tela pequena
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -124,13 +138,13 @@ function ResponsiveAppBar() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          <Typography
+          </Box> */}
+
+          {/* <Typography
+            // logo tela pequena
             variant="h5"
+            component="h1"
             noWrap
-            component="a"
-            href=""
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -143,10 +157,16 @@ function ResponsiveAppBar() {
             }}
           >
             Pizzaria
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          </Typography> */}
+
+          {/* <Box sx={{ display: { xs: "flex", md: "none", flexGrow: 1 } }}>
+            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
+          </Box> */}
+
+          <Box  sx={{ flexGrow: 1, display: "flex" }}>
             {pages.map((page) => (
               <Button
+                // box home e menu tela grande
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -157,9 +177,9 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Abrir configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="" />
               </IconButton>
             </Tooltip>
             <Menu

@@ -25,8 +25,8 @@ export default function Home({ pizzas }: HomeProps) {
         <title>Pizzaria</title>
       </Head>
       <main>
-        <Header/>
-        
+        <Header />
+
 
       </main>
     </>
@@ -34,8 +34,9 @@ export default function Home({ pizzas }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pizzas = await getRequest('pizzas');  
-  
+  // const pizzas = await getRequest('pizzas');
+  const pizzas = [{}];
+
   return {
     props: { pizzas },
     revalidate: 60 * 60,
