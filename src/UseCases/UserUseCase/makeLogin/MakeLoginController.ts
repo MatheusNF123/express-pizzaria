@@ -10,7 +10,6 @@ export default class MakeLoginController {
 
   public login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
-
     const user = await this._makeLoginService.login({ email, password });
 
     return res.status(200).json(user);
