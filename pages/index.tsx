@@ -1,44 +1,42 @@
-import { GetStaticProps } from "next";
 import Head from "next/head";
+import { Box, Button } from "@mui/material";
+import Link from "next/link";
+// import Image from "next/image";
+
+// import pizzaBanner from "../src/images/pizzaBanner.png";
 import Header from "../src/components/header";
-import { getRequest } from "../src/services/api";
 
-type Pizza = {
-  id: string;
-  flavor: string;
-  type: string;
-  price: number;
-  ingredients: string[];
-  img: string;
-};
-
-type HomeProps = {
-  pizzas: Pizza[];
-};
-
-export default function Home({ pizzas }: HomeProps) {
-  console.log(pizzas);
+export default function Home() {
 
   return (
     <>
       <Head>
-        <title>Pizzaria</title>
+        <title>Home</title>
       </Head>
       <main>
         <Header />
 
-
+        <Box
+          sx={{
+            backgroundColor: "GrayText",
+            display: "flex",
+            width: "100%",
+            height: "100vh",
+          }}
+        >
+          <Button
+            sx={{
+              color: "white",
+              borderColor: "white",
+              display: "flex",
+              alignSelf: "end",
+            }}
+            variant="outlined"
+          >
+            <Link href={'/pizzas'}>Menu</Link>
+          </Button>
+        </Box>
       </main>
     </>
   );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  // const pizzas = await getRequest('pizzas');
-  const pizzas = [{}];
-
-  return {
-    props: { pizzas },
-    revalidate: 60 * 60,
-  };
-};

@@ -1,31 +1,4 @@
-// import { Box, Button, Container } from "@mui/material";
-// import Image from "next/image";
-// import Link from "next/link";
-// import favicon from "../../public/favicon.ico";
-// // import Link from '@mui/material/Link';
-
-// export default function Header() {
-//   return (
-//     <header>
-//         <Box
-//         sx={{
-//           my: 0,
-//           display: 'flex',
-//           flexDirection: 'column',
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}
-//       >
-//       <Image src={favicon} alt="Pizzaria Logo" />
-
-//       <Link href="/login">
-//         <Button variant="contained">Login</Button>
-//       </Link>
-//       </Box>
-//     </header>
-//   );
-// }
-import * as React from "react";
+import { MouseEvent, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -47,20 +20,20 @@ import Image from "next/image";
 const pages = ["Home", "Menu"];
 const settings = ["Meus Pedidos", "Configurações", "Sair"];
 
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+function Header() {
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
 
   // const classes = useStyles();
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -210,4 +183,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Header;
