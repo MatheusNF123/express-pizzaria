@@ -13,7 +13,7 @@ export class UserSeeder implements Seeder {
       name: "admin",
       address: "rua admin 123",
       email: "admin@admin.com",
-      password: "$2a$10$U2lefvwpTibt39GqR0h.O.Wj65KAdkIO6/6850sbMIDrZU5rqkhT6",
+      password: "$2a$10$JCVQ7urnenJYzi4Td8Ndd.SEDlIv/y10kp5SEjt/qHxp1VSqvBbPC", //admin123
       phone: "(43) 99999-9999",
       role: "admin",
     };
