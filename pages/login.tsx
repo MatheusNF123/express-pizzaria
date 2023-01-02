@@ -1,4 +1,5 @@
 import Head from "next/head";
+import LoginForm from "../src/components/loginForm";
 
 export default function Login() {
   return (
@@ -6,7 +7,9 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
-      <main>Login</main>
+      <main>
+      <LoginForm/>
+      </main>
     </>
   );
 }
