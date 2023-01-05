@@ -1,10 +1,11 @@
-import { Button } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import {Formik, Form, Field, FormikHelpers, ErrorMessage} from "formik"
 import { useState } from "react";
 import { postRequest } from "../services/api";
 import { validationLogin } from "../utils/schemas/formValidations";
 import { useRouter } from 'next/router'
 import { AxiosError } from "axios";
+
 
 interface MyFormValues {
   email: string;
@@ -31,35 +32,41 @@ return (
     <Formik
      initialValues={initialValues}
      onSubmit={handleOnSubmitLogin}
-     validationSchema={validationLogin}>
-      <Form>
-        <label htmlFor="email"></label>
+     validationSchema={validationLogin}
+     >
+      {(props) => {
+        return (
+          <Form>
+      <Typography variant="h4">Login</Typography>
       <Field 
-          id="email"
           name="email"
-          type="email"           
+          type="email"
+          label="Email"
+          as={TextField}         
           placeholder="Digite seu email"
-          />
-          <ErrorMessage
-            component="span"
-            name="email"
-          />
-          <label htmlFor="password"></label>
+          variant="outlined"
+          margin="dense"
+          helperText={<ErrorMessage name="email" />}
+          error={props.errors.email && props.touched.email}
+          />         
       <Field 
           id="password"
           name="password"
-          type="text"           
+          type="password"
+          label="Password"
+          as={TextField}       
           placeholder="Digite sua senha"
+          margin="dense"
+          helperText={<ErrorMessage name="password" />}
+          error={props.errors.password && props.touched.password}
           />
-          <ErrorMessage
-            component="span"
-            name="password"
-            className="form-error"
-          />
+         
        <Button color="primary" variant="contained" fullWidth={false} type="submit">
-          Submit
+          Login
         </Button>
       </Form>
+        )
+        }}
     </Formik>
   </div>
 )

@@ -32,7 +32,7 @@ export const getRequest = async (endPoint: string): Promise<ApiResponse> => {
 };
 
 export const postRequest = async (endPoint: string, body: any) => {
-  const { data, status } = await api.post(endPoint, { body });
+  const { data, status } = await api.post(endPoint, body );
   return { data, status };
 };
 
@@ -42,6 +42,6 @@ export const deleteRequest = async (endPoint: string, id: string) => {
 };
 
 export const putRequest = async (endPoint: string, body: any) => {
-  const { data, status } = await api.put(endPoint, { body });
+  const { data, status } = await api.put(endPoint, body );
   return { data, status };
 };
