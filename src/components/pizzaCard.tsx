@@ -7,9 +7,9 @@ import {
   CardActions,
   Typography,
 } from "@mui/material";
+import { useRouter } from 'next/router'
 
 import { Pizza } from "../Types";
-import NextLink from "./NextLink";
 
 type PizzaCardProps = {
   info: Pizza;
@@ -18,6 +18,8 @@ type PizzaCardProps = {
 export default function PizzaCard({
   info: { id, img, flavor },
 }: PizzaCardProps) {
+  const router = useRouter();
+
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card
@@ -39,11 +41,11 @@ export default function PizzaCard({
           <Typography variant="h6">{flavor}</Typography>
         </CardContent>
         <CardActions>
-          <Button variant="contained">
-            <NextLink path="/"> Comprar</NextLink>
+          <Button variant="contained" onClick={() => router.push('/')}>
+            Comprar
           </Button>
-          <Button variant="contained">
-            <NextLink path={`/pizzas/${id}`}> Detalhes</NextLink>
+          <Button variant="contained" onClick={() => router.push(`/pizzas/${id}`)}>
+            Detalhes
           </Button>
         </CardActions>
       </Card>

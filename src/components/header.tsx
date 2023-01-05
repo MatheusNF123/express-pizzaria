@@ -15,12 +15,15 @@ import AdbIcon from "@mui/icons-material/Adb";
 // import Image from "next/image";
 import pizzariaLogo from "../images/pizzariaLogo.png";
 import Image from "next/image";
+import { useRouter } from "next/router";
 // import useStyles from "../../styles";
 
-const pages = ["Home", "Menu"];
+const pages = [{ page: "Home", endPoint: '/' }, { page: "Menu", endPoint: '/pizzas' }];
 const settings = ["Meus Pedidos", "Configurações", "Sair"];
 
 function Header() {
+  const router = useRouter();
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
@@ -136,12 +139,12 @@ function Header() {
             <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
           </Box> */}
 
-          <Box  sx={{ flexGrow: 1, display: "flex" }}>
-            {pages.map((page) => (
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
+            {pages.map(({ page, endPoint }) => (
               <Button
                 // box home e menu tela grande
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => router.push(endPoint)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
