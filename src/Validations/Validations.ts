@@ -1,3 +1,4 @@
+import { ILogin } from './../Interfaces/IUser';
 import { Schema } from "zod";
 import ISchemas from "../Interfaces/ISchemas";
 import { IUser } from "../Interfaces/IUser";
@@ -9,6 +10,9 @@ export default class Validations implements IValidation {
   constructor(private schemas: ISchemas<Schema>) {}
   public validateUserDTO(userDTO: IUser): void {
     this.schemas.userSchema.parse(userDTO);
+  }
+  public validateLoginUserDTO(userDTO: ILogin): void {
+    this.schemas.userLoginSchema.parse(userDTO);
   }
 
   public validateUserUpdateDTO(userDTO: IUser): void {

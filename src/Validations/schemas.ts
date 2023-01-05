@@ -15,6 +15,13 @@ export const userSchema = z
   })
   .strict();
 
+export const userLoginSchema = z
+  .object({   
+    email: z.string().email(),
+    password: z.string().min(6),   
+  })
+  .strict();
+
 export const userUpdateSchema = z
   .object({
     id: z.string(),

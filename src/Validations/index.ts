@@ -1,5 +1,6 @@
 import {
   userSchema,
+  userLoginSchema,
   userUpdateSchema,
   orderSchema,
   pizzaSchema,
@@ -9,6 +10,7 @@ import Validations from "./Validations";
 
 const schemas = {
   userSchema,
+  userLoginSchema,
   userUpdateSchema,
   orderSchema,
   pizzaSchema,
