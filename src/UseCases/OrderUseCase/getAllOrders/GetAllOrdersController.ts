@@ -6,7 +6,8 @@ export default class GetAllOrdersController {
 
   public getOrders = async (req: Request, res: Response): Promise<Response> => {
     const { authorization } = req.headers;
-    const orders = await this.service.getOrders(authorization);
+    const { status } = req.params;
+    const orders = await this.service.getOrders(authorization, status);
     return res.status(200).json(orders);
   };
 }

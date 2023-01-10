@@ -5,6 +5,8 @@ import { IUser } from "./IUser";
 export interface IOrder {
   id?: string;
   user: IUser;
+  status?: string;
+  date?: Date | null;
   totalPrice: number;
 }
 

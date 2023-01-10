@@ -10,7 +10,7 @@ AppDataSource.initialize()
 .then(() => {
     
     app.listen(PORT, () => {
-        console.log(`Example app listening on port ${PORT}`);
+        console.log(`App running on port ${PORT}`);
       });
     console.log(`Data Source has been initialized`);
 })

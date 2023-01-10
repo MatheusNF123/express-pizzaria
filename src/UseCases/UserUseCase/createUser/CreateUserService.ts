@@ -9,7 +9,7 @@ export default class CreateUserService {
   constructor(
     private repository: IRepository<IUser>,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async create(userDTO: IUser) {
     this.validation.validateUserDTO(userDTO);

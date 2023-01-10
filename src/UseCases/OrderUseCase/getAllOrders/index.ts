@@ -1,15 +1,15 @@
-import TypeormOrdersPizzasRepository from "../../../Repository/implementations/TypeormOrdersPizzasRepository";
-import OrdersPizzas from "../../../Database/Entities/OrdersPizzas";
+import Order from "../../../Database/Entities/Order";
+import TypeormOrderRepository from "../../../Repository/implementations/TypeormOrderRepository";
 
 import { AppDataSource } from "../../../data-source";
 import GetAllOrdersController from "./GetAllOrdersController";
 import GetAllOrdersService from "./GetAllOrdersService";
 
-const ordersPizzasRepository = new TypeormOrdersPizzasRepository(
-  AppDataSource.getRepository(OrdersPizzas)
+const orderRepository = new TypeormOrderRepository(
+  AppDataSource.getRepository(Order)
 );
 
-const service = new GetAllOrdersService(ordersPizzasRepository);
+const service = new GetAllOrdersService(orderRepository);
 const controller = new GetAllOrdersController(service);
 
 export default controller;

@@ -12,18 +12,12 @@ export interface IRepository<T> {
   delete(id: string): Promise<void>;
 }
 
-// export interface IUserRepository<T> extends IRepository<T> {
-//   findEmail(email: string): Promise<IUser | null>;
-//   findByEmailOrPhone(email: string, phone: string): Promise<IUser | null>;
-// }
-
-// export interface IOrdersPizzasRepository<T> extends IRepository<T> {
-//   findAllByUser(user: IUser): Promise<IOrdersPizzas[]>;
-// }
-
-export interface IOrderRepository {
+export interface IDeleteOrderRepository {
   order: IRepository<IOrder>;
-  ordersPizzas: IRepository<IOrdersPizzas>;
   user: IRepository<IUser>;
+}
+
+export interface IOrderRepository extends IDeleteOrderRepository {
+  ordersPizzas: IRepository<IOrdersPizzas>;
   pizza: IRepository<IPizza>;
 }
