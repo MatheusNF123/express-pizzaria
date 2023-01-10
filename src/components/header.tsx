@@ -1,22 +1,25 @@
 import { MouseEvent, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-// import Image from "next/image";
+
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+  Badge
+} from "@mui/material";
+
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+
 import pizzariaLogo from "../images/pizzariaLogo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
-// import useStyles from "../../styles";
 
 const pages = [{ page: "Home", endPoint: '/' }, { page: "Menu", endPoint: '/pizzas' }];
 const settings = ["Meus Pedidos", "Configurações", "Sair"];
@@ -71,12 +74,12 @@ function Header() {
             Pizzaria
           </Typography> */}
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          {/* <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          </Box> */}
+          {/* <Box> */}
             <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '80px', height: '80px' }} />
-          </Box>
+          {/* </Box> */}
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -151,6 +154,14 @@ function Header() {
               </Button>
             ))}
           </Box>
+
+          <Badge badgeContent={2} sx={{ marginRight: '10px' }}>
+            <Tooltip title="Abrir carrinho">
+              <IconButton aria-label="Carrinho" onClick={() => router.push('/carrinho')}>
+                <ShoppingCartRoundedIcon fontSize='large' sx={{ color: "white" }} />
+              </IconButton>
+            </Tooltip>
+          </Badge>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Abrir configurações">

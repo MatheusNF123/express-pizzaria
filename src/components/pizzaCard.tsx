@@ -7,6 +7,7 @@ import {
   CardActions,
   Typography,
   Paper,
+  Box
 } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -17,7 +18,7 @@ type PizzaCardProps = {
 };
 
 export default function PizzaCard({
-  info: { id, img, flavor },
+  info: { id, img, flavor, price },
 }: PizzaCardProps) {
   const router = useRouter();
 
@@ -52,16 +53,36 @@ export default function PizzaCard({
         <CardContent>
           <Typography variant="h6">{flavor}</Typography>
         </CardContent>
-        <CardActions>
-          <Button variant="contained" onClick={() => router.push("/")}>
-            Comprar
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => router.push(`/pizzas/${id}`)}
-          >
-            Detalhes
-          </Button>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",            
+            marginRight: "10px",
+            flexWrap: "wrap-reverse",
+            
+          }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "4px",
+            }}>
+            <Button variant="contained" onClick={() => router.push("/")}>
+              Comprar
+            </Button>
+            <Button
+              variant="contained"              
+              onClick={() => router.push(`/pizzas/${id}`)}
+            >
+              Detalhes
+            </Button>
+          </Box>
+          <Typography sx={{
+            marginBottom: '4px',
+            backgroundColor: "#E60A30",
+            color: "#FFFFFF",
+            padding: '4px',
+            borderRadius: "5px",
+          }} component="span">R$: {price}</Typography>
         </CardActions>
       </Card>
       {/* </Paper> */}
