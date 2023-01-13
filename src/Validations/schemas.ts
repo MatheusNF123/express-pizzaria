@@ -16,9 +16,9 @@ export const userSchema = z
   .strict();
 
 export const userLoginSchema = z
-  .object({   
+  .object({
     email: z.string().email(),
-    password: z.string().min(6),   
+    password: z.string().min(6),
   })
   .strict();
 
@@ -40,7 +40,7 @@ export const userUpdateSchema = z
   })
   .strict();
 
-const pizzasOrderSchema = z
+const pizzasOrderAndCartSchema = z
   .object({
     pizzaId: z.string(),
     size: z.enum(["small", "medium", "big"]),
@@ -51,7 +51,13 @@ const pizzasOrderSchema = z
 
 export const orderSchema = z
   .object({
-    pizzas: z.array(pizzasOrderSchema),
+    pizzas: z.array(pizzasOrderAndCartSchema),
+  })
+  .strict();
+
+export const cartSchema = z
+  .object({
+    pizzas: z.array(pizzasOrderAndCartSchema),
   })
   .strict();
 

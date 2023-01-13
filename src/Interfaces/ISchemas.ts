@@ -3,6 +3,7 @@ export default interface ISchemas<T> {
   userLoginSchema: T;
   userUpdateSchema: T;
   orderSchema: T;
+  cartSchema: T;
   pizzaSchema: T;
   pizzaUpdateSchema: T;
 }

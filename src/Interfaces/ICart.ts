@@ -1,20 +1,18 @@
 import { IUser } from "./IUser";
 
-export interface IOrder {
+export interface ICart {
   id?: string;
   user: IUser;
-  status?: string;
-  date?: Date | null;
   totalPrice: number;
 }
 
-type IPizzasOrdersDTO = {
+type ICartPizzasDTO = {
   pizzaId: string;
   size: string;
   border: boolean;
   quantity: number;
 };
 
-export interface IOrderDTO {
-  pizzas: IPizzasOrdersDTO[];
+export interface ICartDTO {
+  pizzas: ICartPizzasDTO[];
 }

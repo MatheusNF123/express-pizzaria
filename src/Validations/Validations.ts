@@ -5,9 +5,14 @@ import { IUser } from "../Interfaces/IUser";
 import { IOrderDTO } from "../Interfaces/IOrder";
 import IValidation from "../Interfaces/IValidation";
 import IPizza from "../Interfaces/IPizza";
+import { ICartDTO } from '../Interfaces/ICart';
 
 export default class Validations implements IValidation {
-  constructor(private schemas: ISchemas<Schema>) {}
+  constructor(private schemas: ISchemas<Schema>) { }
+
+  public validateCartDTO(cartDTO: ICartDTO): void {
+    this.schemas.cartSchema.parse(cartDTO);
+  }
   public validateUserDTO(userDTO: IUser): void {
     this.schemas.userSchema.parse(userDTO);
   }

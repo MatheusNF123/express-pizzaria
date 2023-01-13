@@ -26,11 +26,11 @@ export default class Order implements IOrder {
   @JoinColumn({ name: "orders_pizzas_id" })
   ordersPizzas: OrdersPizzas[];
 
-  @Column({ type: "enum", enum: ["pending", "purchased"], default: "pending" })
+  @Column({ type: "enum", enum: ["purchased", "cancelled"], default: "purchased" })
   status: string;
 
-  @Column({ type: "timestamptz", nullable: true, default: null })
-  date: Date | null;
+  @Column({ type: "timestamptz", default: new Date() })
+  date: Date;
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   totalPrice: number;
