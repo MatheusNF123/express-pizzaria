@@ -8,13 +8,17 @@ export interface IOrder {
   totalPrice: number;
 }
 
-type IPizzasOrdersDTO = {
-  pizzaId: string;
+export interface ISaleInfo {
   size: string;
   border: boolean;
   quantity: number;
+}
+
+export interface ISaleInfoDTO extends ISaleInfo {
+  pizzaId: string;
 };
 
 export interface IOrderDTO {
-  pizzas: IPizzasOrdersDTO[];
+  cartId: string;
+  pizzas: ISaleInfoDTO[];
 }

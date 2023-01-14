@@ -1,9 +1,9 @@
 import IPizza from "./IPizza";
-import { IOrder } from "./IOrder";
+import { ICart } from "./ICart";
 
 export interface ICartPizzas {
   id?: string;
-  cart: IOrder;
+  cart: ICart;
   pizza: IPizza;
   size: string;
   border: boolean;

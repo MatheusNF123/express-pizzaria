@@ -2,13 +2,21 @@ import { ILogin } from './../Interfaces/IUser';
 import { Schema } from "zod";
 import ISchemas from "../Interfaces/ISchemas";
 import { IUser } from "../Interfaces/IUser";
-import { IOrderDTO } from "../Interfaces/IOrder";
+import { IOrderDTO, ISaleInfo } from "../Interfaces/IOrder";
 import IValidation from "../Interfaces/IValidation";
 import IPizza from "../Interfaces/IPizza";
-import { ICartDTO } from '../Interfaces/ICart';
+import { ICartDTO, ICartItemDTO } from '../Interfaces/ICart';
 
 export default class Validations implements IValidation {
   constructor(private schemas: ISchemas<Schema>) { }
+
+  public validateCartItemDTO(cartItemDTO: ICartItemDTO): void {
+    this.schemas.cartItemSchema.parse(cartItemDTO);
+  }
+
+  public validateUpdateCartItemDTO(saleInfo: ISaleInfo): void {
+    this.schemas.saleInfoSchema.parse(saleInfo);
+  }
 
   public validateCartDTO(cartDTO: ICartDTO): void {
     this.schemas.cartSchema.parse(cartDTO);

@@ -20,6 +20,7 @@ export interface IDeleteOrderRepository {
 }
 
 export interface IOrderRepository extends IDeleteOrderRepository {
+  cart: IRepository<ICart>;
   ordersPizzas: IRepository<IOrdersPizzas>;
   pizza: IRepository<IPizza>;
 }
@@ -29,7 +30,7 @@ export interface IDeleteCartRepository {
   user: IRepository<IUser>;
 }
 
-export interface IDeleteCartItemRepository extends IDeleteCartRepository {
+export interface ICartItemRepository extends IDeleteCartRepository {
   cartItem: IRepository<ICartPizzas>;
 }
 

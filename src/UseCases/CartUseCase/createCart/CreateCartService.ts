@@ -1,6 +1,5 @@
 import CustomError from "../../../Error/CustomError";
 import { ICartDTO } from "../../../Interfaces/ICart";
-import { IOrderDTO } from "../../../Interfaces/IOrder";
 import IValidation from "../../../Interfaces/IValidation";
 import { ICartRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";

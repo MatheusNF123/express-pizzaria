@@ -3,12 +3,13 @@ import { IOrderDTO } from "../../../Interfaces/IOrder";
 import IValidation from "../../../Interfaces/IValidation";
 import { IOrderRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";
+import calculateTotalPrice from "../../../utils/calculateTotalPrice"
 
 export default class CreateUserService {
   constructor(
     private repository: IOrderRepository,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async create(token: string, orderDTO: IOrderDTO) {
     const { id } = Token.authToken(token);
@@ -25,24 +26,7 @@ export default class CreateUserService {
       )
     );
 
-    const totalPrice = orderDTO.pizzas.reduce((acc, curr, i) => {
-      let price = pizzas[i].price;
-
-      if (curr.border) price + 10;
-
-      switch (curr.size) {
-        case "small":
-          price -= 8;
-          break;
-        case "big":
-          price += 15;
-          break;
-        default:
-          break;
-      }
-
-      return price * curr.quantity + acc;
-    }, 0);
+    const totalPrice = calculateTotalPrice(orderDTO.pizzas, pizzas)
 
     const order = await this.repository.order.create({ user, totalPrice });
 
@@ -57,6 +41,8 @@ export default class CreateUserService {
         })
       )
     );
+
+    await this.repository.cart.delete(orderDTO.cartId);
 
     return "Successful orders";
   }

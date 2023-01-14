@@ -6,18 +6,14 @@ import Token from "../../../utils/GenerateToken";
 export default class GetAllOrdersService {
   constructor(private repository: IRepository<IOrder>) { }
 
-  public async getOrders(token: string, status: string) {
+  public async getOrders(token: string) {
     const user = Token.authToken(token);
-
-    if (status !== 'purchased' && status !== 'pending') {
-      throw new CustomError("Unexpected status", 409);
-    }
 
     const ordersMethods = {
       admin: async () => this.repository.findAll(),
       customer: async () =>
         this.repository.findAll({
-          where: { user, status },
+          where: { user },
         }),
     };
 

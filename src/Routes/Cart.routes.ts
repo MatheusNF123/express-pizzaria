@@ -20,6 +20,10 @@ export default class CartRoutes {
       .delete(this.cartControllers.deleteCart.delete);
 
     this.routes.route("/cart/:id/item")
-      .delete(this.cartControllers.deleteCartItem.delete);
+      .delete(this.cartControllers.deleteCartItem.delete)
+      .put(this.cartControllers.updateCartItem.update);
+
+    this.routes.route("/cart/item")
+      .post(this.cartControllers.addCartItem.add);
   }
 }

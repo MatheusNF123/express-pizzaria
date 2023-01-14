@@ -49,8 +49,11 @@ const pizzasOrderAndCartSchema = z
   })
   .strict();
 
+export const saleInfoSchema = pizzasOrderAndCartSchema.omit({ pizzaId: true }).strict();
+
 export const orderSchema = z
   .object({
+    cartId: z.string(),
     pizzas: z.array(pizzasOrderAndCartSchema),
   })
   .strict();
@@ -58,6 +61,13 @@ export const orderSchema = z
 export const cartSchema = z
   .object({
     pizzas: z.array(pizzasOrderAndCartSchema),
+  })
+  .strict();
+
+export const cartItemSchema = z
+  .object({
+    cartId: z.string(),
+    item: pizzasOrderAndCartSchema,
   })
   .strict();
 
