@@ -6,9 +6,9 @@ export default class DeleteCartItemController {
 
   public delete: RequestHandler = async (req, res): Promise<Response> => {
     const { authorization } = req.headers;
-    const { id } = req.params;
+    const { cartId, cartItemId } = req.params;
 
-    await this.service.delete(authorization, id);
+    await this.service.delete(authorization, cartId, cartItemId);
 
     return res.sendStatus(204);
   };

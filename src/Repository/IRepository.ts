@@ -14,12 +14,12 @@ export interface IRepository<T> {
   delete(id: string): Promise<void>;
 }
 
-export interface IDeleteOrderRepository {
+export interface ICancelOrderRepository {
   order: IRepository<IOrder>;
   user: IRepository<IUser>;
 }
 
-export interface IOrderRepository extends IDeleteOrderRepository {
+export interface IOrderRepository extends ICancelOrderRepository {
   cart: IRepository<ICart>;
   ordersPizzas: IRepository<IOrdersPizzas>;
   pizza: IRepository<IPizza>;

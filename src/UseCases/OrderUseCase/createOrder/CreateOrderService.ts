@@ -12,6 +12,7 @@ export default class CreateUserService {
   ) { }
 
   public async create(token: string, orderDTO: IOrderDTO) {
+    const { cartId } = orderDTO;
     const { id } = Token.authToken(token);
 
     this.validation.validateOrderDTO(orderDTO);
@@ -19,6 +20,9 @@ export default class CreateUserService {
     const user = await this.repository.user.findOne({ id });
 
     if (!user) throw new CustomError("User not found", 404);
+
+    const cart = await this.repository.cart.findOne({ id: cartId });
+    if (!cart || cart.id.toString() !== cartId) throw new CustomError("Unexpected cart", 401);
 
     const pizzas = await Promise.all(
       orderDTO.pizzas.map(({ pizzaId }) =>
@@ -42,7 +46,7 @@ export default class CreateUserService {
       )
     );
 
-    await this.repository.cart.delete(orderDTO.cartId);
+    await this.repository.cart.delete(cartId);
 
     return "Successful orders";
   }

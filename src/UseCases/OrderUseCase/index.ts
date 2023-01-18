@@ -1,5 +1,5 @@
 import createOrder from "./createOrder";
 import getAllOrders from "./getAllOrders";
-import deleteOrder from "./deleteOrder";
+import cancelOrder from "./cancelOrder";
 
-export default { createOrder, getAllOrders, deleteOrder };
+export default { createOrder, getAllOrders, cancelOrder };

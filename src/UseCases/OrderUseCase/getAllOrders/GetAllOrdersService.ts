@@ -1,4 +1,3 @@
-import CustomError from "../../../Error/CustomError";
 import { IOrder } from "../../../Interfaces/IOrder";
 import { IRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";

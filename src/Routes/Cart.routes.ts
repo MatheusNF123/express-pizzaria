@@ -19,7 +19,7 @@ export default class CartRoutes {
     this.routes.route("/cart/:id")
       .delete(this.cartControllers.deleteCart.delete);
 
-    this.routes.route("/cart/:id/item")
+    this.routes.route("/cart/:cartId/item/:cartItemId")
       .delete(this.cartControllers.deleteCartItem.delete)
       .put(this.cartControllers.updateCartItem.update);
 

@@ -29,7 +29,7 @@ export default class Order implements IOrder {
   @Column({ type: "enum", enum: ["purchased", "cancelled"], default: "purchased" })
   status: string;
 
-  @Column({ type: "timestamptz", default: new Date() })
+  @Column({ type: "date", default: new Date() })
   date: Date;
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })

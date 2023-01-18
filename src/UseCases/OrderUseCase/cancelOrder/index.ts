@@ -4,8 +4,8 @@ import User from "../../../Database/Entities/User";
 import Order from "../../../Database/Entities/Order";
 
 import { AppDataSource } from "../../../data-source";
-import DeleteOrderService from "./DeleteOrderService";
-import DeleteOrderController from "./DeleteOrderController";
+import CancelOrderService from "./CancelOrderService";
+import CancelOrderController from "./CancelOrderController";
 
 const orderRepository = new TypeormOrderRepository(
   AppDataSource.getRepository(Order)
@@ -20,7 +20,7 @@ const orderRepositories = {
   user: userRepository,
 };
 
-const service = new DeleteOrderService(orderRepositories);
-const controller = new DeleteOrderController(service);
+const service = new CancelOrderService(orderRepositories);
+const controller = new CancelOrderController(service);
 
 export default controller;
