@@ -21,12 +21,12 @@ export default class UpdateCartItemService {
     if (!user || user.email !== email) throw new CustomError("User not found", 404);
 
     const cartItem = await this.repository.cartItem.findOne({ id: cartItemId });
-    if (!cartItem || cartItem.id.toString() !== cartItemId) throw new CustomError("Cart item not found", 404);
+    if (!cartItem || cartItem.id !== cartItemId) throw new CustomError("Cart item not found", 404);
 
     await this.repository.cartItem.update(cartItem, cartItemDTO);
 
     const cart = await this.repository.cart.findOne({ id: cartId });
-    if (!cart || cart.id.toString() !== cartId) throw new CustomError("Cart not found", 404);
+    if (!cart || cart.id !== cartId) throw new CustomError("Cart not found", 404);
 
     const { saleInfo, pizzas } = saleInfoFactory(cart);
 

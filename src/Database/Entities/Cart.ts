@@ -12,7 +12,7 @@ import User from "./User";
 
 @Entity("carts")
 export default class Cart implements ICart {
-  @PrimaryGeneratedColumn({ name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, {

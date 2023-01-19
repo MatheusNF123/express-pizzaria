@@ -18,12 +18,12 @@ export default class DeleteCartItemService {
     console.log(cartId);
 
     const cartItem = await this.repository.cartItem.findOne({ id: cartItemId });
-    if (!cartItem || cartItem.id.toString() !== cartItemId) throw new CustomError("Unexpected cart item", 401);
+    if (!cartItem || cartItem.id !== cartItemId) throw new CustomError("Unexpected cart item", 401);
 
     await this.repository.cartItem.delete(cartItemId);
 
     const cart = await this.repository.cart.findOne({ id: cartId });
-    if (!cart || cart.id.toString() !== cartId) throw new CustomError("Cart not found", 404);
+    if (!cart || cart.id !== cartId) throw new CustomError("Cart not found", 404);
 
     if (!cart.cartPizzas.length) {
       await this.repository.cart.delete(cartId);

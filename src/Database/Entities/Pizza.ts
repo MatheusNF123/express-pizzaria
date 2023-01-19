@@ -11,7 +11,7 @@ import OrdersPizzas from "./OrdersPizzas";
 
 @Entity("pizzas")
 export default class Pizza implements IPizza {
-  @PrimaryGeneratedColumn({ name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: "text" })

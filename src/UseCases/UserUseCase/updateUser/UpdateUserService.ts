@@ -8,7 +8,7 @@ export default class UpdateUserService {
   constructor(
     private repository: IRepository<IUser>,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async update(token: string, body: IUser) {
     const userPayload = Token.authToken(token);
@@ -21,7 +21,7 @@ export default class UpdateUserService {
 
     if (!user) throw new CustomError("User does not exist", 401);
 
-    if (userPayload.id.toString() !== id)
+    if (userPayload.id !== id)
       throw new CustomError("Unauthorized", 401);
 
     await this.repository.update(user, userData);

@@ -22,7 +22,7 @@ export default class CreateUserService {
     if (!user) throw new CustomError("User not found", 404);
 
     const cart = await this.repository.cart.findOne({ id: cartId });
-    if (!cart || cart.id.toString() !== cartId) throw new CustomError("Unexpected cart", 401);
+    if (!cart || cart.id !== cartId) throw new CustomError("Unexpected cart", 401);
 
     const pizzas = await Promise.all(
       orderDTO.pizzas.map(({ pizzaId }) =>

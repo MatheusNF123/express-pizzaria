@@ -13,12 +13,13 @@ export default class CancelOrderService {
     if (!user || user.email !== email) throw new CustomError("User does not exist", 401);
 
     const order = await this.repository.order.findOne({ id: orderId });
+
     if (!order || order.status === 'cancelled') throw new CustomError("Unexpected order", 401);
 
     const maxMinutesToCancel = 1000 * 300;
     const orderDate = new Date(order.date).getTime() + maxMinutesToCancel;
 
-    if (orderDate > new Date().getTime()) throw new CustomError("Unable to cancel order after 5 minutes", 401);
+    if (new Date().getTime() > orderDate) throw new CustomError("Unable to cancel order after 5 minutes", 401);
 
     await this.repository.order.update(order, { status: 'cancelled' });
 

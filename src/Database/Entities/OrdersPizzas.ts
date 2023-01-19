@@ -11,7 +11,7 @@ import Pizza from "./Pizza";
 
 @Entity("orders_pizzas")
 export default class OrdersPizzas implements IOrdersPizzas {
-  @PrimaryGeneratedColumn({ name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => Order, { onDelete: "CASCADE" })
