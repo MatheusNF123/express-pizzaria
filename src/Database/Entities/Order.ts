@@ -7,6 +7,7 @@ import {
   JoinColumn,
 } from "typeorm";
 import { IOrder } from "../../Interfaces/IOrder";
+import generateDate from "../../utils/genereteDate";
 import OrdersPizzas from "./OrdersPizzas";
 import User from "./User";
 
@@ -29,7 +30,7 @@ export default class Order implements IOrder {
   @Column({ type: "enum", enum: ["purchased", "cancelled"], default: "purchased" })
   status: string;
 
-  @Column({ type: "timestamptz", default: new Date() })
+  @Column({ type: "timestamp", default: new Date(generateDate()) })
   date: Date;
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })

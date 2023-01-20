@@ -1,6 +1,7 @@
 import { ICancelOrderRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";
 import CustomError from "../../../Error/CustomError";
+import generateDate from "../../../utils/genereteDate";
 
 export default class CancelOrderService {
   constructor(private repository: ICancelOrderRepository) { }
@@ -19,9 +20,13 @@ export default class CancelOrderService {
     const maxMinutesToCancel = 1000 * 300;
     const orderDate = new Date(order.date).getTime() + maxMinutesToCancel;
 
-    if (new Date().getTime() > orderDate) throw new CustomError("Unable to cancel order after 5 minutes", 401);
+    const date = generateDate();
+    console.log(new Date(order.date));
+    console.log(new Date(date));    
 
-    await this.repository.order.update(order, { status: 'cancelled' });
+    if (new Date(date).getTime() > orderDate) throw new CustomError("Unable to cancel order after 5 minutes", 401);
+
+    // await this.repository.order.update(order, { status: 'cancelled' });
 
     return { message: "Order cancelled" };
   }
