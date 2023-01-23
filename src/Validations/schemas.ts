@@ -10,7 +10,7 @@ export const userSchema = z
       .string()
       .regex(
         /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
-        "Invalid Phone"
+        "Telefone inválido"
       ),
   })
   .strict();
@@ -33,7 +33,7 @@ export const userUpdateSchema = z
       .string()
       .regex(
         /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
-        "Invalid Phone"
+        "Telefone inválido"
       ),
     role: z.enum(["customer", "admin"]),
     img: z.string(),

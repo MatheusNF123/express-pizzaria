@@ -8,12 +8,12 @@ export default class UpdatePizzaService {
   constructor(
     private repository: IRepository<IPizza>,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async update(token: string, body: IPizza) {
     const { role } = Token.authToken(token);
 
-    if (role !== "admin") throw new CustomError("Unauthorized", 401);
+    if (role !== "admin") throw new CustomError("Não autorizado", 401);
 
     this.validation.validatePizzaUpdateDTO(body);
 
@@ -21,10 +21,10 @@ export default class UpdatePizzaService {
 
     const pizza = await this.repository.findOne({ id });
 
-    if (!pizza) throw new CustomError("Pizza does not exist", 401);
+    if (!pizza) throw new CustomError("Pizza não existe", 401);
 
     await this.repository.update(pizza, pizzaData);
 
-    return { message: "updated pizza" };
+    return { message: "Pizza atualizada" };
   }
 }

@@ -21,13 +21,13 @@ export default class AddCartItemService {
     const { cartId, item: { pizzaId, ...itemInfo } } = cartItemDTO;
 
     const user = await this.repository.user.findOne({ id });
-    if (!user || user.email !== email) throw new CustomError("User not found", 404);
+    if (!user || user.email !== email) throw new CustomError("Usuário não encontrado", 404);
 
     const cart = await this.repository.cart.findOne({ id: cartId });
-    if (!cart || cart.id !== cartId) throw new CustomError("Cart not found", 404);
+    if (!cart || cart.id !== cartId) throw new CustomError("Carrinho não encontrado", 404);
 
     const pizza = await this.repository.pizza.findOne({ id: pizzaId });
-    if (!pizza || pizza.id !== pizzaId) throw new CustomError("Pizza not found", 404);
+    if (!pizza || pizza.id !== pizzaId) throw new CustomError("Pizza não encontrada", 404);
 
     const { saleInfo, pizzas } = saleInfoFactory(cart);
 
@@ -37,6 +37,6 @@ export default class AddCartItemService {
 
     await this.repository.cartPizzas.create({ cart, pizza, ...itemInfo });
 
-    return "Cart item successfully added";
+    return "Pizza adicionada";
   }
 }

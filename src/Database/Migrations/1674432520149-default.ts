@@ -1,13 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class default1674182212841 implements MigrationInterface {
-    name = 'default1674182212841'
+export class default1674432520149 implements MigrationInterface {
+    name = 'default1674432520149'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('customer', 'admin')`);
         await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" text NOT NULL, "address" text NOT NULL, "email" text NOT NULL, "password" text NOT NULL, "phone" text NOT NULL, "role" "public"."users_role_enum" NOT NULL, "img" text NOT NULL DEFAULT '', CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "UQ_a000cca60bcf04454e727699490" UNIQUE ("phone"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TYPE "public"."orders_status_enum" AS ENUM('purchased', 'cancelled')`);
-        await queryRunner.query(`CREATE TABLE "orders" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "status" "public"."orders_status_enum" NOT NULL DEFAULT 'purchased', "date" TIMESTAMP NOT NULL DEFAULT '2023-01-19T23:37:02', "totalPrice" numeric(10,2) NOT NULL DEFAULT '0', "user_id" uuid, CONSTRAINT "PK_710e2d4957aa5878dfe94e4ac2f" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TYPE "public"."orders_status_enum" AS ENUM('Comprado', 'Cancelado')`);
+        await queryRunner.query(`CREATE TABLE "orders" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "status" "public"."orders_status_enum" NOT NULL DEFAULT 'Comprado', "date" TIMESTAMP NOT NULL, "totalPrice" numeric(10,2) NOT NULL DEFAULT '0', "user_id" uuid, CONSTRAINT "PK_710e2d4957aa5878dfe94e4ac2f" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "orders_pizzas" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "size" text NOT NULL, "border" boolean NOT NULL, "quantity" integer NOT NULL, "order_id" uuid, "pizza_id" uuid, CONSTRAINT "PK_a7c92b129edc46ccc93533a5ba8" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pizzas" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "flavor" text NOT NULL, "type" text NOT NULL, "price" numeric(5,2) NOT NULL DEFAULT '0', "ingredients" text array NOT NULL, "img" text NOT NULL, CONSTRAINT "PK_27f7ede7b9304d8372a336d1e5d" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "cart_pizzas" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "size" text NOT NULL, "border" boolean NOT NULL, "quantity" integer NOT NULL, "cart_id" uuid, "pizza_id" uuid, CONSTRAINT "PK_1e8b26b0e568558a9c9b23aa97a" PRIMARY KEY ("id"))`);

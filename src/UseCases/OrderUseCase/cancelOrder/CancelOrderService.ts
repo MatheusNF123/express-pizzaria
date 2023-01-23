@@ -11,23 +11,21 @@ export default class CancelOrderService {
 
     const user = await this.repository.user.findOne({ id });
 
-    if (!user || user.email !== email) throw new CustomError("User does not exist", 401);
+    if (!user || user.email !== email) throw new CustomError("Usuário não existe", 401);
 
     const order = await this.repository.order.findOne({ id: orderId });
 
-    if (!order || order.status === 'cancelled') throw new CustomError("Unexpected order", 401);
+    if (!order || order.status === 'Cancelado') throw new CustomError("Compra inesperada", 401);
 
     const maxMinutesToCancel = 1000 * 300;
     const orderDate = new Date(order.date).getTime() + maxMinutesToCancel;
 
     const date = generateDate();
-    console.log(new Date(order.date));
-    console.log(new Date(date));    
 
-    if (new Date(date).getTime() > orderDate) throw new CustomError("Unable to cancel order after 5 minutes", 401);
+    if (new Date(date).getTime() > orderDate) throw new CustomError("Não é possível cancelar o pedido após 5 minutos", 401);
 
-    // await this.repository.order.update(order, { status: 'cancelled' });
+    await this.repository.order.update(order, { status: 'Cancelado' });
 
-    return { message: "Order cancelled" };
+    return { message: "Compra Cancelada" };
   }
 }

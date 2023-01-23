@@ -11,7 +11,7 @@ export default class GetCartService {
 
     const cart = await this.repository.findOne({ user });
 
-    if (!cart || cart.user.id !== user.id) throw new CustomError("Unexpected cart", 409);
+    if (!cart || cart.user.id !== user.id) throw new CustomError("Carrinho inesperado", 409);
 
     cart.user.password = undefined;
 

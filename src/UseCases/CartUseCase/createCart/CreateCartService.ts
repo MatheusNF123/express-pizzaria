@@ -17,7 +17,7 @@ export default class CreateCartService {
 
     const user = await this.repository.user.findOne({ id });
 
-    if (!user || user.email !== email) throw new CustomError("User not found", 404);
+    if (!user || user.email !== email) throw new CustomError("Usuário não encontrado", 404);
 
     const pizzas = await Promise.all(
       cartDTO.pizzas.map(({ pizzaId }) =>
@@ -58,6 +58,6 @@ export default class CreateCartService {
       )
     );
 
-    return "Successful cart";
+    return { message: "Carrinho criado com sucesso" };
   }
 }

@@ -4,6 +4,7 @@ import IValidation from "../../../Interfaces/IValidation";
 import { IOrderRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";
 import calculateTotalPrice from "../../../utils/calculateTotalPrice"
+import generateDate from "../../../utils/genereteDate";
 
 export default class CreateUserService {
   constructor(
@@ -19,10 +20,10 @@ export default class CreateUserService {
 
     const user = await this.repository.user.findOne({ id });
 
-    if (!user) throw new CustomError("User not found", 404);
+    if (!user) throw new CustomError("Usuário não encontrado", 404);
 
     const cart = await this.repository.cart.findOne({ id: cartId });
-    if (!cart || cart.id !== cartId) throw new CustomError("Unexpected cart", 401);
+    if (!cart || cart.id !== cartId) throw new CustomError("Carrinho inesperado", 401);
 
     const pizzas = await Promise.all(
       orderDTO.pizzas.map(({ pizzaId }) =>
@@ -30,9 +31,10 @@ export default class CreateUserService {
       )
     );
 
-    const totalPrice = calculateTotalPrice(orderDTO.pizzas, pizzas)
+    const totalPrice = calculateTotalPrice(orderDTO.pizzas, pizzas);
+    const date = new Date(generateDate());
 
-    const order = await this.repository.order.create({ user, totalPrice });
+    const order = await this.repository.order.create({ user, totalPrice, date });
 
     await Promise.all(
       orderDTO.pizzas.map(({ size, border, quantity }, i) =>
@@ -48,6 +50,6 @@ export default class CreateUserService {
 
     await this.repository.cart.delete(cartId);
 
-    return "Successful orders";
+    return { message: "Compra realizada com sucesso" };
   }
 }

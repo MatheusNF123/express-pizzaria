@@ -4,17 +4,17 @@ import Token from "../../../utils/GenerateToken";
 import CustomError from "../../../Error/CustomError";
 
 export default class DeleteUserService {
-  constructor(private repository: IRepository<IUser>) {}
+  constructor(private repository: IRepository<IUser>) { }
 
   public async delete(token: string) {
     const { id } = Token.authToken(token);
 
     const user = await this.repository.findOne({ id });
 
-    if (!user) throw new CustomError("User does not exist", 401);
+    if (!user || user.id !== id) throw new CustomError("Usuário não existe", 401);
 
     await this.repository.delete(id);
 
-    return { message: "Deleted user" };
+    return { message: "Usuário deletado" };
   }
 }

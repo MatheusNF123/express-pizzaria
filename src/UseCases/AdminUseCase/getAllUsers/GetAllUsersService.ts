@@ -3,12 +3,12 @@ import Token from "../../../utils/GenerateToken";
 import { IUser } from "./../../../Interfaces/IUser";
 import { IRepository } from "./../../../Repository/IRepository";
 export default class GetAllUsersService {
-  constructor(private repository: IRepository<IUser>) {}
+  constructor(private repository: IRepository<IUser>) { }
 
   async getAll(token: string) {
     const { role } = Token.authToken(token);
 
-    if (role !== "admin") throw new CustomError("Unauthorized", 401);
+    if (role !== "admin") throw new CustomError("Não autorizado", 401);
     const users = await this.repository.findAll({
       where: { role: "customer" },
     });
