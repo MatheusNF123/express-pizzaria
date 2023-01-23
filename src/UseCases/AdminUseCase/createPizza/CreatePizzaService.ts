@@ -8,18 +8,18 @@ export default class CreatePizzaService {
   constructor(
     private repository: IRepository<IPizza>,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async create(token: string, pizzaDTO: IPizza) {
     const { role } = Token.authToken(token);
 
-    if (role !== "admin") throw new CustomError("Unauthorized", 401);
+    if (role !== "admin") throw new CustomError("Não autorizado", 401);
 
     this.validation.validatePizzaDTO(pizzaDTO);
 
     const pizza = await this.repository.findOne({ flavor: pizzaDTO.flavor });
 
-    if (pizza) throw new CustomError("Pizza already exist", 409);
+    if (pizza) throw new CustomError("Pizza já existe", 409);
 
     const createdPizza = await this.repository.create(pizzaDTO);
 

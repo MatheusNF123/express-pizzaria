@@ -12,7 +12,7 @@ import User from "./User";
 
 @Entity("orders")
 export default class Order implements IOrder {
-  @PrimaryGeneratedColumn({ name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, {
@@ -22,9 +22,15 @@ export default class Order implements IOrder {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @OneToMany(() => OrdersPizzas, (OrdersPizzas) => OrdersPizzas.order)
+  @OneToMany(() => OrdersPizzas, (OrdersPizzas) => OrdersPizzas.order, { eager: true })
   @JoinColumn({ name: "orders_pizzas_id" })
   ordersPizzas: OrdersPizzas[];
+
+  @Column({ type: "enum", enum: ["Comprado", "Cancelado"], default: "Comprado" })
+  status: string;
+
+  @Column({ type: "timestamp" })
+  date: Date;
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   totalPrice: number;

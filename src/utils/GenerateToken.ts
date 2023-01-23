@@ -8,8 +8,8 @@ const secretKey = process.env.JWT_SECRET || 'jwt_secret' as string;
 
 export default class Token {
   static generateToken = (payload: JwtPayload): string => {
-    
-    const token = jwt.sign(payload, secretKey, {expiresIn: '20h'});
+
+    const token = jwt.sign(payload, secretKey, { expiresIn: '20h' });
     return token;
   };
 

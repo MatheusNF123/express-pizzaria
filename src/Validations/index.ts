@@ -1,8 +1,11 @@
 import {
   userSchema,
   userLoginSchema,
+  saleInfoSchema,
   userUpdateSchema,
   orderSchema,
+  cartSchema,
+  cartItemSchema,
   pizzaSchema,
   pizzaUpdateSchema,
 } from "./schemas";
@@ -12,7 +15,10 @@ const schemas = {
   userSchema,
   userLoginSchema,
   userUpdateSchema,
+  saleInfoSchema,
   orderSchema,
+  cartSchema,
+  cartItemSchema,
   pizzaSchema,
   pizzaUpdateSchema,
 };

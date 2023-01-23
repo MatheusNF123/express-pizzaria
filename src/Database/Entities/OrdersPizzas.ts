@@ -11,10 +11,10 @@ import Pizza from "./Pizza";
 
 @Entity("orders_pizzas")
 export default class OrdersPizzas implements IOrdersPizzas {
-  @PrimaryGeneratedColumn({ name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Order, { eager: true, onDelete: "CASCADE" })
+  @ManyToOne(() => Order, { onDelete: "CASCADE" })
   @JoinColumn({ name: "order_id" })
   order: Order;
 

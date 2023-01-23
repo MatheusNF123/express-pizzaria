@@ -16,7 +16,6 @@ const op: DataSourceOptions & SeederOptions = {
   entities: ["./src/Database/Entities/**/*.ts"],
   migrations: [`${__dirname}/**/Database/Migrations/*.{ts,js}`],
   seeds: [MainSeeder],
-  
 }
 
 export const AppDataSource = new DataSource(op);

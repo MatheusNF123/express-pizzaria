@@ -12,9 +12,11 @@ export default class OrderRoutes {
   }
 
   private config(): void {
-    this.routes.route("/order").post(this.orderControllers.createOrder.create);
-    this.routes
-      .route("/order")
+    this.routes.route("/order")
+      .post(this.orderControllers.createOrder.create)
       .get(this.orderControllers.getAllOrders.getOrders);
+
+    this.routes.route("/order/:id")
+      .patch(this.orderControllers.cancelOrder.cancel);
   }
 }

@@ -9,17 +9,31 @@ export class UserSeeder implements Seeder {
   ): Promise<void> {
     const userRepository = dataSource.getRepository(User);
 
-    const user = {
+    const users = [{
       name: "admin",
       address: "rua admin 123",
       email: "admin@admin.com",
       password: "$2a$10$JCVQ7urnenJYzi4Td8Ndd.SEDlIv/y10kp5SEjt/qHxp1VSqvBbPC", //admin123
       phone: "(43) 99999-9999",
       role: "admin",
-    };
+    },
+    {
+      name: "Python script",
+      address: "Avenida paulista, 404",
+      email: "python@script.com",
+      password: "$2a$10$4dwrPvHY2GQFNlrRwcXi/OIhzGahwuzKzzSrtAdpu3OMM2gh6Wlu2", //python123
+      phone: "(32) 94045-4404",
+      role: "customer",
+    }
+    ];
 
-    const userCreate = userRepository.create(user);
-    
-    await userRepository.save(userCreate);
+    await userRepository
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values(users)
+      .execute();
+
+    await userRepository.save(users);
   }
 }

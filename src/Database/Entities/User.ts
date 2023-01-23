@@ -10,7 +10,7 @@ import Order from "./Order";
 
 @Entity("users")
 export default class User implements IUser {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: "text" })

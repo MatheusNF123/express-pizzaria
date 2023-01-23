@@ -9,7 +9,7 @@ export default class MiddleError {
     res: Response,
     _next: NextFunction
   ) => {
-    console.log(`caiu no middleware de erro ${err.message}`);
+
     if (err instanceof ZodError) {
       const message = err.issues.map((err) => err.message);
       return res.status(400).json({ message });

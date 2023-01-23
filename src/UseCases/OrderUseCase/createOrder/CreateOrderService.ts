@@ -3,21 +3,27 @@ import { IOrderDTO } from "../../../Interfaces/IOrder";
 import IValidation from "../../../Interfaces/IValidation";
 import { IOrderRepository } from "../../../Repository/IRepository";
 import Token from "../../../utils/GenerateToken";
+import calculateTotalPrice from "../../../utils/calculateTotalPrice"
+import generateDate from "../../../utils/genereteDate";
 
 export default class CreateUserService {
   constructor(
     private repository: IOrderRepository,
     private validation: IValidation
-  ) {}
+  ) { }
 
   public async create(token: string, orderDTO: IOrderDTO) {
+    const { cartId } = orderDTO;
     const { id } = Token.authToken(token);
 
     this.validation.validateOrderDTO(orderDTO);
 
     const user = await this.repository.user.findOne({ id });
 
-    if (!user) throw new CustomError("User not found", 404);
+    if (!user) throw new CustomError("Usuário não encontrado", 404);
+
+    const cart = await this.repository.cart.findOne({ id: cartId });
+    if (!cart || cart.id !== cartId) throw new CustomError("Carrinho inesperado", 401);
 
     const pizzas = await Promise.all(
       orderDTO.pizzas.map(({ pizzaId }) =>
@@ -25,26 +31,10 @@ export default class CreateUserService {
       )
     );
 
-    const totalPrice = orderDTO.pizzas.reduce((acc, curr, i) => {
-      let price = pizzas[i].price;
+    const totalPrice = calculateTotalPrice(orderDTO.pizzas, pizzas);
+    const date = new Date(generateDate());
 
-      if (curr.border) price + 10;
-
-      switch (curr.size) {
-        case "small":
-          price -= 8;
-          break;
-        case "big":
-          price += 15;
-          break;
-        default:
-          break;
-      }
-
-      return price * curr.quantity + acc;
-    }, 0);
-
-    const order = await this.repository.order.create({ user, totalPrice });
+    const order = await this.repository.order.create({ user, totalPrice, date });
 
     await Promise.all(
       orderDTO.pizzas.map(({ size, border, quantity }, i) =>
@@ -58,6 +48,8 @@ export default class CreateUserService {
       )
     );
 
-    return "Successful orders";
+    await this.repository.cart.delete(cartId);
+
+    return { message: "Compra realizada com sucesso" };
   }
 }

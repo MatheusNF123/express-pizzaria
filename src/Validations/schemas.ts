@@ -10,15 +10,15 @@ export const userSchema = z
       .string()
       .regex(
         /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
-        "Invalid Phone"
+        "Telefone inválido"
       ),
   })
   .strict();
 
 export const userLoginSchema = z
-  .object({   
+  .object({
     email: z.string().email(),
-    password: z.string().min(6),   
+    password: z.string().min(6),
   })
   .strict();
 
@@ -33,14 +33,14 @@ export const userUpdateSchema = z
       .string()
       .regex(
         /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
-        "Invalid Phone"
+        "Telefone inválido"
       ),
     role: z.enum(["customer", "admin"]),
     img: z.string(),
   })
   .strict();
 
-const pizzasOrderSchema = z
+const pizzasOrderAndCartSchema = z
   .object({
     pizzaId: z.string(),
     size: z.enum(["small", "medium", "big"]),
@@ -49,9 +49,25 @@ const pizzasOrderSchema = z
   })
   .strict();
 
+export const saleInfoSchema = pizzasOrderAndCartSchema.omit({ pizzaId: true }).strict();
+
 export const orderSchema = z
   .object({
-    pizzas: z.array(pizzasOrderSchema),
+    cartId: z.string(),
+    pizzas: z.array(pizzasOrderAndCartSchema),
+  })
+  .strict();
+
+export const cartSchema = z
+  .object({
+    pizzas: z.array(pizzasOrderAndCartSchema),
+  })
+  .strict();
+
+export const cartItemSchema = z
+  .object({
+    cartId: z.string(),
+    item: pizzasOrderAndCartSchema,
   })
   .strict();
 
