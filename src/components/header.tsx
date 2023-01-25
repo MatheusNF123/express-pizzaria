@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 
 import {
   AppBar,
@@ -12,27 +12,28 @@ import {
   Button,
   Tooltip,
   MenuItem,
-  Badge
+  Badge,
 } from "@mui/material";
 
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 import pizzariaLogo from "../images/pizzariaLogo.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { userContext } from "../context/userProvider";
 
-const pages = [{ page: "Home", endPoint: '/' }, { page: "Menu", endPoint: '/pizzas' }];
+const pages = [
+  { page: "Home", endPoint: "/" },
+  { page: "Menu", endPoint: "/pizzas" },
+];
 const settings = ["Meus Pedidos", "Configurações", "Sair"];
 
 function Header() {
+  const { cartQuantity } = useContext(userContext);
   const router = useRouter();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   // const classes = useStyles();
 
@@ -78,7 +79,11 @@ function Header() {
             <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
           </Box> */}
           {/* <Box> */}
-            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '80px', height: '80px' }} />
+          <Image
+            src={pizzariaLogo}
+            alt="Pizzaria logo"
+            style={{ width: "80px", height: "80px" }}
+          />
           {/* </Box> */}
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -155,10 +160,16 @@ function Header() {
             ))}
           </Box>
 
-          <Badge badgeContent={2} sx={{ marginRight: '10px' }}>
+          <Badge badgeContent={cartQuantity} sx={{ marginRight: "10px" }}>
             <Tooltip title="Abrir carrinho">
-              <IconButton aria-label="Carrinho" onClick={() => router.push('/carrinho')}>
-                <ShoppingCartRoundedIcon fontSize='large' sx={{ color: "white" }} />
+              <IconButton
+                aria-label="Carrinho"
+                onClick={() => router.push("/user/carrinho")}
+              >
+                <ShoppingCartRoundedIcon
+                  fontSize="large"
+                  sx={{ color: "white" }}
+                />
               </IconButton>
             </Tooltip>
           </Badge>

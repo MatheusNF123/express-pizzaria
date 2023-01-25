@@ -1,8 +1,12 @@
+
 import { Button, TextField, Typography, Box, Grid, Paper } from "@mui/material";
-import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik"
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { postRequest } from "../services/api";
-import { validationLogin, validationRegister } from "../utils/schemas/formValidations";
-import { useRouter } from 'next/router'
+import {
+  validationLogin,
+  validationRegister,
+} from "../utils/schemas/formValidations";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 interface MyFormValues {
@@ -16,17 +20,34 @@ interface MyFormValues {
 }
 
 export default function RegisterForm() {
-  const router = useRouter()
-  const initialValues: MyFormValues = { firstName: '', lastName: '', address: '', email: '', password: '', confirmPassword: "", phone: '' };
+  const router = useRouter();
+  const initialValues: MyFormValues = {
+    firstName: "",
+    lastName: "",
+    address: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+  };
 
-  async function handleOnSubmitRegister({ firstName, lastName, address, email, password, phone }: MyFormValues, actions: FormikHelpers<MyFormValues>) {
+  async function handleOnSubmitRegister(
+    { firstName, lastName, address, email, password, phone }: MyFormValues,
+    actions: FormikHelpers<MyFormValues>
+  ) {
     try {
-      const { data, status } = await postRequest('register', { name: `${firstName} ${lastName}`, address, email, password, phone })
-      if (status !== 201) return alert(`${data.message}`)
-      router.push('/')
+      const { data, status } = await postRequest("register", {
+        name: `${firstName} ${lastName}`,
+        address,
+        email,
+        password,
+        phone,
+      });
+      if (status !== 201) return alert(`${data.message}`);
+      router.push("/");
       actions.resetForm();
     } catch (err) {
-      return alert(`Erro interno, volte mais tarde :)`)
+      return alert(`Erro interno, volte mais tarde :)`);
     }
   }
 
@@ -41,18 +62,21 @@ export default function RegisterForm() {
       }}
     >
       <Paper elevation={3}>
-        <Box m={5} p={3}
+        <Box
+          m={5}
+          p={3}
           sx={{
             display: "flex",
             flexDirection: "column",
-          }}>
+          }}
+        >
           <Formik
             initialValues={initialValues}
             onSubmit={handleOnSubmitRegister}
-            validationSchema={validationRegister}>
+            validationSchema={validationRegister}
+          >
             {(props) => {
               return (
-
                 <Form>
                   <Typography variant="h4">Cadastro</Typography>
 
@@ -68,7 +92,9 @@ export default function RegisterForm() {
                         margin="dense"
                         fullWidth
                         helperText={<ErrorMessage name="firstName" />}
-                        error={props.errors.firstName && props.touched.firstName}
+                        error={
+                          props.errors.firstName && props.touched.firstName
+                        }
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -115,7 +141,6 @@ export default function RegisterForm() {
                         helperText={<ErrorMessage name="password" />}
                         error={props.errors.password && props.touched.password}
                       />
-
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Field
@@ -128,7 +153,10 @@ export default function RegisterForm() {
                         margin="dense"
                         fullWidth
                         helperText={<ErrorMessage name="confirmPassword" />}
-                        error={props.errors.confirmPassword && props.touched.confirmPassword}
+                        error={
+                          props.errors.confirmPassword &&
+                          props.touched.confirmPassword
+                        }
                       />
                     </Grid>
                   </Grid>
@@ -145,8 +173,8 @@ export default function RegisterForm() {
                     helperText={<ErrorMessage name="phone" />}
                     error={props.errors.phone && props.touched.phone}
                   />
-
-                  <Field name="address"
+                  <Field
+                    name="address"
                     label="Endereço"
                     id="address"
                     type="text"
@@ -158,19 +186,28 @@ export default function RegisterForm() {
                     helperText={<ErrorMessage name="address" />}
                     error={props.errors.address && props.touched.address}
                   />
-                  <Typography style={{ color: '#757575' }} mt={1} mb={2}>
-                    <Link style={{ textDecoration: "none", color: '#1769aa' }} href="/login">Já tem uma conta?</Link>
+                  <Typography style={{ color: "#757575" }} mt={1} mb={2}>
+                    <Link
+                      style={{ textDecoration: "none", color: "#1769aa" }}
+                      href="/login"
+                    >
+                      Já tem uma conta?
+                    </Link>
                   </Typography>
-                  <Button color="primary"
-                    variant="contained" fullWidth type="submit">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    type="submit"
+                  >
                     Cadastrar
                   </Button>
                 </Form>
-              )
+              );
             }}
           </Formik>
         </Box>
       </Paper>
     </Box>
-  )
+  );
 }
