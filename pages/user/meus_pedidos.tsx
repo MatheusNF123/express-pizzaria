@@ -36,12 +36,13 @@ export default function meusPedidos({ orders }: OrderProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const { data } = await getRequest<Order[]>(`order`);
+
     return {
-      props: { order: data },
+      props: { orders: data },
     };
   } catch (error) {
     return {
-      props: { order: null },
+      props: { orders: [] },
     };
   }
 };

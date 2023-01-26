@@ -7,20 +7,18 @@ export type Pizza = {
   img: string;
 };
 
-export type Login = {
-  email: string;
-  password: string;
-}
-
 export type User = {
   id?: string;
   name: string;
   address: string;
+  email: string;
   phone: string;
   role: string;
   img: string;
-  email: string;
-  password: string;
+}
+
+export interface Login extends User {
+  token: string;
 }
 
 export type OrdersPizzas = {
@@ -33,8 +31,8 @@ export type OrdersPizzas = {
 
 export type Order = {
   id: string;
-  user: Omit<User, "password">;
-  ordersPizzas: OrdersPizzas[]
+  user: User;
+  ordersPizzas: OrdersPizzas[];
   status: string;
   date: Date;
   totalPrice: number;

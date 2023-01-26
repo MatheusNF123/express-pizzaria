@@ -26,126 +26,41 @@ const pages = [
   { page: "Home", endPoint: "/" },
   { page: "Menu", endPoint: "/pizzas" },
 ];
-const settings = ["Meus Pedidos", "Configurações", "Sair"];
+const settings = [
+  { page: "Meus Pedidos", endPoint: "/user/meus_pedidos" },
+  { page: "Configurações", endPoint: "/pizzas" },
+  { page: "Sair", endPoint: "/pizzas" },
+];
 
 function Header() {
   const { cartQuantity } = useContext(userContext);
   const router = useRouter();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  // const classes = useStyles();
-
-  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const handleUserMenuClick = (endPoint: string) => {
+    router.push(endPoint)
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          {/* <Typography
-            // logo tela grande
-            variant="h5"
-            component="h1"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Pizzaria
-          </Typography> */}
 
-          {/* <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
-          </Box> */}
-          {/* <Box> */}
           <Image
             src={pizzariaLogo}
             alt="Pizzaria logo"
             style={{ width: "80px", height: "80px" }}
           />
-          {/* </Box> */}
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              //box menu hambuger tela pequena
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-
-          {/* <Typography
-            // logo tela pequena
-            variant="h5"
-            component="h1"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Pizzaria
-          </Typography> */}
-
-          {/* <Box sx={{ display: { xs: "flex", md: "none", flexGrow: 1 } }}>
-            <Image src={pizzariaLogo} alt='Pizzaria logo' style={{ width: '100px', height: '100px' }} />
-          </Box> */}
 
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             {pages.map(({ page, endPoint }) => (
@@ -196,9 +111,9 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map(({ page, endPoint }) => (
+                <MenuItem key={page} onClick={() => handleUserMenuClick(endPoint)}>
+                  <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>

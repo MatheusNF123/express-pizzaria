@@ -1,9 +1,12 @@
 import { GetServerSideProps } from "next";
+import { useContext, useEffect } from "react";
 import { Container } from "@mui/material";
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
 import { getRequest } from "../../src/services/api";
+import setApiHeaders from "../../src/services/setApiHeaders";
+import { userContext } from "../../src/context/userProvider";
 
 const cartItems = [1, 2, 3, 4, 5, 6, 7];
 
@@ -11,7 +14,13 @@ type CartProps = {
   cart: any;
 };
 
-export default function Cart(props: CartProps) {
+export default function Cart({ cart }: CartProps) {
+  const { handleCartQuantity } = useContext(userContext);
+
+  useEffect(() => {
+    handleCartQuantity(cart.cartPizzas)
+  }, []);
+
   return (
     <Layout title="Carrinho">
       <Container
@@ -35,16 +44,18 @@ export default function Cart(props: CartProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
+    setApiHeaders(ctx);
+
     const { data, status } = await getRequest<string>("/cart");
-    // console.log("data", data);
-    // console.log("status", status); 
-    // if (status === 401)
-    //   return {
-    //     redirect: {
-    //       permanent: false,
-    //       destination: "/login",
-    //     },
-    //   };
+    console.log('cart', status, data);
+
+    if (status !== 200)
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/login",
+        },
+      };
 
     return {
       props: { cart: data },

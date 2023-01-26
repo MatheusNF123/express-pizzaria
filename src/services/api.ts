@@ -1,40 +1,37 @@
 import axios from "axios";
 
-import { Pizza } from "../Types";
-
 export const api = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: "http://localhost:3001/"
 });
 
-const token = {user: 'Aloo'};
+// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ0OWU0YWU4LTYyOTktNDA5NC04MmY3LTQyOGNhMzMyOGU5YSIsImVtYWlsIjoicHl0aG9uQHNjcmlwdC5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE2NzQ2ODUyODksImV4cCI6MTY3NDc1NzI4OX0.sbOPnFUOJVIW-mgcNjLfn5wkkzDLGmswyqcU4OapKGY";
 
-api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+// api.defaults.headers.common['Authorization'] = token;
+
+type ApiErrorMessage = {
+  message?: string;
+}
 
 type ApiResponse<T> = {
-  data: T;
+  data: T & ApiErrorMessage;
   status: number;
 };
 
-
-// Add a response interceptor
 api.interceptors.response.use(
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+
     return response;
   },
   function (error) {
     if (error.message !== "Network Error") {
       return error.response;
     }
+
     console.log("error");
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+
     return Promise.reject(error);
   }
 );
-
-
 
 export const getRequest = async <T>(
   endPoint: string
@@ -43,7 +40,7 @@ export const getRequest = async <T>(
   return { data, status };
 };
 
-export const postRequest = async (endPoint: string, body: any) => {
+export const postRequest = async <T>(endPoint: string, body: any): Promise<ApiResponse<T>> => {
   const { data, status } = await api.post(endPoint, body);
   return { data, status };
 };
