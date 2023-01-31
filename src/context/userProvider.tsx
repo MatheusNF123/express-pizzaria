@@ -1,11 +1,20 @@
-import { createContext, ReactNode, Dispatch, SetStateAction, useState } from "react";
-import { User } from "../Types";
+import { useRouter } from "next/router";
+import {
+  createContext,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
+import createOrAddItemToCart from "../services/createOrAddItemToCart";
+import { User, CartPizzas, PurchaseItem } from "../Types";
 
 type UserContextValues = {
   user: User | null;
   cartQuantity: number;
   handleUser: (user: User) => void;
-  handleCartQuantity: (cartItems: any[]) => void;
+  handleCartQuantity: (cartItems: CartPizzas[]) => void;
+  handlePurchase: (item: PurchaseItem) => void;
 };
 
 export const userContext = createContext({} as UserContextValues);
@@ -17,14 +26,20 @@ type UserProviderProps = {
 export default function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [cartQuantity, setCartQuantity] = useState(0);
+  const router = useRouter();
 
-  const handleCartQuantity = (cartItems: any[]) => {
+  const handleCartQuantity = (cartItems: CartPizzas[]) => {
     setCartQuantity(cartItems.length);
-  }
+  };
 
   const handleUser = (user: User) => {
     setUser(user);
-  }
+  };
+
+  const handlePurchase = async (item: PurchaseItem) => {
+    // verificar se tem cookie se não vai para o login
+    await createOrAddItemToCart(item, router);
+  };
 
   return (
     <userContext.Provider
@@ -33,6 +48,7 @@ export default function UserProvider({ children }: UserProviderProps) {
         cartQuantity,
         handleUser,
         handleCartQuantity,
+        handlePurchase,
       }}
     >
       {children}

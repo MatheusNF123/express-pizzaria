@@ -24,7 +24,6 @@ export default function PizzaCard({
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      {/* <Paper elevation={3}> */}
       <Card
         elevation={10}
         sx={{
@@ -91,7 +90,6 @@ export default function PizzaCard({
           </Typography>
         </CardActions>
       </Card>
-      {/* </Paper> */}
     </Grid>
   );
 }

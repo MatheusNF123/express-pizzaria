@@ -7,6 +7,7 @@ import Layout from "../../src/components/layout";
 import { getRequest } from "../../src/services/api";
 import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
+import { Cart } from "../../src/Types";
 
 const cartItems = [1, 2, 3, 4, 5, 6, 7];
 
@@ -18,7 +19,7 @@ export default function Cart({ cart }: CartProps) {
   const { handleCartQuantity } = useContext(userContext);
 
   useEffect(() => {
-    handleCartQuantity(cart.cartPizzas)
+    handleCartQuantity(cart.cartPizzas);
   }, []);
 
   return (
@@ -46,8 +47,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     setApiHeaders(ctx);
 
-    const { data, status } = await getRequest<string>("/cart");
-    console.log('cart', status, data);
+    const { data, status } = await getRequest<Cart>("/cart");
+    console.log("cart", status, data);
 
     if (status !== 200)
       return {
