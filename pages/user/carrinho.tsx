@@ -1,26 +1,29 @@
 import { GetServerSideProps } from "next";
 import { useContext, useEffect } from "react";
-import { Container } from "@mui/material";
+import { Box, Container, Divider, Typography } from "@mui/material";
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
-import { getRequest } from "../../src/services/api";
+import { deleteRequest, getRequest } from "../../src/services/api";
 import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
-import { Cart } from "../../src/Types";
-
-const cartItems = [1, 2, 3, 4, 5, 6, 7];
+import { Cart as CartType } from "../../src/Types";
+import getCartQuantity from "../../src/services/getCartQuantity";
 
 type CartProps = {
-  cart: any;
+  cart: CartType;
 };
 
-export default function Cart({ cart }: CartProps) {
+export default function Cart({ cart: { id, totalPrice, cartPizzas } }: CartProps) {
   const { handleCartQuantity } = useContext(userContext);
 
-  useEffect(() => {
-    handleCartQuantity(cart.cartPizzas);
-  }, []);
+  const handleCartItemDeletion = async (itemId: string) => {
+    setApiHeaders();
+    await deleteRequest(`/cart/${id}/item/${itemId}`);
+    // pegar dados do carrinho depois de ter deletado
+    const quantity = await getCartQuantity();
+    handleCartQuantity(quantity);
+  }
 
   return (
     <Layout title="Carrinho">
@@ -35,8 +38,24 @@ export default function Cart({ cart }: CartProps) {
           padding: "20px",
         }}
       >
-        {cartItems.map((n) => (
-          <CartCard info={n} key={n} />
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            color: 'white',
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{ display: "flex", m: 1, fontWeight: "bold" }}
+            component="span"
+          >
+            <Typography>Total R$: </Typography> {totalPrice}
+          </Typography>
+        </Box>
+        {/* <Divider color="white" /> */}
+        {cartPizzas.map((item) => (
+          <CartCard info={item} handleCartItemDeletion={handleCartItemDeletion} key={item.id} />
         ))}
       </Container>
     </Layout>
@@ -47,10 +66,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     setApiHeaders(ctx);
 
-    const { data, status } = await getRequest<Cart>("/cart");
+    const { data, status } = await getRequest<CartType>("/cart");
     console.log("cart", status, data);
 
-    if (status !== 200)
+    if (status === 401)
       return {
         redirect: {
           permanent: false,

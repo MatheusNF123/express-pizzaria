@@ -1,6 +1,5 @@
 import {
   Button,
-  Grid,
   Card,
   CardMedia,
   CardContent,
@@ -18,11 +17,9 @@ import verifyDate from "../utils/verifyDate";
 
 export default function CardMyPurchase({
   date,
-  id,
   ordersPizzas,
   status,
   totalPrice,
-  user,
 }: Order) {
   const router = useRouter();
 
@@ -67,7 +64,7 @@ export default function CardMyPurchase({
                   <Box sx={{ mr: 1 }}>
                     <CardMedia
                       sx={{
-                        width:  '120px',
+                        width: '120px',
                         height: '120px',
                         border: "2px solid black",
                         // margin: "20px 5px 20px 20px",
@@ -86,7 +83,7 @@ export default function CardMyPurchase({
                     <Typography sx={{ mb: 1 }} variant="subtitle2">
                       R$ {ordersPizza.pizza.price}
                     </Typography>
-                    <Box sx={{ flex: 1, display: {sm: 'flex', md: "none", lg: "none" } }}>
+                    <Box sx={{ flex: 1, display: { sm: 'flex', md: "none", lg: "none" } }}>
                       Status:
                       <Typography
                         sx={{
@@ -123,7 +120,7 @@ export default function CardMyPurchase({
                 <CardActions
                   sx={{
                     display: "flex",
-                    padding: { xs: "5px 0px",  },
+                    padding: { xs: "5px 0px", },
                   }}
                 >
                   <Box
@@ -131,7 +128,7 @@ export default function CardMyPurchase({
                       display: "flex",
                       width: { xs: "100%" },
                       flexDirection: "column",
-                      gap:  "8px" ,
+                      gap: "8px",
                     }}
                   >
                     <Button

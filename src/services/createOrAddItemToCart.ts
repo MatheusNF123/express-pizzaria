@@ -11,7 +11,6 @@ export default async function createOrAddItemToCart(
   setApiHeaders();
   try {
     const { data, status } = await getRequest<Cart>("/cart");
-    console.log("cart", status);
 
     if (status === 401) return router.push("/login");
 
@@ -19,11 +18,13 @@ export default async function createOrAddItemToCart(
       return await postRequest<ApiReturnMessage>("/cart", { pizzas: [item] });
     }
 
-    return await postRequest<ApiReturnMessage>("/cart/item", {
-      cartId: data.id,
-      item,
-    });
-  } catch (_error) {
+    if (status === 200) {
+      return await postRequest<ApiReturnMessage>("/cart/item", {
+        cartId: data.id,
+        item,
+      });
+    }
+  } catch (error) {
     return;
   }
 }

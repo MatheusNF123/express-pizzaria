@@ -45,8 +45,8 @@ export const postRequest = async <T>(
   return { data, status };
 };
 
-export const deleteRequest = async (endPoint: string, id: string) => {
-  const { status } = await api.delete(`${endPoint}/${id}`);
+export const deleteRequest = async (endPoint: string) => {
+  const { status } = await api.delete(endPoint);
   return { status };
 };
 

@@ -8,7 +8,7 @@ export interface Pizza {
 }
 
 export interface User {
-  id?: string;
+  id: string;
   name: string;
   address: string;
   email: string;
@@ -28,19 +28,19 @@ interface PurchaseInfo {
 }
 
 export interface CartPizzas extends PurchaseInfo {
-  id?: string;
+  id: string;
   pizza: Pizza;
 }
 
 export interface Cart {
-  id?: string;
+  id: string;
   user: User;
-  cartPizzas?: CartPizzas[];
+  cartPizzas: CartPizzas[];
   totalPrice: number;
 }
 
 export interface OrdersPizzas extends PurchaseInfo {
-  id?: string;
+  id: string;
   pizza: Pizza;
 }
 

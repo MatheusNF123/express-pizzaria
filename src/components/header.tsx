@@ -27,8 +27,8 @@ const pages = [
   { page: "Menu", endPoint: "/pizzas" },
 ];
 const settings = [
-  { page: "Meus Pedidos", endPoint: "/user/meus_pedidos" },
-  { page: "Configurações", endPoint: "/pizzas" },
+  { page: "Meu perfil", endPoint: "/user/perfil" },
+  { page: "Meus pedidos", endPoint: "/user/meus_pedidos" },
   { page: "Sair", endPoint: "/pizzas" },
 ];
 
