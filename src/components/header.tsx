@@ -1,5 +1,6 @@
+import { useRouter } from "next/router";
+import Image from "next/image";
 import { MouseEvent, useContext, useState } from "react";
-
 import {
   AppBar,
   Box,
@@ -14,25 +15,30 @@ import {
   MenuItem,
   Badge,
 } from "@mui/material";
-
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { destroyCookie } from "nookies";
 
 import pizzariaLogo from "../images/pizzariaLogo.png";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import { userContext } from "../context/userProvider";
+import verifyCookie from "../services/verifyCookie";
 
 const pages = [
   { page: "Home", endPoint: "/" },
   { page: "Menu", endPoint: "/pizzas" },
 ];
-const settings = [
+
+const logged = [
   { page: "Meu perfil", endPoint: "/user/perfil" },
   { page: "Meus pedidos", endPoint: "/user/meus_pedidos" },
   { page: "Sair", endPoint: "/pizzas" },
 ];
 
+const loggedOut = [{ page: "Login", endPoint: "/login" }];
+
+const initialOptions = verifyCookie() ? logged : loggedOut;
+
 function Header() {
+  const [options, setOptions] = useState(initialOptions);
   const { cartQuantity } = useContext(userContext);
   const router = useRouter();
 
@@ -46,21 +52,24 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const handleUserMenuClick = (endPoint: string) => {
-    router.push(endPoint)
+  const handleUserMenuClick = (page: string, endPoint: string) => {
+    if (page === "Sair") {
+      destroyCookie(undefined, "pizzeria.token");
+      setOptions(loggedOut);
+    }
+    // muda opções quando a pessoa logar
+    router.push(endPoint);
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-
           <Image
             src={pizzariaLogo}
             alt="Pizzaria logo"
             style={{ width: "80px", height: "80px" }}
           />
-
 
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             {pages.map(({ page, endPoint }) => (
@@ -111,8 +120,11 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(({ page, endPoint }) => (
-                <MenuItem key={page} onClick={() => handleUserMenuClick(endPoint)}>
+              {options.map(({ page, endPoint }) => (
+                <MenuItem
+                  key={page}
+                  onClick={() => handleUserMenuClick(page, endPoint)}
+                >
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}

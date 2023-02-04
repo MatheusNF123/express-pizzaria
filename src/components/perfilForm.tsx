@@ -11,6 +11,9 @@ import Link from "next/link";
 import Icon from '@mui/material/Icon';
 import Image from 'next/image'
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
+import { useRef, useState } from "react";
+
+
 
 interface MyFormValues {
   firstName: string;
@@ -18,11 +21,14 @@ interface MyFormValues {
   address: string;
   email: string;
   password: string;
-  confirmPassword: string;
   phone: string;
+  imagem: null
 }
 
 export default function PerfilForm() {
+  const [file, setFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | ArrayBuffer | null | undefined>(null);
   const router = useRouter();
   const initialValues: MyFormValues = {
     firstName: "",
@@ -30,12 +36,34 @@ export default function PerfilForm() {
     address: "",
     email: "",
     password: "",
-    confirmPassword: "",
     phone: "",
+    imagem: null,
   };
 
+  const handleOnChange = async ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log(target.files[0]?.name);
+  //   const formData = new FormData();
+  //   formData.append("file", target.files[0]?.name);
+  //  console.log(formData)
+  };
+  // const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFile = target.files![0];    
+  //   setFile(selectedFile);
+
+
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     console.log(e.target)
+  //     setPreviewUrl(e.target?.result);
+  //   };
+  //   reader.readAsDataURL(selectedFile);
+   
+  // };
+   
+
+
   async function handleOnSubmitRegister(
-    { firstName, lastName, address, email, password, phone }: MyFormValues,
+    { firstName, lastName, address, email, password, phone,  }: MyFormValues,
     actions: FormikHelpers<MyFormValues>
   ) {
     try {
@@ -93,10 +121,20 @@ export default function PerfilForm() {
                     }}
                   >
                     <Box sx={{ display: 'flex', justifyContent: "center", alignItems: 'center' }}>
-                      <IconButton>
+                      <label htmlFor="upload-photo">
+                      <IconButton color="secondary" component="span">
+                      <input
+                        id="upload-photo"
+                        name="imagem"
+                        accept="image/*"
+                        type="file"
+                        hidden
+                        ref={inputRef}
+                        onChange={handleOnChange}
+                      />
                         <Avatar sx={{
-                          width: '200px',
-                          height: '200px',
+                          width: '180px',
+                          height: '180px',
                           backgroundColor: '#e5e5e5',
                           transition: ".2s",
                           '&:hover':
@@ -104,12 +142,13 @@ export default function PerfilForm() {
                             backgroundColor: '#f7f7f7',
                           }
                         }}
-                          alt="imagemPerfil" src="" />
+                          alt="imagemPerfil" src={''} />
                         <CameraEnhanceIcon sx={{
                           position: "absolute", fontSize: '40px', color: '#595959', bottom: '20px', right: '30px',
                         }} />
-                      </IconButton>
-
+                        
+                      </IconButton>                      
+                      </label>
 
                     </Box>
 

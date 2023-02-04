@@ -1,15 +1,10 @@
 import { useRouter } from "next/router";
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
-import { User, CartPizzas, PurchaseItem } from "../Types";
+import { User, PurchaseItem } from "../Types";
 import createOrAddItemToCart from "../services/createOrAddItemToCart";
 import verifyCookie from "../services/verifyCookie";
-import getCartQuantity from "../services/getCartQuantity";
+import getCartData from "../services/getCartData";
 
 type UserContextValues = {
   user: User | null;
@@ -31,10 +26,11 @@ export default function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
 
   useEffect(() => {
-    getCartQuantity().then((quantity) => {
-      console.log('quantity', quantity);
-      setCartQuantity(quantity);
-    })
+    getCartData()
+      .then(({ quantity }) => {
+        setCartQuantity(quantity);
+      })
+      .catch(() => setCartQuantity(0));
   }, []);
 
   const handleCartQuantity = (quantity: number) => {
@@ -49,16 +45,9 @@ export default function UserProvider({ children }: UserProviderProps) {
     if (!verifyCookie()) return router.push("/login");
     await createOrAddItemToCart(item, router);
 
-    const quantity = await getCartQuantity();
+    const { quantity } = await getCartData();
     setCartQuantity(quantity);
   };
-
-  // const handleCartItemDeletion = async (cartId: string, itemId: string) => {
-  //   await deleteRequest(`/cart/${cartId}/item/${itemId}`);
-
-  //   const quantity = await getCartQuantity();
-  //   setCartQuantity(quantity);
-  // }
 
   return (
     <userContext.Provider

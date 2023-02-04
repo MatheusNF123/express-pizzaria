@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { useContext, useEffect } from "react";
-import { Box, Container, Divider, Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import { Box, Button, Card, Container, Divider, Typography } from "@mui/material";
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
@@ -8,22 +9,26 @@ import { deleteRequest, getRequest } from "../../src/services/api";
 import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
 import { Cart as CartType } from "../../src/Types";
-import getCartQuantity from "../../src/services/getCartQuantity";
+import getCartData from "../../src/services/getCartData";
 
 type CartProps = {
-  cart: CartType;
+  cart: CartType | null;
 };
-
-export default function Cart({ cart: { id, totalPrice, cartPizzas } }: CartProps) {
+ 
+export default function Cart(props: CartProps) {
+  const router = useRouter();
+  const [cart, setCart] = useState<CartType | null>(props.cart);
   const { handleCartQuantity } = useContext(userContext);
+  console.log("cart", cart);
 
   const handleCartItemDeletion = async (itemId: string) => {
     setApiHeaders();
-    await deleteRequest(`/cart/${id}/item/${itemId}`);
-    // pegar dados do carrinho depois de ter deletado
-    const quantity = await getCartQuantity();
+    await deleteRequest(`/cart/${cart?.id}/item/${itemId}`);
+
+    const { quantity, data } = await getCartData();
+    setCart(data);
     handleCartQuantity(quantity);
-  }
+  };
 
   return (
     <Layout title="Carrinho">
@@ -33,30 +38,78 @@ export default function Cart({ cart: { id, totalPrice, cartPizzas } }: CartProps
           minHeight: "calc(100vh - 87px)",
           width: "100%",
           display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          padding: "20px",
+          // flexDirection: "column",
+          // gap: "10px",
+          // padding: "20px",
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            color: 'white',
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography
-            sx={{ display: "flex", m: 1, fontWeight: "bold" }}
-            component="span"
+        {cart ? (
+          <Box
+            sx={{
+              color: "white",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              padding: "20px",
+              width: "100%",
+            }}
           >
-            <Typography>Total R$: </Typography> {totalPrice}
-          </Typography>
-        </Box>
-        {/* <Divider color="white" /> */}
-        {cartPizzas.map((item) => (
-          <CartCard info={item} handleCartItemDeletion={handleCartItemDeletion} key={item.id} />
-        ))}
+            <Typography
+              sx={{ display: "flex", m: 1, fontWeight: "bold" }}
+              component="span"
+            >
+              <Typography>Total R$: </Typography> {cart?.totalPrice}
+            </Typography>
+            {cart?.cartPizzas.map((item) => (
+              <CartCard
+                info={item}
+                handleCartItemDeletion={handleCartItemDeletion}
+                key={item.id}
+              />
+            ))}
+            {/* <Divider color="white" /> */}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              alignItems: "center",
+              flex: "1",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <Card
+              sx={{
+                alignItems: "center",
+                backgroundColor: "inherit",
+                border: "1px solid white",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                height: "300px",
+                justifyContent: "space-around",
+                width: "500px",
+              }}
+            >
+              <Typography
+                sx={{ display: "flex", fontSize: "2rem", fontWeight: "bold" }}
+                component="h1"
+              >
+                Carrinho vazio
+              </Typography>
+              <Button
+                sx={{
+                  width: "70%",
+                }}
+                variant="contained"
+                onClick={() => router.push("/pizzas")}
+              >
+                Continuar comprando
+              </Button>
+            </Card>
+          </Box>
+        )}
       </Container>
     </Layout>
   );
@@ -67,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     setApiHeaders(ctx);
 
     const { data, status } = await getRequest<CartType>("/cart");
-    console.log("cart", status, data);
+    console.log("cartback", status, data);
 
     if (status === 401)
       return {
@@ -77,12 +130,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         },
       };
 
+    if (status === 200)
+      return {
+        props: { cart: data },
+      };
+
     return {
-      props: { cart: data },
+      props: { cart: null },
     };
   } catch (error) {
-    console.log("error", error);
-
     return {
       redirect: {
         permanent: false,

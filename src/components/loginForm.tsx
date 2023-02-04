@@ -1,14 +1,15 @@
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import Link from "next/link";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { Button, TextField, Typography, Box, Paper } from "@mui/material";
-import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik"
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
 
 import { postRequest } from "../services/api";
 import { validationLogin } from "../utils/schemas/formValidations";
 import { Login } from "../Types";
-import { userContext } from '../context/userProvider';
+import { userContext } from "../context/userProvider";
+import getCartData from "../services/getCartData";
 
 interface MyFormValues {
   email: string;
@@ -16,23 +17,32 @@ interface MyFormValues {
 }
 
 export default function LoginForm() {
-  const { handleUser } = useContext(userContext);
+  const { handleUser, handleCartQuantity } = useContext(userContext);
   const router = useRouter();
-  const initialValues: MyFormValues = { email: '', password: '' };
+  const initialValues: MyFormValues = { email: "", password: "" };
 
-  async function handleOnSubmitLogin({ email, password }: MyFormValues, actions: FormikHelpers<MyFormValues>) {
+  async function handleOnSubmitLogin(
+    { email, password }: MyFormValues,
+    actions: FormikHelpers<MyFormValues>
+  ) {
     try {
-      const { data: { message, token, ...user }, status } = await postRequest<Login>('login', { email, password });
+      const {
+        data: { message, token, ...user },
+        status,
+      } = await postRequest<Login>("login", { email, password });
       if (status !== 200) return alert(`${message}`);
 
-      setCookie(undefined, 'pizzeria.token', token, {
+      setCookie(undefined, "pizzeria.token", token, {
         maxAge: 60 * 60 * 20, // 20 hours
       });
 
+      const { quantity } = await getCartData();
+
       handleUser(user);
+      handleCartQuantity(quantity);
 
       actions.resetForm();
-      router.push('/pizzas');
+      router.push("/pizzas");
     } catch (err) {
       return alert(`Erro interno, volte mais tarde :)`);
     }
@@ -49,11 +59,14 @@ export default function LoginForm() {
       }}
     >
       <Paper elevation={3}>
-        <Box m={5} p={3}
+        <Box
+          m={5}
+          p={3}
           sx={{
             display: "flex",
             flexDirection: "column",
-          }}>
+          }}
+        >
           <Formik
             initialValues={initialValues}
             onSubmit={handleOnSubmitLogin}
@@ -87,19 +100,30 @@ export default function LoginForm() {
                     helperText={<ErrorMessage name="password" />}
                     error={props.errors.password && props.touched.password}
                   />
-                  <Typography style={{ color: '#757575' }} mt={1} mb={2}>
+                  <Typography style={{ color: "#757575" }} mt={1} mb={2}>
                     Não tem uma conta?
-                    <Link style={{ textDecoration: "none", color: '#1769aa' }} href="/register">  crie uma!</Link>
+                    <Link
+                      style={{ textDecoration: "none", color: "#1769aa" }}
+                      href="/register"
+                    >
+                      {" "}
+                      crie uma!
+                    </Link>
                   </Typography>
-                  <Button color="primary" variant="contained" fullWidth type="submit">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    type="submit"
+                  >
                     Login
                   </Button>
                 </Form>
-              )
+              );
             }}
           </Formik>
         </Box>
       </Paper>
     </Box>
-  )
+  );
 }
