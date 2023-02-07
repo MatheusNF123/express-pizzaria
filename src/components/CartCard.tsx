@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
   Button,
@@ -12,20 +13,41 @@ import {
   Tooltip,
   IconButton
 } from "@mui/material";
-
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { CartPizzas } from "../Types";
+import CartItemModalForm from "./cartItemModalForm";
+import setApiHeaders from "../services/setApiHeaders";
+import { deleteRequest, putRequest } from "../services/api";
+import getCartData from "../services/getCartData";
 
 type CartCardProps = {
   info: CartPizzas;
-  handleCartItemDeletion: (itemId: string) => void;
+  cartId?: string;
+  handleCartReload: () => Promise<void>;
 };
 
-export default function CartCard({ info, handleCartItemDeletion }: CartCardProps) {
+export default function CartCard({ info, cartId, handleCartReload }: CartCardProps) {
+  const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const { id, quantity, border, size, pizza } = info;
   const { flavor, img, price } = pizza;
+
+  const handleCartItemDeletion = async () => {
+    setApiHeaders();
+    await deleteRequest(`/cart/${cartId}/item/${id}`);
+
+    await handleCartReload();
+  };
+
+  const handleCartItemUpdate = async () => {
+    setApiHeaders();
+    await putRequest(`/cart/${cartId}/item/${id}`, {});
+    // Atualização do item do carrinho
+    await handleCartReload();
+    setOpenModal(false);
+  };
 
   return (
     <Container>
@@ -80,10 +102,21 @@ export default function CartCard({ info, handleCartItemDeletion }: CartCardProps
                     padding: { xs: "5px 0px", },
                   }}
                 >
+                  <Tooltip title="Editar">
+                    <IconButton
+                      aria-label="Editar pedido do carrinho"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      <EditIcon
+                        fontSize="large"
+                        sx={{ color: "white" }}
+                      />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="Excluir">
                     <IconButton
-                      aria-label="Excluir pizza"
-                      onClick={() => handleCartItemDeletion(id)}
+                      aria-label="Excluir pedido do carrinho"
+                      onClick={() => handleCartItemDeletion()}
                     >
                       <DeleteIcon
                         fontSize="large"
@@ -97,6 +130,7 @@ export default function CartCard({ info, handleCartItemDeletion }: CartCardProps
           </Box>
         </Container>
       </Card>
+      <CartItemModalForm open={openModal} handleClose={() => setOpenModal(false)} />
     </Container>
   );
 }

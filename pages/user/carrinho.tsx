@@ -5,7 +5,7 @@ import { Box, Button, Card, Container, Divider, Typography } from "@mui/material
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
-import { deleteRequest, getRequest } from "../../src/services/api";
+import { getRequest } from "../../src/services/api";
 import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
 import { Cart as CartType } from "../../src/Types";
@@ -14,17 +14,14 @@ import getCartData from "../../src/services/getCartData";
 type CartProps = {
   cart: CartType | null;
 };
- 
+
 export default function Cart(props: CartProps) {
   const router = useRouter();
   const [cart, setCart] = useState<CartType | null>(props.cart);
   const { handleCartQuantity } = useContext(userContext);
   console.log("cart", cart);
 
-  const handleCartItemDeletion = async (itemId: string) => {
-    setApiHeaders();
-    await deleteRequest(`/cart/${cart?.id}/item/${itemId}`);
-
+  const handleCartReload = async () => {
     const { quantity, data } = await getCartData();
     setCart(data);
     handleCartQuantity(quantity);
@@ -63,7 +60,8 @@ export default function Cart(props: CartProps) {
             {cart?.cartPizzas.map((item) => (
               <CartCard
                 info={item}
-                handleCartItemDeletion={handleCartItemDeletion}
+                cartId={props.cart?.id}
+                handleCartReload={handleCartReload}
                 key={item.id}
               />
             ))}

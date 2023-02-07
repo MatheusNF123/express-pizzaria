@@ -16,30 +16,17 @@ import {
   Badge,
 } from "@mui/material";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import { destroyCookie } from "nookies";
 
 import pizzariaLogo from "../images/pizzariaLogo.png";
 import { userContext } from "../context/userProvider";
-import verifyCookie from "../services/verifyCookie";
 
 const pages = [
   { page: "Home", endPoint: "/" },
   { page: "Menu", endPoint: "/pizzas" },
 ];
 
-const logged = [
-  { page: "Meu perfil", endPoint: "/user/perfil" },
-  { page: "Meus pedidos", endPoint: "/user/meus_pedidos" },
-  { page: "Sair", endPoint: "/pizzas" },
-];
-
-const loggedOut = [{ page: "Login", endPoint: "/login" }];
-
-const initialOptions = verifyCookie() ? logged : loggedOut;
-
 function Header() {
-  const [options, setOptions] = useState(initialOptions);
-  const { cartQuantity } = useContext(userContext);
+  const { cartQuantity, menuOptions, handleLogout } = useContext(userContext);
   const router = useRouter();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -52,12 +39,11 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const handleUserMenuClick = (page: string, endPoint: string) => {
-    if (page === "Sair") {
-      destroyCookie(undefined, "pizzeria.token");
-      setOptions(loggedOut);
+  const handleUserMenuClick = (option: string, endPoint: string) => {
+    if (option === "Sair") {
+      handleLogout();
     }
-    // muda opções quando a pessoa logar
+
     router.push(endPoint);
   };
 
@@ -120,12 +106,12 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {options.map(({ page, endPoint }) => (
+              {menuOptions.map(({ option, endPoint }) => (
                 <MenuItem
-                  key={page}
-                  onClick={() => handleUserMenuClick(page, endPoint)}
+                  key={option}
+                  onClick={() => handleUserMenuClick(option, endPoint)}
                 >
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">{option}</Typography>
                 </MenuItem>
               ))}
             </Menu>

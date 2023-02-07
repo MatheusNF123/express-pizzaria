@@ -9,7 +9,6 @@ import { postRequest } from "../services/api";
 import { validationLogin } from "../utils/schemas/formValidations";
 import { Login } from "../Types";
 import { userContext } from "../context/userProvider";
-import getCartData from "../services/getCartData";
 
 interface MyFormValues {
   email: string;
@@ -17,7 +16,7 @@ interface MyFormValues {
 }
 
 export default function LoginForm() {
-  const { handleUser, handleCartQuantity } = useContext(userContext);
+  const { handleLogin } = useContext(userContext);
   const router = useRouter();
   const initialValues: MyFormValues = { email: "", password: "" };
 
@@ -36,10 +35,7 @@ export default function LoginForm() {
         maxAge: 60 * 60 * 20, // 20 hours
       });
 
-      const { quantity } = await getCartData();
-
-      handleUser(user);
-      handleCartQuantity(quantity);
+      await handleLogin(user);
 
       actions.resetForm();
       router.push("/pizzas");

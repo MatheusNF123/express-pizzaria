@@ -11,13 +11,17 @@ type GetCartDataReturn = {
 export default async function getCartData(): Promise<GetCartDataReturn> {
   if (!verifyCookie()) return { data: null, quantity: 0 };
 
-  setApiHeaders();
-  const { data, status } = await getRequest<Cart>("/cart");
+  try {
+    setApiHeaders();
+    const { data, status } = await getRequest<Cart>("/cart");
 
-  if (status !== 200) return { data: null, quantity: 0 };
+    if (status !== 200) return { data: null, quantity: 0 };
 
-  return {
-    data,
-    quantity: data.cartPizzas.length,
-  };
+    return {
+      data,
+      quantity: data.cartPizzas.length,
+    };
+  } catch (error) {
+    return { data: null, quantity: 0 };
+  }
 }
