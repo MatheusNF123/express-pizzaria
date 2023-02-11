@@ -21,7 +21,7 @@ export interface Login extends User {
   token: string;
 }
 
-interface PurchaseInfo {
+export interface PurchaseInfo {
   size: string;
   border: boolean;
   quantity: number;
@@ -60,15 +60,6 @@ export interface ApiReturnMessage {
 export interface PurchaseItem extends PurchaseInfo {
   pizzaId: string;
 }
-
-// export interface CreateCart {
-//   pizzas: PurchaseItem[];
-// }
-
-// export interface AddCartItem {
-//   cartId: string;
-//   item: PurchaseItem;
-// }
 
 export interface createOrder {
   cartId: string;

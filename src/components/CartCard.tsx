@@ -11,12 +11,12 @@ import {
   Container,
   Divider,
   Tooltip,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-import { CartPizzas } from "../Types";
+import { CartPizzas, PurchaseInfo } from "../Types";
 import CartItemModalForm from "./cartItemModalForm";
 import setApiHeaders from "../services/setApiHeaders";
 import { deleteRequest, putRequest } from "../services/api";
@@ -28,7 +28,11 @@ type CartCardProps = {
   handleCartReload: () => Promise<void>;
 };
 
-export default function CartCard({ info, cartId, handleCartReload }: CartCardProps) {
+export default function CartCard({
+  info,
+  cartId,
+  handleCartReload,
+}: CartCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const { id, quantity, border, size, pizza } = info;
@@ -41,10 +45,10 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
     await handleCartReload();
   };
 
-  const handleCartItemUpdate = async () => {
+  const handleCartItemUpdate = async (cartItemInfo: PurchaseInfo) => {
     setApiHeaders();
-    await putRequest(`/cart/${cartId}/item/${id}`, {});
-    // Atualização do item do carrinho
+    await putRequest(`/cart/${cartId}/item/${id}`, cartItemInfo);
+
     await handleCartReload();
     setOpenModal(false);
   };
@@ -52,7 +56,7 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
   return (
     <Container>
       <Divider color="white" />
-      <Card elevation={0} sx={{ display: "flex", backgroundColor: 'inherit' }}>
+      <Card elevation={0} sx={{ display: "flex", backgroundColor: "inherit" }}>
         <Container maxWidth="xl">
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent
@@ -71,8 +75,8 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
                 <Box sx={{ mr: 1 }}>
                   <CardMedia
                     sx={{
-                      width: '120px',
-                      height: '120px',
+                      width: "120px",
+                      height: "120px",
                       border: "2px solid black",
                     }}
                     image={img}
@@ -83,15 +87,11 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
                   <Typography variant="h6" component="div" sx={{ mb: 1 }}>
                     {flavor}
                   </Typography>
+                  <Typography variant="subtitle2">{quantity} uni.</Typography>
                   <Typography variant="subtitle2">
-                    {quantity} uni.
+                    {border ? "Tem borda" : "Sem borda"}
                   </Typography>
-                  <Typography variant="subtitle2">
-                    {border ? 'Tem borda' : 'Sem borda'}
-                  </Typography>
-                  <Typography variant="subtitle2">
-                    {size}
-                  </Typography>
+                  <Typography variant="subtitle2">{size}</Typography>
                   <Typography sx={{ mb: 1 }} variant="subtitle2">
                     R$ {price}
                   </Typography>
@@ -99,7 +99,7 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
                 <CardActions
                   sx={{
                     display: "flex",
-                    padding: { xs: "5px 0px", },
+                    padding: { xs: "5px 0px" },
                   }}
                 >
                   <Tooltip title="Editar">
@@ -107,10 +107,7 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
                       aria-label="Editar pedido do carrinho"
                       onClick={() => setOpenModal(true)}
                     >
-                      <EditIcon
-                        fontSize="large"
-                        sx={{ color: "white" }}
-                      />
+                      <EditIcon fontSize="large" sx={{ color: "white" }} />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Excluir">
@@ -118,10 +115,7 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
                       aria-label="Excluir pedido do carrinho"
                       onClick={() => handleCartItemDeletion()}
                     >
-                      <DeleteIcon
-                        fontSize="large"
-                        sx={{ color: "white" }}
-                      />
+                      <DeleteIcon fontSize="large" sx={{ color: "white" }} />
                     </IconButton>
                   </Tooltip>
                 </CardActions>
@@ -130,7 +124,12 @@ export default function CartCard({ info, cartId, handleCartReload }: CartCardPro
           </Box>
         </Container>
       </Card>
-      <CartItemModalForm open={openModal} handleClose={() => setOpenModal(false)} />
+      <CartItemModalForm
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        handleCartItemUpdate={handleCartItemUpdate}
+        info={info}
+      />
     </Container>
   );
 }

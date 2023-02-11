@@ -34,10 +34,22 @@ export default function Pizzas({ pizzas }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await getRequest("pizzas");
+  try {
+    const { status, data } = await getRequest("pizzas");
 
-  return {
-    props: { pizzas: data },
-    revalidate: 60 * 60,
-  };
+    if (status !== 200) {
+      return {
+        props: { pizzas: [] },
+      };
+    }
+
+    return {
+      props: { pizzas: data },
+      revalidate: 60 * 60,
+    };
+  } catch (error) {
+    return {
+      props: { pizzas: [] },
+    };
+  }
 };
