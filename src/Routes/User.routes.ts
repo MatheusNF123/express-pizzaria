@@ -19,5 +19,7 @@ export default class UseRoutes {
     this.routes.route("/update").put(this.controllers.updateUser.update);
 
     this.routes.route("/delete").delete(this.controllers.deleteUser.delete);
+
+    this.routes.route("/user").get(this.controllers.getUser.get);
   }
 }
