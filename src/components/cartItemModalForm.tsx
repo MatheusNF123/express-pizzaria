@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { useState } from "react";
 import {
   Modal,
   Box,
@@ -60,7 +58,6 @@ export default function CartItemModalForm({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {/* <Image width="100" height="100" src={info.pizza.img} alt="Pizza"/> */}
         <Avatar
           sx={{
             width: "100px",
@@ -68,7 +65,7 @@ export default function CartItemModalForm({
             backgroundColor: "#e5e5e5",
             transition: ".2s",
           }}
-          alt="imagemPerfil"
+          alt="Pizza image"
           src={info.pizza.img}
         />
         <Typography>Nome: {info.pizza.flavor}</Typography>
@@ -79,8 +76,9 @@ export default function CartItemModalForm({
             border: false,
             quantity: 1,
           }}
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             console.log(values);
+            await handleCartItemUpdate(values);
           }}
           validationSchema={validationEditCartItem}
         >
@@ -120,19 +118,19 @@ export default function CartItemModalForm({
                 name="quantity"
                 label="Quantidade"
                 type="number"
-                // variant="outlined"
+                // variant="outlined" 
                 margin="dense"
                 fullWidth
                 helperText={<ErrorMessage name="quantity" />}
-                error={props.errors.quantity}                
+                error={props.errors.quantity}
                 sx={{
                   color: "white",
                   borderColor: "white",
-                  
+
                   "& input:valid + fieldset": {
                     borderColor: "white",
                     borderWidth: 2,
-                  },                  
+                  },
                 }}
                 as={TextField}
                 InputProps={{

@@ -1,30 +1,18 @@
-import {
-  Button,
-  TextField,
-  Typography,
-  Box,
-  Grid,
-  Paper,
-  Avatar,
-  IconButton,
-} from "@mui/material";
-import {
-  Formik,
-  Form,
-  Field,
-  FormikHelpers,
-  ErrorMessage,
-  useFormikContext,
-} from "formik";
-import { postRequest, putRequest } from "../services/api";
-import { validationPerfil } from "../utils/schemas/formValidations";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Icon from "@mui/material/Icon";
 import Image from "next/image";
+
+import { postRequest, putRequest } from "../services/api";
+import { validationPerfil } from "../utils/schemas/formValidations";
+
+import { Formik, Form, Field, FormikHelpers, ErrorMessage, useFormikContext } from "formik";
+
+import { Button, TextField, Typography, Container, Grid, Paper, Avatar, IconButton, InputAdornment, Box } from "@mui/material";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
-import { useRef, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface MyFormValues {
   image?: string;
@@ -38,6 +26,7 @@ interface MyFormValues {
 export default function PerfilForm() {
   const [isEditing, setIsEditing] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const initialValues: MyFormValues = {
     image: "",
@@ -55,6 +44,12 @@ export default function PerfilForm() {
     const _fullName = fullName.split(" ");
     const [firstName, ...lastName] = _fullName;
 
+
+ 
+
+  // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  // };
     // try{
     //   const { data, status } = await putRequest("update", {
     //     name: `${firstName} ${lastName.join(' ')}`,
@@ -69,6 +64,10 @@ export default function PerfilForm() {
     //   return alert(`Erro interno, volte mais tarde :)`);
     // }
   }
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <Box
@@ -165,7 +164,7 @@ export default function PerfilForm() {
                   <Grid
                     container
                     spacing={2}
-                    sx={{ display: "flex", alignItems: "center" }}
+                    
                   >
                     <Grid item xs={12} sm={6}>
                       <Field
@@ -178,7 +177,7 @@ export default function PerfilForm() {
                         margin="dense"
                         fullWidth
                         helperText={<ErrorMessage name="fullName" />}
-                        error={props.errors.fullName}
+                        error={ props.touched.fullName && Boolean(props.errors.fullName)}
                         disabled={!isEditing}
                       />
                     </Grid>
@@ -189,28 +188,43 @@ export default function PerfilForm() {
                           label="Senha"
                           name="password"
                           as={TextField}
-                          type="password"
+                          type={showPassword ? 'text' : 'password'}
                           variant="outlined"
                           margin="dense"
                           fullWidth
                           placeholder="Digite uma senha"
                           helperText={<ErrorMessage name="password" />}
+                          disabled={!isEditing}
                           error={
-                            props.errors.password && props.touched.password
+                            props.errors.password && Boolean(props.touched.password)
                           }
+                          onBlur={props.handleBlur}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={handleClickShowPassword}
+                                  edge="end"
+                                >
+                                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
                         />
                       ) : (
                         <Button
                           size="large"
+                          sx={{"marginTop": "8px", height:"56px"}}
                           disabled={!isEditing}
                           fullWidth
                           onClick={(e) => setEditPassword(true)}
                           variant="contained"
-                        >
+                          >
                           Alterar Senha
                         </Button>
                       )}
-                    </Grid>
+                          </Grid>
                   </Grid>
 
                   <Field
@@ -223,7 +237,7 @@ export default function PerfilForm() {
                     fullWidth
                     placeholder="Digite um email"
                     helperText={<ErrorMessage name="email" />}
-                    error={props.errors.email && props.touched.email}
+                    error={props.errors.email && Boolean(props.touched.email)}
                     disabled={!isEditing}
                   />
 
@@ -272,7 +286,7 @@ export default function PerfilForm() {
                     fullWidth
                     placeholder="(00) 00000-0000"
                     helperText={<ErrorMessage name="phone" />}
-                    error={props.errors.phone && props.touched.phone}
+                    error={props.errors.phone && Boolean(props.touched.phone)}
                     disabled={!isEditing}
                   />
                   <Field
@@ -286,7 +300,7 @@ export default function PerfilForm() {
                     margin="dense"
                     fullWidth
                     helperText={<ErrorMessage name="address" />}
-                    error={props.errors.address && props.touched.address}
+                    error={props.errors.address && Boolean(props.touched.address)}
                     disabled={!isEditing}
                   />
                   <Field

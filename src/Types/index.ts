@@ -49,7 +49,7 @@ export interface Order {
   user: User;
   ordersPizzas: OrdersPizzas[];
   status: string;
-  date: Date;
+  date: string;
   totalPrice: number;
 }
 

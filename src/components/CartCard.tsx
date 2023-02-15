@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import {
-  Button,
   Card,
   CardMedia,
   CardContent,
@@ -20,7 +18,6 @@ import { CartPizzas, PurchaseInfo } from "../Types";
 import CartItemModalForm from "./cartItemModalForm";
 import setApiHeaders from "../services/setApiHeaders";
 import { deleteRequest, putRequest } from "../services/api";
-import getCartData from "../services/getCartData";
 
 type CartCardProps = {
   info: CartPizzas;
@@ -34,7 +31,6 @@ export default function CartCard({
   handleCartReload,
 }: CartCardProps) {
   const [openModal, setOpenModal] = useState(false);
-  const router = useRouter();
   const { id, quantity, border, size, pizza } = info;
   const { flavor, img, price } = pizza;
 

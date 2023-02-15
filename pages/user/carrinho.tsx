@@ -5,7 +5,7 @@ import { Box, Button, Card, Container, Divider, Typography } from "@mui/material
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
-import { getRequest } from "../../src/services/api";
+import { getRequest, postRequest } from "../../src/services/api";
 import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
 import { Cart as CartType } from "../../src/Types";
@@ -19,12 +19,26 @@ export default function Cart(props: CartProps) {
   const router = useRouter();
   const [cart, setCart] = useState<CartType | null>(props.cart);
   const { handleCartQuantity } = useContext(userContext);
-  console.log("cart", cart);
 
   const handleCartReload = async () => {
     const { quantity, data } = await getCartData();
     setCart(data);
     handleCartQuantity(quantity);
+  };
+
+  const handlePurchaseFinished = async () => {
+    const pizzas = cart?.cartPizzas.map(({ pizza, border, quantity, size }) => (
+      { pizzaId: pizza.id, border, quantity, size }
+    ));
+    setApiHeaders();
+    await postRequest(
+      "/order",
+      {
+        cartId: cart?.id,
+        pizzas,
+      });
+
+    await handleCartReload()
   };
 
   return (
@@ -35,9 +49,6 @@ export default function Cart(props: CartProps) {
           minHeight: "calc(100vh - 87px)",
           width: "100%",
           display: "flex",
-          // flexDirection: "column",
-          // gap: "10px",
-          // padding: "20px",
         }}
       >
         {cart ? (
@@ -65,6 +76,15 @@ export default function Cart(props: CartProps) {
                 key={item.id}
               />
             ))}
+            <Button
+              // sx={{
+              //   width: "70%",
+              // }}
+              variant="contained"
+              onClick={handlePurchaseFinished}
+            >
+              Finalizar compra
+            </Button>
             {/* <Divider color="white" /> */}
           </Box>
         ) : (
@@ -114,12 +134,10 @@ export default function Cart(props: CartProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  try {
+  try {    
     setApiHeaders(ctx);
-
     const { data, status } = await getRequest<CartType>("/cart");
-    console.log("cartback", status, data);
-
+    
     if (status === 401)
       return {
         redirect: {

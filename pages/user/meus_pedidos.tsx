@@ -12,8 +12,6 @@ type OrderProps = {
   orders: Order[];
 };
 
-const Items = [1, 2, 3, 4, 5, 6, 7];
-
 export default function MyOrders({ orders }: OrderProps) {
   const router = useRouter();
   return (
