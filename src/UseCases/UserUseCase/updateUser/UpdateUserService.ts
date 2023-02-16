@@ -3,6 +3,7 @@ import Token from "../../../utils/GenerateToken";
 import CustomError from "../../../Error/CustomError";
 import { IUser } from "../../../Interfaces/IUser";
 import IValidation from "../../../Interfaces/IValidation";
+import * as bcrypt from "bcryptjs";
 
 export default class UpdateUserService {
   constructor(
@@ -11,20 +12,20 @@ export default class UpdateUserService {
   ) { }
 
   public async update(token: string, body: IUser) {
-    const userPayload = Token.authToken(token);
+    const {id} = Token.authToken(token);
 
     this.validation.validateUserUpdateDTO(body);
 
-    const { id, ...userData } = body;
+    const user = await this.repository.findOne({ id });
 
-    const user = await this.repository.findOne({ id: userPayload.id });
+    if (!user || user.id !== id) throw new CustomError("Usuário não existe", 401);
 
-    if (!user) throw new CustomError("Usuário não existe", 401);
-
-    if (userPayload.id !== id)
-      throw new CustomError("Não autorizado", 401);
-
-    await this.repository.update(user, userData);
+    if(body.password){      
+      const password = await bcrypt.hash(body.password, 10);
+      await this.repository.update(user, {...body, password});
+    }else{
+      await this.repository.update(user, body);
+    }
 
     return { message: "Usuário atualizado" };
   }
