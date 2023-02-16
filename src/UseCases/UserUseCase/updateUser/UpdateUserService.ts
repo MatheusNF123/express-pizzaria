@@ -22,11 +22,14 @@ export default class UpdateUserService {
 
     if(body.password){      
       const password = await bcrypt.hash(body.password, 10);
-      await this.repository.update(user, {...body, password});
-    }else{
-      await this.repository.update(user, body);
-    }
+      const updatedUser = await this.repository.update(user, {...body, password});
+      updatedUser.password = undefined
+      return updatedUser
+    }   
+    const updatedUser = await this.repository.update(user, body);
+     updatedUser.password = undefined
+     return updatedUser
 
-    return { message: "Usuário atualizado" };
+    
   }
 }
