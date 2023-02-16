@@ -6,11 +6,13 @@ import { User, PurchaseItem } from "../Types";
 import createOrAddItemToCart from "../services/createOrAddItemToCart";
 import verifyCookie from "../services/verifyCookie";
 import getCartData from "../services/getCartData";
+import getUser from "../services/getUser";
+import useFetch from "./hooks/useFetch";
 
 type UserContextValues = {
   user: User | null;
   cartQuantity: number;
-  menuOptions: { option: string, endPoint: string }[];
+  menuOptions: { option: string; endPoint: string }[];
   handleUser: (user: User) => void;
   handleLogin: (user: User) => Promise<void>;
   handleLogout: () => void;
@@ -24,7 +26,15 @@ type UserProviderProps = {
   children: ReactNode;
 };
 
-const loggedInMenu = [
+const adminMenu = [
+  { option: "Meu perfil", endPoint: "/user/perfil" },
+  { option: "Meus pedidos", endPoint: "/user/meus_pedidos" },
+  { option: "Usuários", endPoint: "/admin/usuarios" },
+  { option: "Pizzas", endPoint: "/admin/pizzas" },
+  { option: "Sair", endPoint: "/pizzas" },
+];
+
+const customerMenu = [
   { option: "Meu perfil", endPoint: "/user/perfil" },
   { option: "Meus pedidos", endPoint: "/user/meus_pedidos" },
   { option: "Sair", endPoint: "/pizzas" },
@@ -32,21 +42,18 @@ const loggedInMenu = [
 
 const loggedOutMenu = [{ option: "Login", endPoint: "/login" }];
 
-const initialMenuOptions = verifyCookie() ? loggedInMenu : loggedOutMenu;
+// const initialMenuOptions = verifyCookie() ? customerMenu : loggedOutMenu;
 
 export default function UserProvider({ children }: UserProviderProps) {
-  const [menuOptions, setMenuOptions] = useState(initialMenuOptions);
-  const [user, setUser] = useState<User | null>(null);
-  const [cartQuantity, setCartQuantity] = useState(0);
+  const { user, setUser, cartQuantity, setCartQuantity } = useFetch();
+  const [menuOptions, setMenuOptions] = useState(loggedOutMenu);
   const router = useRouter();
 
   useEffect(() => {
-    getCartData()
-      .then(({ quantity }) => {
-        setCartQuantity(quantity);
-      })
-      .catch(() => setCartQuantity(0));
-  }, []);
+    if (verifyCookie()) {
+      setMenuOptions(user?.role === "admin" ? adminMenu : customerMenu);
+    }
+  }, [user]);
 
   const handleCartQuantity = (quantity: number) => {
     setCartQuantity(quantity);
@@ -57,7 +64,7 @@ export default function UserProvider({ children }: UserProviderProps) {
 
     setUser(user);
     setCartQuantity(quantity);
-    setMenuOptions(loggedInMenu);
+    setMenuOptions(user.role === "admin" ? adminMenu : customerMenu);
   };
 
   const handleLogout = () => {

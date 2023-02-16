@@ -1,68 +1,75 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Image from "next/image";
 
-import { postRequest, putRequest } from "../services/api";
 import { validationPerfil } from "../utils/schemas/formValidations";
 
-import { Formik, Form, Field, FormikHelpers, ErrorMessage, useFormikContext } from "formik";
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 
-import { Button, TextField, Typography, Container, Grid, Paper, Avatar, IconButton, InputAdornment, Box } from "@mui/material";
-import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
+import {
+  Button,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+  Box,
+  Paper,
+  Grid,
+} from "@mui/material";
+
 import EditIcon from "@mui/icons-material/Edit";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { userContext } from "../context/userProvider";
+import { putRequest } from "../services/api";
 
 interface MyFormValues {
   image?: string;
   fullName: string;
-  address: string;
-  email: string;
-  password: string;
-  phone: string;
+  address?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
 }
 
 export default function PerfilForm() {
+  const { user, handleUser } = useContext(userContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
+
+
   const initialValues: MyFormValues = {
-    image: "",
-    fullName: "",
-    address: "",
-    email: "",
-    password: "",
-    phone: "",
+    image: user?.img || '',
+    fullName: user?.name! || '',
+    address: user?.address || '',
+    email: user?.email || '',
+    password: '',
+    phone: user?.phone || '',
   };
 
   async function handleOnSubmitEditProfile(
     { fullName, address, email, password, phone, image }: MyFormValues,
-    actions: FormikHelpers<MyFormValues>
   ) {
-    const _fullName = fullName.split(" ");
+    const _fullName = fullName?.split(" ");
     const [firstName, ...lastName] = _fullName;
 
-
- 
-
-  // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  // };
-    // try{
-    //   const { data, status } = await putRequest("update", {
-    //     name: `${firstName} ${lastName.join(' ')}`,
-    //     address,
-    //     email,
-    //     password,
-    //     phone,
-    //     img: image
-    //   });
-    //   if (status !== 200) return alert(`${data.message}`);
-    // } catch (err) {
-    //   return alert(`Erro interno, volte mais tarde :)`);
-    // }
+    try{
+      const { data, status } = await putRequest("update", {
+        name: `${firstName} ${lastName.join(' ')}`,
+        address,
+        email,
+        password: password || undefined,
+        phone,
+        img: image
+      });
+      if (status !== 200) return alert(`${data.message}`);
+      setIsEditing(false)
+      setEditPassword(false)
+      setShowPassword(false)
+      handleUser(data)
+    } catch (err) {
+      return alert(`Erro interno, volte mais tarde :)`);
+    }
   }
 
   const handleClickShowPassword = () => {
@@ -143,29 +150,28 @@ export default function PerfilForm() {
                       }}
                     >
                       <Box
-                       component="img"
+                        component="img"
                         sx={{
-                          display: 'flex',
-                          justifyContent:'center',
-                          alignItems: 'center',
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                           width: "180px",
                           height: "180px",
                           backgroundColor: "#e5e5e5",
                           transition: ".2s",
                           borderRadius: "50%",
-                          objectFit: 'cover',
+                          objectFit: "cover",
                         }}
                         alt=""
-                        src={props.values.image || 'https://cdn-icons-png.flaticon.com/512/711/711769.png'}
+                        src={
+                          props.values.image ||
+                          "https://cdn-icons-png.flaticon.com/512/711/711769.png"
+                        }
                       />
                     </Box>
                   </Box>
 
-                  <Grid
-                    container
-                    spacing={2}
-                    
-                  >
+                  <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <Field
                         name="fullName"
@@ -177,7 +183,10 @@ export default function PerfilForm() {
                         margin="dense"
                         fullWidth
                         helperText={<ErrorMessage name="fullName" />}
-                        error={ props.touched.fullName && Boolean(props.errors.fullName)}
+                        error={
+                          props.touched.fullName &&
+                          Boolean(props.errors.fullName)
+                        }
                         disabled={!isEditing}
                       />
                     </Grid>
@@ -188,7 +197,7 @@ export default function PerfilForm() {
                           label="Senha"
                           name="password"
                           as={TextField}
-                          type={showPassword ? 'text' : 'password'}
+                          type={showPassword ? "text" : "password"}
                           variant="outlined"
                           margin="dense"
                           fullWidth
@@ -196,7 +205,8 @@ export default function PerfilForm() {
                           helperText={<ErrorMessage name="password" />}
                           disabled={!isEditing}
                           error={
-                            props.errors.password && Boolean(props.touched.password)
+                            props.errors.password &&
+                            Boolean(props.touched.password)
                           }
                           onBlur={props.handleBlur}
                           InputProps={{
@@ -206,7 +216,11 @@ export default function PerfilForm() {
                                   onClick={handleClickShowPassword}
                                   edge="end"
                                 >
-                                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                                  {showPassword ? (
+                                    <Visibility />
+                                  ) : (
+                                    <VisibilityOff />
+                                  )}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -215,16 +229,16 @@ export default function PerfilForm() {
                       ) : (
                         <Button
                           size="large"
-                          sx={{"marginTop": "8px", height:"56px"}}
+                          sx={{ marginTop: "8px", height: "56px" }}
                           disabled={!isEditing}
                           fullWidth
                           onClick={(e) => setEditPassword(true)}
                           variant="contained"
-                          >
+                        >
                           Alterar Senha
                         </Button>
                       )}
-                          </Grid>
+                    </Grid>
                   </Grid>
 
                   <Field
@@ -240,41 +254,7 @@ export default function PerfilForm() {
                     error={props.errors.email && Boolean(props.touched.email)}
                     disabled={!isEditing}
                   />
-
-                  {/* <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                      <Field
-                        id="password"
-                        label="Senha"
-                        name="password"
-                        as={TextField}
-                        type="password"
-                        variant="outlined"
-                        margin="dense"
-                        fullWidth
-                        placeholder="Digite uma senha"
-                        helperText={<ErrorMessage name="password" />}
-                        error={props.errors.password && props.touched.password}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Field
-                        name="confirmPassword"
-                        label="Confirmar"
-                        type="password"
-                        placeholder="Confirme sua senha"
-                        as={TextField}
-                        variant="outlined"
-                        margin="dense"
-                        fullWidth
-                        helperText={<ErrorMessage name="confirmPassword" />}
-                        error={
-                          props.errors.confirmPassword &&
-                          props.touched.confirmPassword
-                        }
-                      />
-                    </Grid>
-                  </Grid> */}
+       
                   <Field
                     name="phone"
                     label="Telefone"
@@ -300,7 +280,9 @@ export default function PerfilForm() {
                     margin="dense"
                     fullWidth
                     helperText={<ErrorMessage name="address" />}
-                    error={props.errors.address && Boolean(props.touched.address)}
+                    error={
+                      props.errors.address && Boolean(props.touched.address)
+                    }
                     disabled={!isEditing}
                   />
                   <Field
@@ -320,7 +302,11 @@ export default function PerfilForm() {
                     disabled={!isEditing}
                   />
 
-                  <Button color="primary" variant="contained" type="submit">
+                  <Button color="primary"
+                   variant="contained"
+                    type="submit"
+                    disabled={!isEditing}>
+                    
                     salvar
                   </Button>
                 </Form>

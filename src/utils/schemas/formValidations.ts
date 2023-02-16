@@ -56,8 +56,7 @@ export const validationPerfil = yup.object().shape({
     .required("Este campo é obrigatório"),
   password: yup
     .string()
-    .min(6, "A senha deve ter 6 caracteres no mínimo")
-    .required("Este campo é obrigatório"),
+    .min(6, "A senha deve ter 6 caracteres no mínimo"),
   phone: yup
     .string()
     .matches(
