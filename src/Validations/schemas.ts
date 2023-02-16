@@ -24,18 +24,16 @@ export const userLoginSchema = z
 
 export const userUpdateSchema = z
   .object({
-    id: z.string(),
     name: z.string().min(2),
     address: z.string().min(2),
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(6).optional(),
     phone: z
       .string()
       .regex(
         /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
         "Telefone inválido"
       ),
-    role: z.enum(["customer", "admin"]),
     img: z.string(),
   })
   .strict();

@@ -8,7 +8,6 @@ export default class UpdateUserController {
     const { authorization } = req.headers;
     const { body } = req;
     const updatedUser = await this.service.update(authorization, body);
-
     return res.status(200).json(updatedUser);
   };
 }
