@@ -1,13 +1,17 @@
-
+import { useContext } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import { Button, TextField, Typography, Box, Grid, Paper } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
+import { setCookie } from "nookies";
+
 import { postRequest } from "../services/api";
 import {
   validationLogin,
   validationRegister,
 } from "../utils/schemas/formValidations";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import { userContext } from "../context/userProvider";
+import { Login } from "../Types";
 
 interface MyFormValues {
   firstName: string;
@@ -20,6 +24,7 @@ interface MyFormValues {
 }
 
 export default function RegisterForm() {
+  const { handleLogin } = useContext(userContext);
   const router = useRouter();
   const initialValues: MyFormValues = {
     firstName: "",
@@ -36,16 +41,26 @@ export default function RegisterForm() {
     actions: FormikHelpers<MyFormValues>
   ) {
     try {
-      const { data, status } = await postRequest("register", {
+      const {
+        data: { message, token, ...user },
+        status,
+      } = await postRequest<Login>("register", {
         name: `${firstName} ${lastName}`,
         address,
         email,
         password,
         phone,
       });
-      if (status !== 201) return alert(`${data.message}`);
-      router.push("/");
+      if (status !== 201) return alert(`${message}`);
+
+      setCookie(undefined, "pizzeria.token", token, {
+        maxAge: 60 * 60 * 20, // 20 hours
+      });
+
+      await handleLogin(user);
+
       actions.resetForm();
+      router.push("/");
     } catch (err) {
       return alert(`Erro interno, volte mais tarde :)`);
     }

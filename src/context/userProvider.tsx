@@ -70,9 +70,9 @@ export default function UserProvider({ children }: UserProviderProps) {
   const handleLogout = () => {
     destroyCookie(undefined, "pizzeria.token");
 
-    setUser(null);
     setCartQuantity(0);
     setMenuOptions(loggedOutMenu);
+    setUser(null);
   };
 
   const handleUser = (user: User) => {

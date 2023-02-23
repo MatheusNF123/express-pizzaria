@@ -54,9 +54,7 @@ export const validationPerfil = yup.object().shape({
     .string()
     .email("Não e um email valido")
     .required("Este campo é obrigatório"),
-  password: yup
-    .string()
-    .min(6, "A senha deve ter 6 caracteres no mínimo"),
+  password: yup.string().min(6, "A senha deve ter 6 caracteres no mínimo"),
   phone: yup
     .string()
     .matches(
@@ -73,4 +71,24 @@ export const validationEditCartItem = yup.object().shape({
     .number()
     .min(1, "O valor deve ser maior ou igual a 1")
     .required("Este campo é obrigatório"),
+});
+
+export const validationEditPizza = yup.object().shape({
+  flavor: yup
+    .string()
+    .min(5, "nome deve ter 5 caracteres no mínimo")
+    .required("Este campo é obrigatório"),
+  type: yup
+    .string()
+    .min(5, "nome deve ter 2 caracteres no mínimo")
+    .required("Este campo é obrigatório"),
+  price: yup
+    .number()
+    .min(1, "O valor deve ser maior ou igual a 1")
+    .required("Este campo é obrigatório"),
+  ingredients: yup
+    .array()
+    .of(yup.string())
+    .required("Este campo é obrigatório"),
+  img: yup.string().required("Este campo é obrigatório"),
 });
