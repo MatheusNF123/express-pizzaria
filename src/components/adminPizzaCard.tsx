@@ -17,42 +17,58 @@ import { Pizza } from "../Types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PizzaModalForm from "./pizzaModalForm";
+import setApiHeaders from "../services/setApiHeaders";
+import { deleteRequest, putRequest } from "../services/api";
 
 type AdminPizzaCardProps = {
   pizza: Pizza;
+  handlePizzasReload: () => Promise<void>;
 };
 
-export default function AdminPizzaCard({ pizza }: AdminPizzaCardProps) {
+export default function AdminPizzaCard({
+  pizza,
+  handlePizzasReload,
+}: AdminPizzaCardProps) {
   const [openModal, setOpenModal] = useState(false);
   const { id, flavor, price, img, ingredients, type } = pizza;
 
   const handlePizzaUpdate = async (pizzaInfo: Omit<Pizza, "id">) => {
-    console.log('wdwadawacsada');
-    
     // setApiHeaders();
-    // await putRequest(`/cart/${cartId}/item/${id}`, cartItemInfo);
+    // await putRequest(`admin/pizza`, { id, ...pizzaInfo });
 
-    // await handleCartReload();
-    setOpenModal(false);
+    // await handlePizzasReload();
+    // setOpenModal(false);
+  };
+
+  const handlePizzaDeletion = async () => {
+    setApiHeaders();
+    await deleteRequest(`admin/pizza/${id}`);
+
+    await handlePizzasReload();
   };
 
   return (
     <Grid item xs={12}>
-      <Card sx={{ display: "flex" }}>
+      <Card
+        sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}
+      >
         <CardMedia
           component="img"
           sx={{
-            width: {xs: 100, sm: 200},
-            height: {xs: 120, sm: 220},
+            width: { xs: "100%", sm: 200, objectFit: "cover" },
+            height: { xs: 150, sm: 222 },
           }}
           image={img}
         />
         <CardContent sx={{ width: "100%", padding: "12px" }}>
-
-
-          <Box sx={{ display: "flex"}}>
+          <Box sx={{ display: "flex" }}>
             <Typography
-              sx={{ width: "100%", display: "flex", alignItems: "center" }}
+              sx={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                fontSize: { xs: "18px", sm: "25px" },
+              }}
               variant="h5"
               component="div"
             >
@@ -77,7 +93,7 @@ export default function AdminPizzaCard({ pizza }: AdminPizzaCardProps) {
               <Tooltip title="Excluir">
                 <IconButton
                   aria-label="Excluir Pizza"
-                  // onClick={() => setOpenModal(true)}
+                  onClick={() => handlePizzaDeletion()}
                 >
                   <DeleteIcon fontSize="medium" />
                 </IconButton>
@@ -89,22 +105,27 @@ export default function AdminPizzaCard({ pizza }: AdminPizzaCardProps) {
           <Box
             sx={{ display: { xs: "column", sm: "flex" }, alignItems: "center" }}
           >
-            <Box sx={{ width: "40%", marginRight: "5px" }}>
+            <Box sx={{ width: { xs: "100%", sm: "50%" }, marginRight: "5px" }}>
               <Typography gutterBottom variant="body1" component="div">
                 Categoria: {type}
               </Typography>
-              <Typography variant="body1" component="div">
+              <Typography
+                sx={{ marginBottom: { xs: "4px", sm: "0px" } }}
+                variant="body1"
+                component="div"
+              >
                 Preço: {price}
               </Typography>
             </Box>
             <Box>
               Ingredientes:
-              <Box sx={{ 
-                flexWrap: {xs: "nowrap",sm:"wrap"},
-                display: "flex",
-                flexDirection: "column",
-                height: "100px"}}
-              
+              <Box
+                sx={{
+                  flexWrap: { xs: "nowrap", sm: "wrap" },
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100px",
+                }}
               >
                 {ingredients?.map((el, index) => (
                   <Typography

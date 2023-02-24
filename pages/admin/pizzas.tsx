@@ -6,31 +6,21 @@ import { Pizza } from "../../src/Types";
 import Layout from "../../src/components/layout";
 import AdminPizzaCard from "../../src/components/adminPizzaCard";
 import { width } from "@mui/system";
+import { useState } from "react";
 
 type AdminPizzasProps = {
   pizzas: Pizza[] | null;
 };
 
-const pizza = [
-  {
-    id: "1",
-    flavor: "chocolate",
-    type: "doce",
-    price: 29.99,
-    ingredients: ["pedra", "sabão", "feijao"],
-    img: "https://f.i.uol.com.br/fotografia/2021/02/18/1613671083602eaaab101f1_1613671083_3x2_md.jpg",
-  },
-  {
-    id: "2",
-    flavor: "chocolate",
-    type: "doce",
-    price: 29.99,
-    ingredients: ["pedra", "sabão", "feijao"],
-    img: "https://f.i.uol.com.br/fotografia/2021/02/18/1613671083602eaaab101f1_1613671083_3x2_md.jpg",
-  },
-];
+export default function AdminPizzas(props: AdminPizzasProps) {
+  const [pizzas, setPizzas] = useState<Pizza[] | null>(props.pizzas);
 
-export default function AdminPizzas({ pizzas }: AdminPizzasProps) {
+  const handlePizzasReload = async () => {
+    const { data } = await getRequest<Pizza[]>("pizzas");
+
+    setPizzas(data);
+  };
+
   return (
     <Layout title="Admin: pizzas">
       <Container
@@ -45,7 +35,11 @@ export default function AdminPizzas({ pizzas }: AdminPizzasProps) {
       >
         <Grid container spacing={4}>
           {pizzas?.map((pizza) => (
-            <AdminPizzaCard key={pizza.id} pizza={pizza} />
+            <AdminPizzaCard
+              key={pizza.id}
+              pizza={pizza}
+              handlePizzasReload={handlePizzasReload}
+            />
           ))}
         </Grid>
       </Container>

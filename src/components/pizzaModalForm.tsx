@@ -21,7 +21,10 @@ import {
   useFormikContext,
 } from "formik";
 
-import { validationEditPizza } from "../utils/schemas/formValidations";
+import {
+  validationEditPizza,
+  validationFieldIngredient,
+} from "../utils/schemas/formValidations";
 import { Pizza } from "../Types";
 
 const style = {
@@ -52,13 +55,32 @@ export default function PizzaModalForm({
   handlePizzaUpdate,
   info: { flavor, type, price, ingredients, img },
 }: PizzaModalFormProps) {
-  // const initialValues: PizzaFields = {
-  //   flavor,
-  //   type,
-  //   price,
-  //   ingredients,
-  //   img,
-  // };
+  const handleIngredientsAddition = async (
+    oddIngredients: string[],
+    newValue: string,
+    setField: (field: string, value: string[]) => void
+  ) => {
+    try {
+      const a = await validationFieldIngredient.validate({ ingredient: 1 });
+      console.log(a);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // if(){
+    const newIngredients = [...oddIngredients, newValue];
+    setField("ingredients", newIngredients);
+    // }
+  };
+
+  const handleIngredientDeletion = (
+    oddIngredients: string[],
+    index: number,
+    setField: (field: string, value: string[]) => void
+  ) => {
+    const newIngredients = oddIngredients.filter((_, i) => i != index);
+    setField("ingredients", newIngredients);
+  };
 
   return (
     <Modal
@@ -85,12 +107,13 @@ export default function PizzaModalForm({
             flavor,
             type,
             price,
+            ingredient: "",
             ingredients,
             img,
           }}
-          onSubmit={async (values) => {
-            console.log(values);
-            await handlePizzaUpdate(values);
+          onSubmit={async ({ ingredient, ...fields }) => {
+            console.log(fields);
+            await handlePizzaUpdate(fields);
           }}
           validationSchema={validationEditPizza}
         >
@@ -133,17 +156,48 @@ export default function PizzaModalForm({
                 error={props.errors.price}
               />
               <Field
-                name="ingredients"
-                label="Ingredientes"
+                name="ingredient"
+                label="Ingrediente"
                 type="text"
                 as={TextField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
-                placeholder="Digite os ingredientes"
-                helperText={<ErrorMessage name="ingredients" />}
-                error={props.errors.ingredients}
+                placeholder="Digite o ingrediente"
+                helperText={<ErrorMessage name="ingredient" />}
+                error={props.errors.ingredient}
               />
+              <ul>
+                {props.values.ingredients.map((ingredient, i) => (
+                  <li key={i}>
+                    {ingredient}
+                    <Button
+                      onClick={() =>
+                        handleIngredientDeletion(
+                          props.values.ingredients,
+                          i,
+                          props.setFieldValue
+                        )
+                      }
+                      sx={{ color: "red" }}
+                    >
+                      X
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                onClick={() => {
+                  handleIngredientsAddition(
+                    props.values.ingredients,
+                    props.values.ingredient,
+                    props.setFieldValue
+                  );
+                  props.setFieldValue("ingredient", "");
+                }}
+              >
+                ADD
+              </Button>
               <Field
                 name="img"
                 label="URL da imagem"
