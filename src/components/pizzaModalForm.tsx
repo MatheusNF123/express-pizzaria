@@ -61,7 +61,7 @@ export default function PizzaModalForm({
     setField: (field: string, value: string[]) => void
   ) => {
     try {
-      const a = await validationFieldIngredient.validate({ ingredient: 1 });
+      const a = await validationFieldIngredient.validate(1);
       console.log(a);
     } catch (error) {
       console.log(error);
