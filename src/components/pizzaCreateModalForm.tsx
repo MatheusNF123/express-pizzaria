@@ -3,26 +3,20 @@ import {
   Box,
   Button,
   Avatar,
-  Typography,
   TextField,
-  Checkbox,
-  Select,
-  MenuItem,
-  InputLabel,
-  styled,
 } from "@mui/material";
+
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   Formik,
   Form,
   Field,
-  FormikHelpers,
   ErrorMessage,
-  useFormikContext,
 } from "formik";
 
 import {
-  validationEditPizza,
+  validationPizza,
   validationFieldIngredient,
 } from "../utils/schemas/formValidations";
 import { Pizza } from "../Types";
@@ -32,6 +26,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  height: "80%",
+  overflow: "auto",
   width: 400,
   color: "white",
   bgcolor: "inherit",
@@ -40,37 +36,33 @@ const style = {
   p: 4,
 };
 
-type PizzaModalFormProps = {
+type PizzaCreateModalFormProps = {
   open: boolean;
   handleClose: () => void;
-  handlePizzaUpdate: (pizzaInfo: Omit<Pizza, "id">) => Promise<void>;
-  info: Pizza;
+  handlePizzaCreate: (pizzaInfo: Omit<Pizza, "id">) => Promise<void>;
 };
 
-// type PizzaFields = Omit<Pizza, "id">;
-
-export default function PizzaModalForm({
+export default function PizzaCreateModalForm({
   open,
   handleClose,
-  handlePizzaUpdate,
-  info: { flavor, type, price, ingredients, img },
-}: PizzaModalFormProps) {
+  handlePizzaCreate,
+}: PizzaCreateModalFormProps) {
+
   const handleIngredientsAddition = async (
     oddIngredients: string[],
     newValue: string,
-    setField: (field: string, value: string[]) => void
+    setField: (field: string, value: string[] | string) => void,
+    setFieldError: (field: string, value: string | undefined) => void
   ) => {
     try {
-      const a = await validationFieldIngredient.validate(1);
-      console.log(a);
-    } catch (error) {
-      console.log(error);
-    }
+      await validationFieldIngredient.validate(newValue);
 
-    // if(){
-    const newIngredients = [...oddIngredients, newValue];
-    setField("ingredients", newIngredients);
-    // }
+      const newIngredients = [...oddIngredients, newValue];
+      setField("ingredients", newIngredients);
+      setField("ingredient", "");
+    } catch (error: any) {
+      setFieldError("ingredient", error.message);
+    }
   };
 
   const handleIngredientDeletion = (
@@ -98,24 +90,22 @@ export default function PizzaModalForm({
             transition: ".2s",
           }}
           alt="Pizza image"
-          src={img}
+          src={""}
         />
-        <Typography>Nome: {flavor}</Typography>
         <Formik
-          enableReinitialize
           initialValues={{
-            flavor,
-            type,
-            price,
+            flavor: "",
+            type: "",
+            price: 30,
             ingredient: "",
-            ingredients,
-            img,
+            ingredients: [],
+            img: "",
           }}
           onSubmit={async ({ ingredient, ...fields }) => {
             console.log(fields);
-            await handlePizzaUpdate(fields);
+            await handlePizzaCreate(fields);
           }}
-          validationSchema={validationEditPizza}
+          validationSchema={validationPizza}
         >
           {(props) => (
             <Form>
@@ -169,7 +159,11 @@ export default function PizzaModalForm({
               />
               <ul>
                 {props.values.ingredients.map((ingredient, i) => (
-                  <li key={i}>
+                  <li key={i} style={{
+                    "alignItems": "center",
+                    "display": "flex",
+                    "justifyContent": "space-between"
+                  }}>
                     {ingredient}
                     <Button
                       onClick={() =>
@@ -179,24 +173,21 @@ export default function PizzaModalForm({
                           props.setFieldValue
                         )
                       }
-                      sx={{ color: "red" }}
                     >
-                      X
+                      <CloseIcon />
                     </Button>
                   </li>
                 ))}
               </ul>
               <Button
-                onClick={() => {
-                  handleIngredientsAddition(
-                    props.values.ingredients,
-                    props.values.ingredient,
-                    props.setFieldValue
-                  );
-                  props.setFieldValue("ingredient", "");
-                }}
+                onClick={() => handleIngredientsAddition(
+                  props.values.ingredients,
+                  props.values.ingredient,
+                  props.setFieldValue,
+                  props.setFieldError
+                )}
               >
-                ADD
+                Adicionar
               </Button>
               <Field
                 name="img"
@@ -212,12 +203,12 @@ export default function PizzaModalForm({
               />
 
               <Button color="primary" variant="contained" type="submit">
-                Editar
+                Criar
               </Button>
             </Form>
           )}
         </Formik>
       </Box>
-    </Modal>
+    </Modal >
   );
 }

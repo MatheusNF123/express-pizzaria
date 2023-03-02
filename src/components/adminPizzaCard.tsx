@@ -16,7 +16,7 @@ import { Container } from "@mui/system";
 import { Pizza } from "../Types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import PizzaModalForm from "./pizzaModalForm";
+import PizzaUpdateModalForm from "./pizzaUpdateModalForm";
 import setApiHeaders from "../services/setApiHeaders";
 import { deleteRequest, putRequest } from "../services/api";
 
@@ -29,7 +29,7 @@ export default function AdminPizzaCard({
   pizza,
   handlePizzasReload,
 }: AdminPizzaCardProps) {
-  const [openModal, setOpenModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const { id, flavor, price, img, ingredients, type } = pizza;
 
   const handlePizzaUpdate = async (pizzaInfo: Omit<Pizza, "id">) => {
@@ -37,7 +37,7 @@ export default function AdminPizzaCard({
     // await putRequest(`admin/pizza`, { id, ...pizzaInfo });
 
     // await handlePizzasReload();
-    // setOpenModal(false);
+    // setOpenUpdateModal(false);
   };
 
   const handlePizzaDeletion = async () => {
@@ -84,7 +84,7 @@ export default function AdminPizzaCard({
               <Tooltip title="Editar">
                 <IconButton
                   aria-label="Editar Pizza"
-                  onClick={() => setOpenModal(true)}
+                  onClick={() => setOpenUpdateModal(true)}
                 >
                   <EditIcon fontSize="medium" />
                 </IconButton>
@@ -144,9 +144,9 @@ export default function AdminPizzaCard({
           </Box>
         </CardContent>
       </Card>
-      <PizzaModalForm
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
+      <PizzaUpdateModalForm
+        open={openUpdateModal}
+        handleClose={() => setOpenUpdateModal(false)}
         handlePizzaUpdate={handlePizzaUpdate}
         info={pizza}
       />

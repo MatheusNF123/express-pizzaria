@@ -54,3 +54,8 @@ export const putRequest = async (endPoint: string, body: any) => {
   const { data, status } = await api.put(endPoint, body);
   return { data, status };
 };
+
+export const patchRequest = async (endPoint: string) => {
+  const { data, status } = await api.patch(endPoint);
+  return { data, status };
+};

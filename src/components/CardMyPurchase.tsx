@@ -14,14 +14,27 @@ import { useRouter } from "next/router";
 import { Order } from "../Types";
 import { formatDate } from "../utils/formatDate";
 import verifyDate from "../utils/verifyDate";
+import { patchRequest } from "../services/api"
+import setApiHeaders from "../services/setApiHeaders";
 
 export default function CardMyPurchase({
   date,
   ordersPizzas,
   status,
   totalPrice,
+  id
 }: Order) {
   const router = useRouter();
+
+
+  const cancelOrder = async () => {
+    try {
+      setApiHeaders();
+      await patchRequest(`order/${id}`)
+    } catch {
+      return alert(`Erro interno, volte mais tarde :)`);
+    }
+  }
 
   return (
     <Container>
@@ -145,7 +158,7 @@ export default function CardMyPurchase({
                       sx={{ fontSize: "12px" }}
                       disabled={verifyDate(date)}
                       variant="contained"
-                      onClick={() => router.push("/")}
+                      onClick={cancelOrder}
                     >
                       cancelar
                     </Button>

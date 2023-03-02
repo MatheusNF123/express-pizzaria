@@ -1,12 +1,13 @@
 import { GetServerSideProps } from "next";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import { Button, Container, Grid } from "@mui/material";
 
-import { getRequest } from "../../src/services/api";
+import { getRequest, postRequest } from "../../src/services/api";
 import { Pizza } from "../../src/Types";
 import Layout from "../../src/components/layout";
 import AdminPizzaCard from "../../src/components/adminPizzaCard";
-import { width } from "@mui/system";
-import { useState } from "react";
+import PizzaCreateModalForm from "../../src/components/pizzaCreateModalForm";
+import setApiHeaders from "../../src/services/setApiHeaders";
 
 type AdminPizzasProps = {
   pizzas: Pizza[] | null;
@@ -14,11 +15,20 @@ type AdminPizzasProps = {
 
 export default function AdminPizzas(props: AdminPizzasProps) {
   const [pizzas, setPizzas] = useState<Pizza[] | null>(props.pizzas);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   const handlePizzasReload = async () => {
     const { data } = await getRequest<Pizza[]>("pizzas");
 
     setPizzas(data);
+  };
+
+  const handlePizzaCreate = async (pizzaInfo: Omit<Pizza, "id">) => {
+    setApiHeaders();
+    await postRequest("admin/pizza", pizzaInfo);
+
+    await handlePizzasReload();
+    setOpenCreateModal(false);
   };
 
   return (
@@ -33,6 +43,7 @@ export default function AdminPizzas(props: AdminPizzasProps) {
           padding: "20px",
         }}
       >
+        <Button onClick={() => setOpenCreateModal(true)}>Criar pizza</Button>
         <Grid container spacing={4}>
           {pizzas?.map((pizza) => (
             <AdminPizzaCard
@@ -42,6 +53,11 @@ export default function AdminPizzas(props: AdminPizzasProps) {
             />
           ))}
         </Grid>
+        <PizzaCreateModalForm
+          open={openCreateModal}
+          handleClose={() => setOpenCreateModal(false)}
+          handlePizzaCreate={handlePizzaCreate}
+        />
       </Container>
     </Layout>
   );
