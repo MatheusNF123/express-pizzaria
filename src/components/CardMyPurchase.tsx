@@ -60,6 +60,8 @@ export default function CardMyPurchase({
             </Box>
             <Divider />
             {ordersPizzas.map((ordersPizza) => (
+              <>
+               <Divider />
               <CardContent
                 key={ordersPizza.id}
                 sx={{
@@ -74,6 +76,7 @@ export default function CardMyPurchase({
                     flex: "1",
                   }}
                 >
+                  
                   <Box sx={{ mr: 1 }}>
                     <CardMedia
                       sx={{
@@ -96,7 +99,7 @@ export default function CardMyPurchase({
                     <Typography sx={{ mb: 1 }} variant="subtitle2">
                       R$ {ordersPizza.pizza.price}
                     </Typography>
-                    <Box sx={{ flex: 1, display: { sm: 'flex', md: "none", lg: "none" } }}>
+                    <Box sx={{ flex: 1, display: {xs: "flex", sm: 'none', md: "none", lg: "none" } }}>
                       Status:
                       <Typography
                         sx={{
@@ -109,27 +112,9 @@ export default function CardMyPurchase({
                       </Typography>
                     </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      flex: 1,
-                      display: {
-                        xs: "none",
-                        sm: "none",
-                        md: "flex",
-                        lg: "flex",
-                      },
-                    }}
-                  >
-                    Status:
-                    <Typography
-                      sx={{ color: status === "Comprado" ? "#13AD5D" : "red" }}
-                      component="span"
-                    >
-                      {" "}
-                      {status}
-                    </Typography>
-                  </Box>
+                 
                 </Box>
+                
                 <CardActions
                   sx={{
                     display: "flex",
@@ -154,18 +139,53 @@ export default function CardMyPurchase({
                       comprar novamente
                     </Button>
 
+                  </Box>
+                </CardActions>
+               
+              </CardContent>
+              </>
+            ))}
+            <Divider />
+
+                  <CardActions
+                  sx={{
+                    display: "flex",
+                    padding: { xs: "5px 20px",
+                  justifyContent: "space-between", width: "100%" },
+                  }}
+                >
+                    <Box
+                    sx={{
+                      // flex: 1,
+                      display: {
+                        xs: "none",
+                        sm: "flex",
+                        md: "flex",
+                        lg: "flex",
+                      },
+                    }}
+                  >
+                    Status:
+                    <Typography
+                      sx={{ color: status === "Comprado" ? "#13AD5D" : "red" }}
+                      component="span"
+                    >
+                      {" "}
+                      {status}
+                    </Typography>
+                  </Box>
                     <Button
-                      sx={{ fontSize: "12px" }}
+                      sx={{ fontSize: "12px", marginBottom: "5px", width: {xs: "100%", sm: "initial"} }}
                       disabled={verifyDate(date)}
                       variant="contained"
                       onClick={cancelOrder}
+                      color="error"
+                      
                     >
-                      cancelar
+                      cancelar pedido
                     </Button>
-                  </Box>
                 </CardActions>
-              </CardContent>
-            ))}
+                  
           </Box>
         </Container>
       </Card>
