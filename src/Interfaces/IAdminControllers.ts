@@ -3,6 +3,7 @@ import CreatePizzaController from "../UseCases/AdminUseCase/createPizza/CreatePi
 import DeletePizzaController from "../UseCases/AdminUseCase/deletePizza/DeletePizzaController";
 import UpdatePizzaController from "../UseCases/AdminUseCase/updatePizza/UpdatePizzaController";
 import GetAllUsersController from "../UseCases/AdminUseCase/getAllUsers/GetAllUsersController";
+import GetAllPizzasController from "../UseCases/AdminUseCase/getAllPizzas/GetAllPizzasController";
 
 export default interface IAdminControllers {
   deleteUser: DeleteUserController;
@@ -10,4 +11,5 @@ export default interface IAdminControllers {
   deletePizza: DeletePizzaController;
   updatePizza: UpdatePizzaController;
   getAllUsers: GetAllUsersController;
+  getAllPizzas: GetAllPizzasController;
 }

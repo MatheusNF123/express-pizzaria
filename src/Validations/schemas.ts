@@ -41,7 +41,7 @@ export const userUpdateSchema = z
 const pizzasOrderAndCartSchema = z
   .object({
     pizzaId: z.string(),
-    size: z.enum(["small", "medium", "big"]),
+    size: z.enum(["pequeno", "médio", "grande"]),
     border: z.boolean(),
     quantity: z.number(),
   })

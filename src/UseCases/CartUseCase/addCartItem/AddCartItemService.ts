@@ -3,6 +3,7 @@ import { ICartItemDTO } from "../../../Interfaces/ICart";
 import IValidation from "../../../Interfaces/IValidation";
 import { ICartRepository } from "../../../Repository/IRepository";
 import calculateTotalPrice from "../../../utils/calculateTotalPrice";
+import checkDuplicateCartItem from "../../../utils/checkDuplicateCartItem";
 import Token from "../../../utils/GenerateToken";
 import saleInfoFactory from "../../../utils/saleInfoFactory";
 
@@ -13,7 +14,6 @@ export default class AddCartItemService {
   ) { }
 
   public async add(token: string, cartItemDTO: ICartItemDTO) {
-
     const { id, email } = Token.authToken(token);
 
     this.validation.validateCartItemDTO(cartItemDTO);
@@ -35,7 +35,13 @@ export default class AddCartItemService {
 
     await this.repository.cart.update(cart, { totalPrice });
 
-    await this.repository.cartPizzas.create({ cart, pizza, ...itemInfo });
+    const { cartItem, quantity } = checkDuplicateCartItem(cart.cartPizzas, cartItemDTO.item);
+
+    if (cartItem) {
+      await this.repository.cartPizzas.update(cartItem, { quantity });
+    } else {
+      await this.repository.cartPizzas.create({ cart, pizza, ...itemInfo });
+    }
 
     return "Pizza adicionada";
   }

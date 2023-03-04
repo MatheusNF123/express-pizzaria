@@ -28,5 +28,9 @@ export default class PizzaRoutes {
       .route("/admin/pizza")
       .post(this.adminControllers.createPizza.create)
       .put(this.adminControllers.updatePizza.update);
+    
+      this.routes
+      .route("/admin/pizzas")
+      .get(this.adminControllers.getAllPizzas.getAll);
   }
 }

@@ -9,10 +9,10 @@ export default function calculateTotalPrice(saleInfo: ISaleInfo[], pizzas: IPizz
     if (curr.border) price + 10;
 
     switch (curr.size) {
-      case "small":
+      case "pequeno":
         price -= 8;
         break;
-      case "big":
+      case "grande":
         price += 15;
         break;
       default:
