@@ -3,6 +3,7 @@ import createPizza from "./createPizza";
 import deletePizza from "./deletePizza";
 import updatePizza from "./updatePizza";
 import getAllUsers from "./getAllUsers";
+import getAllPizzas from "./getAllPizzas";
 
 export default {
   deleteUser,
@@ -10,4 +11,5 @@ export default {
   deletePizza,
   updatePizza,
   getAllUsers,
+  getAllPizzas,
 };
