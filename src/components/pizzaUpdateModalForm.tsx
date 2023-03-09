@@ -153,11 +153,11 @@ export default function PizzaUpdateModalForm({
                 as={TextField}
                 variant="outlined"
                 margin="dense"
-                fullWidth
+                fullWidth                
                 placeholder="Digite o preço"
-                helperText={<ErrorMessage name="price" />}
                 error={props.errors.price}
               />
+                <ErrorMessage name="price" />
               <Field
                 name="ingredient"
                 label="Ingrediente"
@@ -179,6 +179,7 @@ export default function PizzaUpdateModalForm({
                   }}>
                     {ingredient}
                     <Button
+                    type="submit"
                       onClick={() =>
                         handleIngredientDeletion(
                           props.values.ingredients,
@@ -193,6 +194,7 @@ export default function PizzaUpdateModalForm({
                 ))}
               </ul>
               <Button
+                type="submit"
                 onClick={() => handleIngredientsAddition(
                   props.values.ingredients,
                   props.values.ingredient,

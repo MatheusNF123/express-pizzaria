@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Button, TextField, Typography, Box, Grid, Paper } from "@mui/material";
+import { Button, TextField, Typography, Box, Grid, Paper, InputAdornment, IconButton } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
 
@@ -12,6 +12,7 @@ import {
 } from "../utils/schemas/formValidations";
 import { userContext } from "../context/userProvider";
 import { Login } from "../Types";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface MyFormValues {
   firstName: string;
@@ -26,6 +27,7 @@ interface MyFormValues {
 export default function RegisterForm() {
   const { handleLogin } = useContext(userContext);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const initialValues: MyFormValues = {
     firstName: "",
     lastName: "",
@@ -34,6 +36,10 @@ export default function RegisterForm() {
     password: "",
     confirmPassword: "",
     phone: "",
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   async function handleOnSubmitRegister(
@@ -148,13 +154,29 @@ export default function RegisterForm() {
                         label="Senha"
                         name="password"
                         as={TextField}
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         variant="outlined"
                         margin="dense"
                         fullWidth
                         placeholder="Digite uma senha"
                         helperText={<ErrorMessage name="password" />}
                         error={props.errors.password && props.touched.password}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>

@@ -19,7 +19,10 @@ export default async function getCartData(): Promise<GetCartDataReturn> {
 
     return {
       data,
-      quantity: data.cartPizzas.length,
+      quantity: data.cartPizzas.reduce(
+        (acc, { quantity }) => acc + quantity,
+        0
+      ),
     };
   } catch (error) {
     return { data: null, quantity: 0 };

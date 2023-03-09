@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { userContext } from "../context/userProvider";
 
 import { Pizza } from "../Types";
+import AddToCartForm from "./addToCartForm";
 
 type PizzaCardProps = {
   info: Pizza;
@@ -51,6 +52,7 @@ export default function PizzaCard({
         />
         <CardContent>
           <Typography variant="h6">{flavor}</Typography>
+          <AddToCartForm pizzaId={id} />
         </CardContent>
         <CardActions
           sx={{
@@ -66,14 +68,19 @@ export default function PizzaCard({
               gap: "4px",
             }}
           >
-            <Button variant="contained" onClick={() => handlePurchase({
-              pizzaId: id,
-              size: 'medium',
-              quantity: 1,
-              border: false,
-            })}>
+            {/* <Button
+              variant="contained"
+              onClick={() =>
+                handlePurchase({
+                  pizzaId: id,
+                  size: "médio",
+                  quantity: 1,
+                  border: false,
+                })
+              }
+            >
               Adicionar ao carrinho
-            </Button>
+            </Button> */}
             <Button
               variant="contained"
               onClick={() => router.push(`/pizzas/${id}`)}

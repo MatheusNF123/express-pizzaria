@@ -7,19 +7,20 @@ import Header from "../../src/components/header";
 import { Pizza } from "../../src/Types";
 import Image from "next/image";
 import Layout from "../../src/components/layout";
+import AddToCartForm from "../../src/components/addToCartForm";
 
 type PizzaDetailsProps = {
   pizza: Pizza;
 };
 
 export default function PizzaDetails({
-  pizza: { img, flavor, ingredients, price, type },
+  pizza: { id, img, flavor, ingredients, price, type },
 }: PizzaDetailsProps) {
   // console.log(pizza);
 
   return (
     <Layout title="Detalhes da pizza">
-      <Box 
+      <Box
         sx={{
           // backgroundColor: "red",
           minHeight: "calc(100vh - 100px)",
@@ -79,7 +80,7 @@ export default function PizzaDetails({
               </Typography>
             ))}
             <Typography variant="h6">{`Preço: R$ ${price}`}</Typography>
-            <Button variant="contained">Comprar</Button>
+            <AddToCartForm pizzaId={id} />
           </Box>
         </Stack>
       </Box>

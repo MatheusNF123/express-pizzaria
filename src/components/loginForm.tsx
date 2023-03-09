@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useContext } from "react";
-import { Button, TextField, Typography, Box, Paper } from "@mui/material";
+import { useContext, useState } from "react";
+import {
+  Button,
+  TextField,
+  Typography,
+  Box,
+  Paper,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
 
@@ -9,6 +17,7 @@ import { postRequest } from "../services/api";
 import { validationLogin } from "../utils/schemas/formValidations";
 import { Login } from "../Types";
 import { userContext } from "../context/userProvider";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface MyFormValues {
   email: string;
@@ -19,6 +28,7 @@ export default function LoginForm() {
   const { handleLogin } = useContext(userContext);
   const router = useRouter();
   const initialValues: MyFormValues = { email: "", password: "" };
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleOnSubmitLogin(
     { email, password }: MyFormValues,
@@ -32,6 +42,7 @@ export default function LoginForm() {
       if (status !== 200) return alert(`${message}`);
 
       setCookie(undefined, "pizzeria.token", token, {
+        path: "/",
         maxAge: 60 * 60 * 20, // 20 hours
       });
 
@@ -43,6 +54,10 @@ export default function LoginForm() {
       return alert(`Erro interno, volte mais tarde :)`);
     }
   }
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <Box
@@ -87,7 +102,7 @@ export default function LoginForm() {
                   <Field
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     label="Password"
                     as={TextField}
                     placeholder="Digite sua senha"
@@ -95,6 +110,18 @@ export default function LoginForm() {
                     fullWidth
                     helperText={<ErrorMessage name="password" />}
                     error={props.errors.password && props.touched.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={handleClickShowPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                   <Typography style={{ color: "#757575" }} mt={1} mb={2}>
                     Não tem uma conta?

@@ -65,7 +65,17 @@ export default function AdminPizzas(props: AdminPizzasProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
-    const { data } = await getRequest<Pizza[]>("pizzas");
+    setApiHeaders(ctx);
+    const { data, status } = await getRequest<Pizza[]>("admin/pizzas");
+
+    if (status !== 200)
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/login",
+        },
+      };
+
     return {
       props: { pizzas: data },
     };

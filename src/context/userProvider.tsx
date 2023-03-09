@@ -17,7 +17,7 @@ type UserContextValues = {
   handleLogin: (user: User) => Promise<void>;
   handleLogout: () => void;
   handleCartQuantity: (quantity: number) => void;
-  handlePurchase: (item: PurchaseItem) => void;
+  handlePurchase: (item: PurchaseItem) => Promise<void>;
 };
 
 export const userContext = createContext({} as UserContextValues);
@@ -50,6 +50,8 @@ export default function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("useEffect", verifyCookie());
+
     if (verifyCookie()) {
       setMenuOptions(user?.role === "admin" ? adminMenu : customerMenu);
     }
@@ -68,11 +70,14 @@ export default function UserProvider({ children }: UserProviderProps) {
   };
 
   const handleLogout = () => {
-    destroyCookie(undefined, "pizzeria.token");
+    destroyCookie(undefined, "pizzeria.token", {
+      path: "/",
+    });
 
     setCartQuantity(0);
     setMenuOptions(loggedOutMenu);
     setUser(null);
+    console.log("OFF", verifyCookie());
   };
 
   const handleUser = (user: User) => {
@@ -80,11 +85,14 @@ export default function UserProvider({ children }: UserProviderProps) {
   };
 
   const handlePurchase = async (item: PurchaseItem) => {
-    if (!verifyCookie()) return router.push("/login");
-    await createOrAddItemToCart(item, router);
+    if (!verifyCookie()) {
+      router.push("/login");
+    } else {
+      await createOrAddItemToCart(item, router);
 
-    const { quantity } = await getCartData();
-    setCartQuantity(quantity);
+      const { quantity } = await getCartData();
+      setCartQuantity(quantity);
+    }
   };
 
   return (

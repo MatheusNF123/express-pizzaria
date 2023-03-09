@@ -33,11 +33,11 @@ export default function AdminPizzaCard({
   const { id, flavor, price, img, ingredients, type } = pizza;
 
   const handlePizzaUpdate = async (pizzaInfo: Omit<Pizza, "id">) => {
-    // setApiHeaders();
-    // await putRequest(`admin/pizza`, { id, ...pizzaInfo });
+    setApiHeaders();
+    await putRequest(`admin/pizza`, { id, ...pizzaInfo });
 
-    // await handlePizzasReload();
-    // setOpenUpdateModal(false);
+    await handlePizzasReload();
+    setOpenUpdateModal(false);
   };
 
   const handlePizzaDeletion = async () => {
