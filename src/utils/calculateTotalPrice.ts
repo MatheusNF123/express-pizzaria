@@ -4,10 +4,8 @@ import IPizza from "../Interfaces/IPizza";
 export default function calculateTotalPrice(saleInfo: ISaleInfo[], pizzas: IPizza[]) {
 
   const totalPrice = saleInfo.reduce((acc, curr, i) => {
-    let price = pizzas[i].price;
-
-    if (curr.border) price + 10;
-
+    let price = Number(pizzas[i].price);
+    if (curr.border) price += 10;
     switch (curr.size) {
       case "pequeno":
         price -= 8;
