@@ -48,7 +48,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#0000005c" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Image
@@ -63,14 +63,17 @@ function Header() {
                 // box home e menu tela grande
                 key={page}
                 onClick={() => router.push(endPoint)}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "#FFCC33", display: "block" }}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          <Badge badgeContent={cartQuantity} sx={{ marginRight: "10px" }}>
+          <Badge
+            badgeContent={cartQuantity}
+            sx={{ marginRight: "10px", color: "white" }}
+          >
             <Tooltip title="Abrir carrinho">
               <IconButton
                 aria-label="Carrinho"
@@ -87,7 +90,11 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Abrir configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="" />
+                <Avatar
+                  sx={{ backgroundColor: "white" }}
+                  alt="Remy Sharp"
+                  src=""
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -111,7 +118,9 @@ function Header() {
                   key={option}
                   onClick={() => handleUserMenuClick(option, endPoint)}
                 >
-                  <Typography textAlign="center">{option}</Typography>
+                  <Typography textAlign="center">
+                    {option}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
