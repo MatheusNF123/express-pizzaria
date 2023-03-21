@@ -61,7 +61,7 @@ export default function PizzaCard({
           </Typography>
         </CardContent>
         <CardActions>
-          <AddToCartForm pizzaId={id} />
+          <AddToCartForm hasDetailsButton pizzaId={id} />
         </CardActions>
       </Card>
     </Grid>

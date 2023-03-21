@@ -37,6 +37,7 @@ const theme = createTheme({
     },
   },
   typography: {
+    fontSize: 18,
     fontFamily: alumni_Sans.style.fontFamily,
   },
 });
