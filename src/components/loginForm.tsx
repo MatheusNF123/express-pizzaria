@@ -9,6 +9,7 @@ import {
   Paper,
   InputAdornment,
   IconButton,
+  makeStyles
 } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
@@ -18,11 +19,11 @@ import { validationLogin } from "../utils/schemas/formValidations";
 import { Login } from "../Types";
 import { userContext } from "../context/userProvider";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
 interface MyFormValues {
   email: string;
   password: string;
 }
+
 
 export default function LoginForm() {
   const { handleLogin } = useContext(userContext);
@@ -69,13 +70,15 @@ export default function LoginForm() {
         justifyContent: "center",
       }}
     >
-      <Paper elevation={3}>
+      <Paper elevation={3} sx={{ backgroundColor: "#0000005c" }}>
         <Box
           m={5}
           p={3}
           sx={{
             display: "flex",
             flexDirection: "column",
+            color: "white",
+            // backgroundColor: "red"
           }}
         >
           <Formik
@@ -85,9 +88,15 @@ export default function LoginForm() {
           >
             {(props) => {
               return (
-                <Form>
-                  <Typography variant="h4">Login</Typography>
+                <Form
+                  style={{
+                    color: "white",
+                    borderColor: "white",
+                    // backgroundColor: "#0000005c",
+                  }}>
+                  <Typography variant="h4" color="#FFCC33">Login</Typography>
                   <Field
+                    // classes={{ root: classes.field }}
                     name="email"
                     type="email"
                     label="Email"
@@ -96,8 +105,31 @@ export default function LoginForm() {
                     variant="outlined"
                     margin="dense"
                     fullWidth
-                    helperText={<ErrorMessage name="email" />}
-                    error={props.errors.email && props.touched.email}
+                    // helperText={<ErrorMessage name="email" />}
+                    // error={props.errors.email && props.touched.email}
+                    sx={{
+                      borderRadius: "5px",
+                      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                        color: "white",
+
+                      }, 
+
+                      "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "inherit",
+                      },
+                    }}
+                    InputProps={{
+                      style: {
+                        // color: "white",
+                        borderColor: "white",
+                        // padding: "0 10px",
+                        '&::placeholder': {
+                          color: "white",
+                        },
+                      },
+
+                    }}
                   />
                   <Field
                     id="password"
@@ -110,7 +142,17 @@ export default function LoginForm() {
                     fullWidth
                     helperText={<ErrorMessage name="password" />}
                     error={props.errors.password && props.touched.password}
+                    sx={{
+                      color: "white",
+                      // backGroundColor: "white",
+                      borderColor: "white",
+                    }}
                     InputProps={{
+                      // style: {
+                      //   color: "white",
+                      //   borderColor: "white",
+                      //   backGroundColor: "white",
+                      // },
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -123,10 +165,10 @@ export default function LoginForm() {
                       ),
                     }}
                   />
-                  <Typography style={{ color: "#757575" }} mt={1} mb={2}>
+                  <Typography mt={1} mb={2}>
                     Não tem uma conta?
                     <Link
-                      style={{ textDecoration: "none", color: "#1769aa" }}
+                      style={{ textDecoration: "none", color: "#FFCC33" }}
                       href="/register"
                     >
                       {" "}
