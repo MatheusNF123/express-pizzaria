@@ -9,7 +9,7 @@ import {
   Paper,
   InputAdornment,
   IconButton,
-  makeStyles
+  styled,
 } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
@@ -19,11 +19,26 @@ import { validationLogin } from "../utils/schemas/formValidations";
 import { Login } from "../Types";
 import { userContext } from "../context/userProvider";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 interface MyFormValues {
   email: string;
   password: string;
 }
 
+const StyledField = styled(Field)(({ theme }) => ({
+  ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    color: "white",
+  },
+  "label, input ": {
+    color: "white",
+  },
+
+  ".MuiOutlinedInput-root:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+    {
+      borderColor: "white",
+    },
+}));
 
 export default function LoginForm() {
   const { handleLogin } = useContext(userContext);
@@ -78,7 +93,6 @@ export default function LoginForm() {
             display: "flex",
             flexDirection: "column",
             color: "white",
-            // backgroundColor: "red"
           }}
         >
           <Formik
@@ -92,11 +106,12 @@ export default function LoginForm() {
                   style={{
                     color: "white",
                     borderColor: "white",
-                    // backgroundColor: "#0000005c",
-                  }}>
-                  <Typography variant="h4" color="#FFCC33">Login</Typography>
-                  <Field
-                    // classes={{ root: classes.field }}
+                  }}
+                >
+                  <Typography variant="h4" color="#FFCC33">
+                    Login
+                  </Typography>
+                  <StyledField
                     name="email"
                     type="email"
                     label="Email"
@@ -105,33 +120,10 @@ export default function LoginForm() {
                     variant="outlined"
                     margin="dense"
                     fullWidth
-                    // helperText={<ErrorMessage name="email" />}
-                    // error={props.errors.email && props.touched.email}
-                    sx={{
-                      borderRadius: "5px",
-                      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
-                        color: "white",
-
-                      }, 
-
-                      "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "inherit",
-                      },
-                    }}
-                    InputProps={{
-                      style: {
-                        // color: "white",
-                        borderColor: "white",
-                        // padding: "0 10px",
-                        '&::placeholder': {
-                          color: "white",
-                        },
-                      },
-
-                    }}
+                    helperText={<ErrorMessage name="email" />}
+                    error={props.errors.email && props.touched.email}
                   />
-                  <Field
+                  <StyledField
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
@@ -142,20 +134,11 @@ export default function LoginForm() {
                     fullWidth
                     helperText={<ErrorMessage name="password" />}
                     error={props.errors.password && props.touched.password}
-                    sx={{
-                      color: "white",
-                      // backGroundColor: "white",
-                      borderColor: "white",
-                    }}
                     InputProps={{
-                      // style: {
-                      //   color: "white",
-                      //   borderColor: "white",
-                      //   backGroundColor: "white",
-                      // },
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
+                            sx={{ color: "white" }}
                             onClick={handleClickShowPassword}
                             edge="end"
                           >
@@ -180,6 +163,10 @@ export default function LoginForm() {
                     variant="contained"
                     fullWidth
                     type="submit"
+                    sx={{
+                      fontSize: "25px",
+                      fontWeight: "bold",
+                    }}
                   >
                     Login
                   </Button>
