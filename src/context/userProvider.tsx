@@ -50,8 +50,6 @@ export default function UserProvider({ children }: UserProviderProps) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("useEffect", verifyCookie());
-
     if (verifyCookie()) {
       setMenuOptions(user?.role === "admin" ? adminMenu : customerMenu);
     }

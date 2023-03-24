@@ -10,6 +10,7 @@ import {
   Divider,
   Tooltip,
   IconButton,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -50,46 +51,123 @@ export default function CartCard({
   };
 
   return (
-    <Container>
-      <Divider color="white" />
-      <Card elevation={0} sx={{ display: "flex", backgroundColor: "inherit" }}>
-        <Container maxWidth="xl">
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardContent
+    <Card elevation={0} sx={{ display: "flex", backgroundColor: "#0000005c" }}>
+      <Container maxWidth="xl">
+        <Box sx={{ color: "white", display: "flex", flexDirection: "column" }}>
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              width: "100%",
+            }}
+          >
+            <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                width: "100%",
+                flex: "1",
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flex: "1",
-                }}
-              >
-                <Box sx={{ mr: 1 }}>
-                  <CardMedia
+              <Box sx={{ mr: 1 }}>
+                <CardMedia
+                  sx={{
+                    width: "120px",
+                    height: "120px",
+                    border: "2px solid black",
+                    borderRadius: "10px",
+                  }}
+                  image={img}
+                  title="Pizza Image"
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ mb: 1, color: "primary.main" }}
+                >
+                  {flavor}
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography component="div" variant="subtitle2">
+                    Tamanho
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        textAlign: "center",
+                        border: "1px solid",
+                        borderColor: "primary.main",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {size}
+                    </Typography>
+                  </Typography>
+
+                  <Typography component="div" variant="subtitle2" sx={{    display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"}}>
+                    Borda
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        border: "1px solid",
+                        borderColor: "primary.main",
+                        borderRadius: "5px",
+                        padding: "0 10px",
+                        
+                      }}
+                    >
+                      {border ? "Sim" : "Não"}
+                    </Typography>
+                  </Typography>
+
+                  <Typography component="div" variant="subtitle2">
+                    quantidade
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        textAlign: "center",
+                        border: "1px solid",
+                        borderColor: "primary.main",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {" "}
+                      {quantity} uni.{" "}
+                    </Typography>
+                  </Typography>
+                  <Typography
+                    component="div"
+                    variant="subtitle2"
                     sx={{
-                      width: "120px",
-                      height: "120px",
-                      border: "2px solid black",
+                      fontSize: "22px",
+                      fontWeight: "bold",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
                     }}
-                    image={img}
-                    title="Pizza Image"
-                  />
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                    {flavor}
-                  </Typography>
-                  <Typography variant="subtitle2">{quantity} uni.</Typography>
-                  <Typography variant="subtitle2">
-                    {border ? "Tem borda" : "Sem borda"}
-                  </Typography>
-                  <Typography variant="subtitle2">{size}</Typography>
-                  <Typography sx={{ mb: 1 }} variant="subtitle2">
-                    R$ {price}
+                  >
+                    Preço
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        textAlign: "center",
+                        border: "1px solid",
+                        borderColor: "primary.main",
+                        borderRadius: "5px",
+                        padding: "0 10px",
+                      }}
+                    >
+                      R$ {price}{" "}
+                    </Typography>
                   </Typography>
                 </Box>
                 <CardActions
@@ -98,34 +176,34 @@ export default function CartCard({
                     padding: { xs: "5px 0px" },
                   }}
                 >
-                  <Tooltip title="Editar">
-                    <IconButton
+                  <Box>
+                    <Button
                       aria-label="Editar pedido do carrinho"
                       onClick={() => setOpenModal(true)}
                     >
-                      <EditIcon fontSize="large" sx={{ color: "white" }} />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Excluir">
-                    <IconButton
+                      Editar
+                    </Button>
+                  </Box>
+                  <Box title="Excluir">
+                    <Button
                       aria-label="Excluir pedido do carrinho"
                       onClick={() => handleCartItemDeletion()}
                     >
-                      <DeleteIcon fontSize="large" sx={{ color: "white" }} />
-                    </IconButton>
-                  </Tooltip>
+                      Remover pizza
+                    </Button>
+                  </Box>
                 </CardActions>
               </Box>
-            </CardContent>
-          </Box>
-        </Container>
-      </Card>
+            </Box>
+          </CardContent>
+        </Box>
+      </Container>
       <CartItemModalForm
         open={openModal}
         handleClose={() => setOpenModal(false)}
         handleCartItemUpdate={handleCartItemUpdate}
         info={info}
       />
-    </Container>
+    </Card>
   );
 }

@@ -25,7 +25,7 @@ interface MyFormValues {
   password: string;
 }
 
-const StyledField = styled(Field)(({ theme }) => ({
+const StyledField = styled(TextField)(({ theme }) => ({
   ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
     borderColor: "white",
     color: "white",
@@ -56,7 +56,8 @@ export default function LoginForm() {
         status,
       } = await postRequest<Login>("login", { email, password });
       if (status !== 200) return alert(`${message}`);
-
+      console.log('HHH');
+      
       setCookie(undefined, "pizzeria.token", token, {
         path: "/",
         maxAge: 60 * 60 * 20, // 20 hours
@@ -111,11 +112,11 @@ export default function LoginForm() {
                   <Typography variant="h4" color="#FFCC33">
                     Login
                   </Typography>
-                  <StyledField
+                  <Field
                     name="email"
                     type="email"
                     label="Email"
-                    as={TextField}
+                    as={StyledField}
                     placeholder="Digite seu email"
                     variant="outlined"
                     margin="dense"
@@ -123,12 +124,12 @@ export default function LoginForm() {
                     helperText={<ErrorMessage name="email" />}
                     error={props.errors.email && props.touched.email}
                   />
-                  <StyledField
+                  <Field
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
                     label="Password"
-                    as={TextField}
+                    as={StyledField}
                     placeholder="Digite sua senha"
                     margin="dense"
                     fullWidth
