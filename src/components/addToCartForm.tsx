@@ -7,7 +7,6 @@ import {
   MenuItem,
   Box,
   Typography,
-  FormControl,
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/router";
@@ -66,7 +65,7 @@ export default function AddToCartForm({
                 "&:focus": {
                   outline: "none",
                 },
-                margin: "10px 0"
+                margin: "10px 0",
               }}
               as={Select}
             >
@@ -85,16 +84,13 @@ export default function AddToCartForm({
             <Typography>Com borda:</Typography>
             <Field
               name="border"
-              // label="Borda"
               size="medium"
               type="checkbox"
               sx={{
                 color: "rgba(243, 243, 38, 0.199)",
-                marginBottom: "10px"
+                marginBottom: "10px",
               }}
               as={Checkbox}
-              
-              // variant="outlined"
             />
           </Box>
 
@@ -103,7 +99,7 @@ export default function AddToCartForm({
               display: "flex",
               alignItems: "center",
               gap: "10px",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}
           >
             <Typography>Quantidade:</Typography>
@@ -117,14 +113,8 @@ export default function AddToCartForm({
                 color: "white",
                 borderColor: "white",
                 width: "80px",
-                // backgroundColor: "#3e3e3e",
                 boxShadow: "0 0 4px rgba(252, 252, 15, 0.445)",
                 borderRadius: "2px",
-
-                // "& input:valid + fieldset": {
-                //   borderColor: "white",
-                //   borderWidth: 2,
-                // },
               }}
               as={TextField}
               InputProps={{
@@ -152,7 +142,6 @@ export default function AddToCartForm({
             {hasDetailsButton && (
               <Button
                 variant="contained"
-                // sx={{backgroundColor: '#FFCC33', color: 'black'}}
                 onClick={() => router.push(`/pizzas/${pizzaId}`)}
               >
                 Detalhes

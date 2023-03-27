@@ -66,6 +66,8 @@ export default function Cart(props: CartProps) {
             sx={{
               color: "white",
               display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "center", md: "normal" },
               gap: "30px",
               margin: "30px 0",
               width: "100%",
@@ -74,9 +76,10 @@ export default function Cart(props: CartProps) {
             <Box
               sx={{
                 display: "flex",
-                flexGrow: "1",
+                // flexGrow: "1",
                 flexDirection: "column",
                 gap: "10px",
+                width: { xs: "100%", md: "70%" },
               }}
             >
               {cart?.cartPizzas.map((item) => (
@@ -98,7 +101,7 @@ export default function Cart(props: CartProps) {
                 height: "265px",
                 justifyContent: "space-evenly",
                 padding: "20px",
-                width: "400px",
+                width: { xs: "60%", md: "30%" },
               }}
             >
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>

@@ -51,39 +51,48 @@ export default function CartCard({
   };
 
   return (
-    <Card elevation={0} sx={{ display: "flex", backgroundColor: "#0000005c" }}>
+    <Card elevation={0} sx={{ display: "flex", backgroundColor: "#0000005c"}}>
       <Container maxWidth="xl">
-        <Box sx={{ color: "white", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ color: "white", display: "flex", flexDirection: "column"}}>
           <CardContent
             sx={{
               display: "flex",
               flexDirection: { xs: "column", sm: "row" },
               width: "100%",
+              
             }}
           >
             <Box
               sx={{
                 display: "flex",
-                flex: "1",
+                flex: 1,
+                flexDirection: {xs: "column", sm:"row"},
+                alignItems: {sm: "center"}
+                
+                
               }}
             >
               <Box sx={{ mr: 1 }}>
                 <CardMedia
                   sx={{
-                    width: "120px",
-                    height: "120px",
+                    width: {xs: 300, sm: 185},
+                    height: 185 ,
                     border: "2px solid black",
                     borderRadius: "10px",
+                    objectFit: "cover",
+                    margin: "auto"
                   }}
                   image={img}
                   title="Pizza Image"
                 />
               </Box>
-              <Box sx={{ flex: 1 }}>
+              <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <Typography
                   variant="h6"
                   component="div"
-                  sx={{ mb: 1, color: "primary.main" }}
+                  sx={{ mb: 1, color: "primary.main",
+                   margin: {xs:"10px auto", sm: "1px"},
+                  fontSize: "30px" }}
                 >
                   {flavor}
                 </Typography>
@@ -92,9 +101,10 @@ export default function CartCard({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    mb: "20px"
                   }}
                 >
-                  <Typography component="div" variant="subtitle2">
+                  <Typography component="div" variant="subtitle2" sx={{fontSize: {xs: "22px", sm:"24px"}}}>
                     Tamanho
                     <Typography
                       variant="subtitle2"
@@ -103,6 +113,7 @@ export default function CartCard({
                         border: "1px solid",
                         borderColor: "primary.main",
                         borderRadius: "5px",
+                        padding: "0 10px",
                       }}
                     >
                       {size}
@@ -112,7 +123,7 @@ export default function CartCard({
                   <Typography component="div" variant="subtitle2" sx={{    display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "center"}}>
+                      alignItems: "center", fontSize: {xs:"24px", sm: "22px"}}}>
                     Borda
                     <Typography
                       variant="subtitle2"
@@ -128,7 +139,7 @@ export default function CartCard({
                     </Typography>
                   </Typography>
 
-                  <Typography component="div" variant="subtitle2">
+                  <Typography component="div" variant="subtitle2" sx={{fontSize: {xs: "24px", sm:"22px",},}}>
                     quantidade
                     <Typography
                       variant="subtitle2"
@@ -137,6 +148,7 @@ export default function CartCard({
                         border: "1px solid",
                         borderColor: "primary.main",
                         borderRadius: "5px",
+                        padding: "0 10px",
                       }}
                     >
                       {" "}
@@ -147,12 +159,13 @@ export default function CartCard({
                     component="div"
                     variant="subtitle2"
                     sx={{
-                      fontSize: "22px",
+                      fontSize: {xs: "26px", sm:"24px",},
                       fontWeight: "bold",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "center"
+                      alignItems: "center",
+                      
                     }}
                   >
                     Preço
@@ -174,18 +187,29 @@ export default function CartCard({
                   sx={{
                     display: "flex",
                     padding: { xs: "5px 0px" },
+                    flexDirection: {xs: "column", sm: "row"},
+                    justifyContent: {xs: "center", sm: "inherit"}
+                    
                   }}
                 >
-                  <Box>
+                  <Box sx={{width: {xs:"100%", sm: "inherit"}, mb: {xs: 2, sm: "inherit"}}}>
                     <Button
+                    fullWidth
+                      sx={{padding: "2px 16px"}}
+                      variant="contained"
                       aria-label="Editar pedido do carrinho"
                       onClick={() => setOpenModal(true)}
                     >
                       Editar
                     </Button>
                   </Box>
-                  <Box title="Excluir">
+                  <Box title="Excluir" sx={{width: {xs:"100%", sm: "inherit"}}}>
                     <Button
+                      sx={{padding: "2px 16px",                       
+                        marginLeft: {xs:-0.5, sm: "inherit"}
+                      }}
+                      fullWidth
+                      variant="contained"
                       aria-label="Excluir pedido do carrinho"
                       onClick={() => handleCartItemDeletion()}
                     >
