@@ -43,7 +43,7 @@ export default function PizzaCard({
       >
         <CardMedia
           image={img}
-          title="Pizza Image"
+          title={`Pizza de ${flavor}`}
           sx={{
             paddingTop: "56.25%",
           }}

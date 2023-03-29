@@ -89,7 +89,7 @@ export default function PizzaCreateModalForm({
             backgroundColor: "#e5e5e5",
             transition: ".2s",
           }}
-          alt="Pizza image"
+          title={`Imagem da pizza`}
           src={""}
         />
         <Formik

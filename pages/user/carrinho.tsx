@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   Typography,
 } from "@mui/material";
 
@@ -17,6 +16,7 @@ import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
 import { Cart as CartType } from "../../src/Types";
 import getCartData from "../../src/services/getCartData";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 type CartProps = {
   cart: CartType | null;
@@ -76,7 +76,6 @@ export default function Cart(props: CartProps) {
             <Box
               sx={{
                 display: "flex",
-                // flexGrow: "1",
                 flexDirection: "column",
                 gap: "10px",
                 width: { xs: "100%", md: "70%" },
@@ -150,31 +149,57 @@ export default function Cart(props: CartProps) {
             <Card
               sx={{
                 alignItems: "center",
-                backgroundColor: "inherit",
-                border: "1px solid white",
+                backgroundColor: "#0000005c",
                 color: "white",
                 display: "flex",
                 flexDirection: "column",
-                height: "300px",
+                height: "350px",
                 justifyContent: "space-around",
-                width: "500px",
+                padding: "20px",
+                width: "550px",
               }}
             >
               <Typography
-                sx={{ display: "flex", fontSize: "2rem", fontWeight: "bold" }}
+                sx={{ fontSize: "2rem", fontWeight: "bold" }}
                 component="h1"
               >
                 Carrinho vazio
               </Typography>
-              <Button
+              <ShoppingCartOutlinedIcon
                 sx={{
+                  fontSize: "80px",
+                }}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
                   width: "70%",
                 }}
-                variant="contained"
-                onClick={() => router.push("/pizzas")}
               >
-                Continuar comprando
-              </Button>
+                <Button
+                  sx={{
+                    width: "100%",
+                    fontWeight: "bold",
+                  }}
+                  variant="contained"
+                  onClick={() => router.push("/user/meus_pedidos")}
+                >
+                  Meus Pedidos
+                </Button>
+                <Button
+                  sx={{
+                    width: "100%",
+                    fontWeight: "bold",
+                  }}
+                  variant="contained"
+                  onClick={() => router.push("/pizzas")}
+                >
+                  Continuar comprando
+                </Button>
+              </Box>
             </Card>
           </Box>
         )}

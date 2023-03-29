@@ -57,7 +57,7 @@ export default function AdminUserCard({
                   border: "2px solid black",
                 }}
                 image={img}
-                title="Pizza Image"
+                title={`${name} imagem`}
               />
               <Box sx={{ flex: 1 }}>
                 <Typography variant="h6" component="h6" sx={{ mb: 1 }}>

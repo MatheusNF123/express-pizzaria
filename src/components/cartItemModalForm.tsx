@@ -74,7 +74,7 @@ export default function CartItemModalForm({
             borderRadius: "10px",
             border: "2px solid #FFCC33",
           }}
-          alt="Pizza image"
+          alt={`Pizza de ${info.pizza.flavor}`}
           src={info.pizza.img}
         />
         <Typography

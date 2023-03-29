@@ -1,19 +1,8 @@
-import {
-  Modal,
-  Box,
-  Button,
-  Avatar,
-  TextField,
-} from "@mui/material";
+import { Modal, Box, Button, Avatar, TextField } from "@mui/material";
 
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-} from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import {
   validationPizza,
@@ -34,17 +23,17 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  '&::-webkit-scrollbar': {
-    width: '0.4em',
+  "&::-webkit-scrollbar": {
+    width: "0.4em",
   },
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: 'transparent',
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
   },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: '#00407c',
-    borderRadius: "10px"
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#00407c",
+    borderRadius: "10px",
   },
-}
+};
 
 type PizzaUpdateModalFormProps = {
   open: boolean;
@@ -59,7 +48,6 @@ export default function PizzaUpdateModalForm({
   handlePizzaUpdate,
   info: { flavor, type, price, ingredients, img },
 }: PizzaUpdateModalFormProps) {
-
   const handleIngredientsAddition = async (
     oddIngredients: string[],
     newValue: string,
@@ -101,7 +89,7 @@ export default function PizzaUpdateModalForm({
             backgroundColor: "#e5e5e5",
             transition: ".2s",
           }}
-          alt="Pizza image"
+          title={`Pizza de ${flavor}`}
           src={img}
         />
         <Formik
@@ -153,11 +141,11 @@ export default function PizzaUpdateModalForm({
                 as={TextField}
                 variant="outlined"
                 margin="dense"
-                fullWidth                
+                fullWidth
                 placeholder="Digite o preço"
                 error={props.errors.price}
               />
-                <ErrorMessage name="price" />
+              <ErrorMessage name="price" />
               <Field
                 name="ingredient"
                 label="Ingrediente"
@@ -172,14 +160,17 @@ export default function PizzaUpdateModalForm({
               />
               <ul>
                 {props.values.ingredients.map((ingredient, i) => (
-                  <li key={i} style={{
-                    "alignItems": "center",
-                    "display": "flex",
-                    "justifyContent": "space-between"
-                  }}>
+                  <li
+                    key={i}
+                    style={{
+                      alignItems: "center",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     {ingredient}
                     <Button
-                    type="submit"
+                      type="submit"
                       onClick={() =>
                         handleIngredientDeletion(
                           props.values.ingredients,
@@ -195,12 +186,14 @@ export default function PizzaUpdateModalForm({
               </ul>
               <Button
                 type="submit"
-                onClick={() => handleIngredientsAddition(
-                  props.values.ingredients,
-                  props.values.ingredient,
-                  props.setFieldValue,
-                  props.setFieldError
-                )}
+                onClick={() =>
+                  handleIngredientsAddition(
+                    props.values.ingredients,
+                    props.values.ingredient,
+                    props.setFieldValue,
+                    props.setFieldError
+                  )
+                }
               >
                 Adicionar
               </Button>
@@ -224,6 +217,6 @@ export default function PizzaUpdateModalForm({
           )}
         </Formik>
       </Box>
-    </Modal >
+    </Modal>
   );
 }

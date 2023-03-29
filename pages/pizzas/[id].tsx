@@ -52,7 +52,7 @@ export default function PizzaDetails({
           >
             <Image
               src={img}
-              alt="Pizza Image"
+              alt={`Pizza de ${flavor}`}              
               width={400}
               height={400}
               style={{ borderRadius: "10px", border: "1px solid #FFCC33" }}
