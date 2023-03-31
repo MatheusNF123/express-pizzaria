@@ -119,6 +119,7 @@ export default function Cart(props: CartProps) {
                 sx={{
                   fontSize: "20px",
                   fontWeight: "bold",
+                  
                 }}
               >
                 Continuar comprando
@@ -175,7 +176,7 @@ export default function Cart(props: CartProps) {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "5px",
+                  gap: "15px",
                   width: "70%",
                 }}
               >
