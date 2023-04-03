@@ -185,7 +185,7 @@ export default function PizzaUpdateModalForm({
                 ))}
               </ul>
               <Button
-                type="submit"
+                type="button"
                 onClick={() =>
                   handleIngredientsAddition(
                     props.values.ingredients,

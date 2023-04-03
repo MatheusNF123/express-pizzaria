@@ -1,13 +1,7 @@
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { useContext, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, Container, Typography } from "@mui/material";
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
@@ -119,7 +113,6 @@ export default function Cart(props: CartProps) {
                 sx={{
                   fontSize: "20px",
                   fontWeight: "bold",
-                  
                 }}
               >
                 Continuar comprando

@@ -1,9 +1,7 @@
-import { useState, useRef, useContext } from "react";
-import { useRouter } from "next/router";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useState, useContext } from "react";
 
 import { validationPerfil } from "../utils/schemas/formValidations";
-
-import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 
 import {
   Button,
@@ -12,9 +10,7 @@ import {
   IconButton,
   InputAdornment,
   Box,
-  Paper,
   Grid,
-  Container,
   styled,
 } from "@mui/material";
 
@@ -23,6 +19,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { userContext } from "../context/userProvider";
 import { putRequest } from "../services/api";
+import { User } from "../Types";
 
 const StyledField = styled(TextField)(({ theme }) => ({
   ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
@@ -52,12 +49,10 @@ const StyledField = styled(TextField)(({ theme }) => ({
       borderColor: "#9e9e9e4e",
     },
 
-  // class="MuiInputBase-input MuiOutlinedInput-input Mui-disabled mui-style-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
-  // "input:disabled": {
-  //   // width: "100px",
-  //   backgroundColor: "red",
-  //   color: "blue",
-  // },
+  ".MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "#9e9e9e4e",
+    color: "#9e9e9e4e",
+  },
 }));
 
 interface MyFormValues {
@@ -69,8 +64,12 @@ interface MyFormValues {
   phone?: string;
 }
 
-export default function PerfilForm() {
-  const { user, handleUser } = useContext(userContext);
+interface PerfilFormProps {
+  user: User;
+}
+
+export default function PerfilForm({ user }: PerfilFormProps) {
+  const { handleUser } = useContext(userContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -152,26 +151,34 @@ export default function PerfilForm() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="h4">Perfil</Typography>
+                  <Typography sx={{ fontWeight: "bold" }} variant="h4">
+                    Perfil
+                  </Typography>
                   <Button
                     onClick={() => setIsEditing(!isEditing)}
                     sx={{
-                      background:
-                        "linear-gradient(45deg, #795617 30%, #e4bb34 90%)",
+                      transition: ".2s",
+                      backgroundColor: "transparent",
                       border: 0,
                       borderRadius: 3,
-                      boxShadow: "0 3px 5px 2px rgba(43, 43, 43, 0.3)",
                       color: "white",
-                      height: 48,
-                      padding: "0 20px",
                       "&:hover": {
-                        background:
-                          "linear-gradient(45deg, #7f7da8 30%, #13151f 90%)",
-                        boxShadow: "0 3px 5px 2px rgba(90, 85, 174, .3)",
+                        backgroundColor: "transparent",
+                      },
+                      "&:active": {
+                        color: "#e4bb34",
                       },
                     }}
                   >
-                    <EditIcon fontSize="large" />
+                    <EditIcon
+                      fontSize="medium"
+                      sx={{
+                        transition: ".2s",
+                        "&:active": {
+                          color: "#e4bb34",
+                        },
+                      }}
+                    />
                   </Button>
                 </Box>
 
@@ -203,6 +210,7 @@ export default function PerfilForm() {
                         borderRadius: "50%",
                         objectFit: "cover",
                         mb: 5,
+                        border: "1px solid white",
                       }}
                       alt=""
                       src={
@@ -272,7 +280,7 @@ export default function PerfilForm() {
                       <Button
                         size="large"
                         sx={{
-                          marginTop: "8px",
+                          marginTop: { xs: "-10px", sm: "8px" },
                           height: "56px",
                           fontWeight: "bold",
                           "&:disabled": {

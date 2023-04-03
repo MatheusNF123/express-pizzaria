@@ -50,7 +50,12 @@ export default function AdminPizzaCard({
   return (
     <Grid item xs={12}>
       <Card
-        sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}
+        sx={{
+          backgroundColor: "#0000005c",
+          color: "white",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+        }}
       >
         <CardMedia
           component="img"
@@ -60,14 +65,16 @@ export default function AdminPizzaCard({
           }}
           image={img}
         />
-        <CardContent sx={{ width: "100%", padding: "12px" }}>
+        <CardContent sx={{ width: "100%", padding: "12px !IMPORTANT" }}>
           <Box sx={{ display: "flex" }}>
             <Typography
               sx={{
-                width: "100%",
-                display: "flex",
                 alignItems: "center",
-                fontSize: { xs: "18px", sm: "25px" },
+                color: "primary.main",
+                display: "flex",
+                fontSize: "35px",
+                fontWeight: "bold",
+                width: "100%",
               }}
               variant="h5"
               component="div"
@@ -86,7 +93,7 @@ export default function AdminPizzaCard({
                   aria-label="Editar Pizza"
                   onClick={() => setOpenUpdateModal(true)}
                 >
-                  <EditIcon fontSize="medium" />
+                  <EditIcon sx={{ color: "white" }} fontSize="medium" />
                 </IconButton>
               </Tooltip>
 
@@ -95,36 +102,75 @@ export default function AdminPizzaCard({
                   aria-label="Excluir Pizza"
                   onClick={() => handlePizzaDeletion()}
                 >
-                  <DeleteIcon fontSize="medium" />
+                  <DeleteIcon sx={{ color: "white" }} fontSize="medium" />
                 </IconButton>
               </Tooltip>
             </CardActions>
           </Box>
-          <Divider sx={{ marginBottom: "5px", background: "#e2e2e2" }} />
+          <Divider sx={{ marginBottom: "5px", background: "white" }} />
 
           <Box
-            sx={{ display: { xs: "column", sm: "flex" }, alignItems: "center" }}
+            sx={{
+              display: { xs: "column", sm: "flex" },
+              alignItems: "center",
+            }}
           >
             <Box sx={{ width: { xs: "100%", sm: "50%" }, marginRight: "5px" }}>
-              <Typography gutterBottom variant="body1" component="div">
-                Categoria: {type}
+              <Typography
+                gutterBottom
+                variant="body1"
+                component="div"
+                sx={{ fontSize: { xs: "25px", sm: "20px" } }}
+              >
+                <Typography
+                  sx={{
+                    color: "primary.main",
+                    fontWeight: "bold",
+                    fontSize: { xs: "25px", sm: "20px" },
+                  }}
+                  component="span"
+                >
+                  Categoria:{" "}
+                </Typography>
+                {type}
               </Typography>
               <Typography
-                sx={{ marginBottom: { xs: "4px", sm: "0px" } }}
+                sx={{
+                  marginBottom: { xs: "4px", sm: "0px" },
+                  fontSize: { xs: "25px", sm: "20px" },
+                }}
                 variant="body1"
                 component="div"
               >
-                Preço: {price}
+                <Typography
+                  component="span"
+                  sx={{
+                    color: "primary.main",
+                    fontWeight: "bold",
+                    fontSize: { xs: "25px", sm: "20px" },
+                  }}
+                >
+                  Preço:{" "}
+                </Typography>
+                {price}
               </Typography>
             </Box>
             <Box>
-              Ingredientes:
+              <Typography
+                sx={{
+                  color: "primary.main",
+                  fontWeight: "bold",
+                  fontSize: { xs: "25px", sm: "20px" },
+                }}
+              >
+                Ingredientes:
+              </Typography>
               <Box
                 sx={{
-                  flexWrap: { xs: "nowrap", sm: "wrap" },
                   display: "flex",
+                  flexWrap: { xs: "nowrap", sm: "wrap" },
                   flexDirection: "column",
-                  height: "100px",
+                  height: { xs: "100%", sm: "103px" },
                 }}
               >
                 {ingredients?.map((el, index) => (
@@ -133,8 +179,8 @@ export default function AdminPizzaCard({
                     component="li"
                     marginRight={1}
                     variant="body2"
-                    color="text.secondary"
                     key={index + el}
+                    sx={{ fontSize: { xs: "25px", sm: "20px" } }}
                   >
                     {el}
                   </Typography>

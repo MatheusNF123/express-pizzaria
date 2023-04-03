@@ -7,11 +7,11 @@ type GetUserReturn = {
   data: User | null;
 };
 
-export default async function getUser(): Promise<GetUserReturn> {
-  if (!verifyCookie()) return { data: null };
+export default async function getUser(ctx?: any): Promise<GetUserReturn> {
+  if (!verifyCookie(ctx)) return { data: null };
 
   try {
-    setApiHeaders();
+    setApiHeaders(ctx);
     const { data, status } = await getRequest<User>("user");
 
     if (status !== 200) return { data: null };
