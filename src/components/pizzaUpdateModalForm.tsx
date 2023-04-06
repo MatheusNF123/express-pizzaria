@@ -1,4 +1,16 @@
-import { Modal, Box, Button, Avatar, TextField } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Button,
+  Avatar,
+  TextField,
+  styled,
+  Typography,
+  Divider,
+  Select,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -9,6 +21,22 @@ import {
   validationFieldIngredient,
 } from "../utils/schemas/formValidations";
 import { Pizza } from "../Types";
+import { Margin } from "@mui/icons-material";
+
+const StyledField = styled(TextField)(({ theme }) => ({
+  ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    color: "white",
+  },
+  "label, input ": {
+    color: "white",
+  },
+
+  ".MuiOutlinedInput-root:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+    {
+      borderColor: "white",
+    },
+}));
 
 const style = {
   position: "absolute" as "absolute",
@@ -17,9 +45,9 @@ const style = {
   transform: "translate(-50%, -50%)",
   height: "80%",
   overflow: "auto",
-  width: 400,
+  width: { xs: 350, sm: 400 },
   color: "white",
-  bgcolor: "inherit",
+  bgcolor: "#000000d6",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -30,7 +58,7 @@ const style = {
     backgroundColor: "transparent",
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "#00407c",
+    backgroundColor: "#FFCC33",
     borderRadius: "10px",
   },
 };
@@ -84,10 +112,13 @@ export default function PizzaUpdateModalForm({
       <Box sx={style}>
         <Avatar
           sx={{
-            width: "100px",
-            height: "100px",
+            width: 140,
+            height: 140,
             backgroundColor: "#e5e5e5",
             transition: ".2s",
+            margin: "auto",
+            mb: 2,
+            border: "2px solid #FFCC33",
           }}
           title={`Pizza de ${flavor}`}
           src={img}
@@ -114,7 +145,7 @@ export default function PizzaUpdateModalForm({
                 name="flavor"
                 label="Nome"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -125,20 +156,84 @@ export default function PizzaUpdateModalForm({
               <Field
                 name="type"
                 label="Categoria"
-                type="text"
-                as={TextField}
+                type="select"
                 variant="outlined"
                 margin="dense"
                 fullWidth
-                placeholder="Digite a categoria"
+                // placeholder="Digite a categoria"
                 helperText={<ErrorMessage name="type" />}
                 error={props.errors.type}
-              />
+                as={Select}
+                sx={{
+                  // class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary
+                  // MuiInputBase-fullWidth  mui-style-gt946p-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
+
+                  // class="MuiSelect-select MuiSelect-outlined MuiInputBase-input
+                  // MuiOutlinedInput-input mui-style-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
+                  ".MuiSelect-outlined": {
+                    color: "white",
+                  },
+
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderColor: "white",
+                    color: "white",
+                  },
+
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "white",
+                    color: "white",
+                  },
+
+                  ".MuiSvgIcon-root": {
+                    color: "white",
+                  },
+                  // ________________
+
+                  "div[aria-expanded='true'] ~ .MuiOutlinedInput-notchedOutline span": {
+                    color: "white !important",
+                    borderColor: "red",
+                    // bgcolor: "red",
+                  },
+
+                  // "&:focus legend": {
+                  //   color: "red !important",
+                  // },
+
+                  // "&:label": {
+                  //   color: "red",
+                  // },
+
+                  // ".Mui-focused label": {
+                  //   color: "red",
+                  // },
+
+                  // "&:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+                  //   {
+                  //     borderColor: "white",
+                  //   },
+
+                  // color: "white",
+                  // ".MuiOutlinedInput-notchedOutline": {
+                  //   borderWidth: "1px",
+                  //   borderColor: "white",
+                  // },
+
+                  // "&:hover .MuiOutlinedInput-notchedOutline": {
+                  //   borderWidth: "1px",
+                  //   borderColor: "#FFCC33",
+                  // },
+
+                 
+                }}
+              >
+                <MenuItem value="Salgado">Salgado</MenuItem>
+                <MenuItem value="Doce">Doce</MenuItem>
+              </Field>
               <Field
                 name="price"
                 label="Preço"
                 type="number"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -150,7 +245,7 @@ export default function PizzaUpdateModalForm({
                 name="ingredient"
                 label="Ingrediente"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -158,32 +253,45 @@ export default function PizzaUpdateModalForm({
                 helperText={<ErrorMessage name="ingredient" />}
                 error={props.errors.ingredient}
               />
-              <ul>
-                {props.values.ingredients.map((ingredient, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      alignItems: "center",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {ingredient}
-                    <Button
-                      type="submit"
-                      onClick={() =>
-                        handleIngredientDeletion(
-                          props.values.ingredients,
-                          i,
-                          props.setFieldValue
-                        )
-                      }
+              <Box sx={{ border: "1px solid white", p: 2 }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "22px",
+                    textAlign: "center",
+                    mb: "0.9px",
+                  }}
+                >
+                  Ingredients
+                </Typography>
+
+                <ul style={{ padding: "5px 10px 10px 10px", margin: "0px" }}>
+                  {props.values.ingredients.map((ingredient, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      <CloseIcon />
-                    </Button>
-                  </li>
-                ))}
-              </ul>
+                      {ingredient}
+                      <Button
+                        type="submit"
+                        onClick={() =>
+                          handleIngredientDeletion(
+                            props.values.ingredients,
+                            i,
+                            props.setFieldValue
+                          )
+                        }
+                      >
+                        <CloseIcon />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
               <Button
                 type="button"
                 onClick={() =>
@@ -201,7 +309,7 @@ export default function PizzaUpdateModalForm({
                 name="img"
                 label="URL da imagem"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
