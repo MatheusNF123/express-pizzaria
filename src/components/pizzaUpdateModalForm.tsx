@@ -6,10 +6,10 @@ import {
   TextField,
   styled,
   Typography,
-  Divider,
-  Select,
-  MenuItem,
-  InputLabel,
+  InputAdornment,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,7 +21,6 @@ import {
   validationFieldIngredient,
 } from "../utils/schemas/formValidations";
 import { Pizza } from "../Types";
-import { Margin } from "@mui/icons-material";
 
 const StyledField = styled(TextField)(({ theme }) => ({
   ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
@@ -36,6 +35,13 @@ const StyledField = styled(TextField)(({ theme }) => ({
     {
       borderColor: "white",
     },
+}));
+
+const StyledRadio = styled(Radio)(({ theme }) => ({
+  color: "white",
+  "&.Mui-checked": {
+    color: theme.palette.primary.main,
+  },
 }));
 
 const style = {
@@ -110,6 +116,12 @@ export default function PizzaUpdateModalForm({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+        <Button
+          onClick={handleClose}
+          sx={{ position: "absolute", top: 10, right: 5, color: "white" }}
+        >
+          <CloseIcon />
+        </Button>
         <Avatar
           sx={{
             width: 140,
@@ -135,7 +147,7 @@ export default function PizzaUpdateModalForm({
           }}
           onSubmit={async ({ ingredient, ...fields }) => {
             console.log(fields);
-            await handlePizzaUpdate(fields);
+            await handlePizzaUpdate({ ...fields, price: +fields.price });
           }}
           validationSchema={validationPizza}
         >
@@ -153,82 +165,44 @@ export default function PizzaUpdateModalForm({
                 helperText={<ErrorMessage name="flavor" />}
                 error={props.errors.flavor}
               />
-              <Field
-                name="type"
-                label="Categoria"
-                type="select"
-                variant="outlined"
-                margin="dense"
-                fullWidth
-                // placeholder="Digite a categoria"
-                helperText={<ErrorMessage name="type" />}
-                error={props.errors.type}
-                as={Select}
-                sx={{
-                  // class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary
-                  // MuiInputBase-fullWidth  mui-style-gt946p-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
 
-                  // class="MuiSelect-select MuiSelect-outlined MuiInputBase-input
-                  // MuiOutlinedInput-input mui-style-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input"
-                  ".MuiSelect-outlined": {
-                    color: "white",
-                  },
+              <Box sx={{ border: "1px solid white", borderRadius: "4px" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "22px",
+                    textAlign: "center",
+                    mb: "0.9px",
+                  }}
+                >
+                  Categoria
+                </Typography>
 
-                  ".MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
-                    color: "white",
-                  },
+                <RadioGroup
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                  aria-label="Categoria"
+                  value={props.values.type}
+                  onChange={({ target }) => {
+                    props.setFieldValue("type", target.value);
+                  }}
+                >
+                  <FormControlLabel
+                    value="Salgado"
+                    control={<StyledRadio />}
+                    label="Salgado"
+                  />
+                  <FormControlLabel
+                    value="Doce"
+                    control={<StyledRadio />}
+                    label="Doce"
+                  />
+                </RadioGroup>
+              </Box>
 
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "white",
-                    color: "white",
-                  },
-
-                  ".MuiSvgIcon-root": {
-                    color: "white",
-                  },
-                  // ________________
-
-                  "div[aria-expanded='true'] ~ .MuiOutlinedInput-notchedOutline span": {
-                    color: "white !important",
-                    borderColor: "red",
-                    // bgcolor: "red",
-                  },
-
-                  // "&:focus legend": {
-                  //   color: "red !important",
-                  // },
-
-                  // "&:label": {
-                  //   color: "red",
-                  // },
-
-                  // ".Mui-focused label": {
-                  //   color: "red",
-                  // },
-
-                  // "&:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
-                  //   {
-                  //     borderColor: "white",
-                  //   },
-
-                  // color: "white",
-                  // ".MuiOutlinedInput-notchedOutline": {
-                  //   borderWidth: "1px",
-                  //   borderColor: "white",
-                  // },
-
-                  // "&:hover .MuiOutlinedInput-notchedOutline": {
-                  //   borderWidth: "1px",
-                  //   borderColor: "#FFCC33",
-                  // },
-
-                 
-                }}
-              >
-                <MenuItem value="Salgado">Salgado</MenuItem>
-                <MenuItem value="Doce">Doce</MenuItem>
-              </Field>
               <Field
                 name="price"
                 label="Preço"
@@ -241,18 +215,7 @@ export default function PizzaUpdateModalForm({
                 error={props.errors.price}
               />
               <ErrorMessage name="price" />
-              <Field
-                name="ingredient"
-                label="Ingrediente"
-                type="text"
-                as={StyledField}
-                variant="outlined"
-                margin="dense"
-                fullWidth
-                placeholder="Digite o ingrediente"
-                helperText={<ErrorMessage name="ingredient" />}
-                error={props.errors.ingredient}
-              />
+
               <Box sx={{ border: "1px solid white", p: 2 }}>
                 <Typography
                   sx={{
@@ -262,7 +225,7 @@ export default function PizzaUpdateModalForm({
                     mb: "0.9px",
                   }}
                 >
-                  Ingredients
+                  Ingredientes
                 </Typography>
 
                 <ul style={{ padding: "5px 10px 10px 10px", margin: "0px" }}>
@@ -277,7 +240,7 @@ export default function PizzaUpdateModalForm({
                     >
                       {ingredient}
                       <Button
-                        type="submit"
+                        type="button"
                         onClick={() =>
                           handleIngredientDeletion(
                             props.values.ingredients,
@@ -292,19 +255,37 @@ export default function PizzaUpdateModalForm({
                   ))}
                 </ul>
               </Box>
-              <Button
-                type="button"
-                onClick={() =>
-                  handleIngredientsAddition(
-                    props.values.ingredients,
-                    props.values.ingredient,
-                    props.setFieldValue,
-                    props.setFieldError
-                  )
-                }
-              >
-                Adicionar
-              </Button>
+              <Field
+                name="ingredient"
+                label="Ingrediente"
+                type="text"
+                as={StyledField}
+                variant="outlined"
+                margin="dense"
+                fullWidth
+                placeholder="Digite o ingrediente"
+                helperText={<ErrorMessage name="ingredient" />}
+                error={props.errors.ingredient}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          handleIngredientsAddition(
+                            props.values.ingredients,
+                            props.values.ingredient,
+                            props.setFieldValue,
+                            props.setFieldError
+                          )
+                        }
+                      >
+                        Adicionar
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
+              />
               <Field
                 name="img"
                 label="URL da imagem"
