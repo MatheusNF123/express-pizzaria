@@ -22,8 +22,9 @@ export default function Home() {
       </Head>
       <Box
         sx={{
-          background:
-            "radial-gradient(circle, rgba(48,48,48,1) 0%, rgba(0,0,0,1) 100%)",
+          backgroundImage: "url(/bgBanner.svg)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
           color: "white",
           display: "flex",
           flexDirection: "column",
@@ -39,32 +40,59 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             height: "100%",
-            width: "85%",
+            width: { xs: "100%", md: "85%" },
             justifyContent: "center",
           }}
         >
+          <Box
+            sx={{
+              display: { xs: "block", sm: "none" },
+              position: "absolute",
+              right: { xs: "auto" },
+              top: { xs: -420 },
+              width: { xs: "800px" },
+              height: { xs: "600px" },
+            }}
+          >
+            <Image
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+              alt="Pizza Logo"
+              src={pizza}
+            />
+          </Box>
+
           <Typography
             variant="h1"
             sx={{
+              textAlign: "center",
               color: "primary.main",
               fontFamily: bungeeInline.style.fontFamily,
-              fontSize: "6rem",
-              mb: 5
+              fontSize: { xs: "4rem", md: "6rem" },
+              mb: 5,
             }}
           >
             Express pizzaria
           </Typography>
-          <Typography sx={{ margin: "60px 0 40px 0" }} variant="h3">
+          <Typography
+            sx={{
+              margin: "60px 0 40px 0",
+              fontSize: { xs: "2.5rem", lg: "4rem" },
+            }}
+            variant="h3"
+          >
             Venha conhecer nossa pizzaria
           </Typography>
           <Button
             onClick={() => router.push("/pizzas")}
             variant="contained"
             sx={{
-              // width: "200px",
               fontWeight: "bold",
-              padding: "15px 100px",
-              fontSize: "25px"
+              padding: { xs: "10px 80px", md: "15px 100px" },
+              fontSize: "25px",
+              zIndex: 2,
             }}
           >
             Ir para o site
@@ -121,18 +149,25 @@ export default function Home() {
             </Typography>
           </Box>
         </Box>
-        <Image
-          style={{
+        <Box
+          sx={{
+            display: { xs: "none", sm: "block" },
             position: "absolute",
-            right: -650,
-            bottom: -700,
+            right: { sm: -350, md: -600, lg: -650 },
+            bottom: { sm: -250, md: -600, lg: -650 },
+            width: { sm: "700px", md: "1200px", lg: "1400px" },
+            height: { sm: "500px", md: "1000px", lg: "1200px" },
           }}
-          alt="Pizza Logo"
-          src={pizza}
-          width="1400"
-          height="1200"
-        />
-
+        >
+          <Image
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            alt="Pizza Logo"
+            src={pizza}
+          />
+        </Box>
       </Box>
     </>
   );
