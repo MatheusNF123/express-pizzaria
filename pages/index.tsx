@@ -5,13 +5,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import pizza from "../public/pizza.png";
-
-export const bungeeInline = Bungee_Inline({
-  weight: ["400"],
-  subsets: ["latin"],
-  display: "swap",
-  fallback: ["Helvetica", "Arial", "sans-serif"],
-});
+import { bungeeInline } from "../styles/theme";
+import EastIcon from '@mui/icons-material/East';
 
 export default function Home() {
   const router = useRouter();
@@ -90,11 +85,15 @@ export default function Home() {
             variant="contained"
             sx={{
               fontWeight: "bold",
-              padding: { xs: "10px 80px", md: "15px 100px" },
+              padding: "10px 0 ",
+              width: "250px",  
               fontSize: "25px",
               zIndex: 2,
+              display: "flex",
+              borderRadius: "30px"
             }}
           >
+            <EastIcon sx={{backgroundColor: "#0D0D0D", color: "primary.main", borderRadius: "30px", fontSize: "40px", p: 1, mr: 2}} />
             Ir para o site
           </Button>
         </Box>
@@ -156,7 +155,7 @@ export default function Home() {
             right: { sm: -350, md: -600, lg: -650 },
             bottom: { sm: -250, md: -600, lg: -650 },
             width: { sm: "700px", md: "1200px", lg: "1400px" },
-            height: { sm: "500px", md: "1000px", lg: "1200px" },
+            height: { sm: "500px", md: "1000px", lg: "1100px" },
           }}
         >
           <Image

@@ -1,25 +1,19 @@
-import { Alumni_Sans } from "@next/font/google";
+import { Alumni_Sans, Bungee_Inline } from "@next/font/google";
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
-// export const roboto = Roboto({
-//   weight: ["300", "400", "500", "700"],
-//   subsets: ["latin"],
-//   display: "swap",
-//   fallback: ["Helvetica", "Arial", "sans-serif"],
-// });
-
-export const alumniSans = Alumni_Sans({
-  weight: ["300", "400", "500", "700"],
+export const bungeeInline = Bungee_Inline({
+  weight: ["400"],
   subsets: ["latin"],
   display: "swap",
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
-// Create a theme instance.
-// #FF9B42 - laranja
-// #C75000 - laranja 
-// #FFCC33 - amarelo 
+export const alumniSans = Alumni_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  fallback: ["Helvetica", "Arial", "sans-serif"],
+});
 
 const theme = createTheme({
   palette: {
@@ -40,7 +34,6 @@ const theme = createTheme({
     fontSize: 18,
     fontFamily: alumniSans.style.fontFamily,
   },
-  
 });
 
 export default theme;
