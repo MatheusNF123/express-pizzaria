@@ -8,8 +8,6 @@ import {
   Checkbox,
   Select,
   MenuItem,
-  InputLabel,
-  styled,
 } from "@mui/material";
 
 import {
@@ -20,6 +18,7 @@ import {
   ErrorMessage,
   useFormikContext,
 } from "formik";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { validationEditCartItem } from "../utils/schemas/formValidations";
 import { CartPizzas, PurchaseInfo } from "../Types";
@@ -29,11 +28,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: { xs: 350, sm: 400 },
   color: "white",
-  bgcolor: "inherit",
-  border: "2px solid #000",
-  boxShadow: 24,
+  bgcolor: "#000000d6",
+  borderRadius: "10px",
+  boxShadow: "0px 0px 10px 0px #a8a8a86e",
   p: 4,
 };
 
@@ -58,17 +57,36 @@ export default function CartItemModalForm({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+        <Button
+          onClick={handleClose}
+          sx={{ position: "absolute", top: 10, right: 5, color: "white" }}
+        >
+          <CloseIcon />
+        </Button>
         <Avatar
           sx={{
-            width: "100px",
-            height: "100px",
+            width: "150px",
+            height: "150px",
             backgroundColor: "#e5e5e5",
             transition: ".2s",
+            margin: "auto",
+            mb: 2,
+            borderRadius: "10px",
+            border: "2px solid #FFCC33",
           }}
-          alt="Pizza image"
+          alt={`Pizza de ${info.pizza.flavor}`}
           src={info.pizza.img}
         />
-        <Typography>Nome: {info.pizza.flavor}</Typography>
+        <Typography
+          sx={{
+            m: 3,
+            fontSize: "26px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          {info.pizza.flavor}
+        </Typography>
         <Formik
           enableReinitialize
           initialValues={{
@@ -83,63 +101,110 @@ export default function CartItemModalForm({
           validationSchema={validationEditCartItem}
         >
           {(props) => (
-            <Form>
-              <Field
-                labelId="select-size-label"
-                name="size"
-                label="Tamanho"
-                as={Select}
-                sx={{
-                  color: "white",
-                }}
-               
-              >
-                <MenuItem value="médio">Médio</MenuItem>
-                <MenuItem value="grande">Grande</MenuItem>
-                <MenuItem value="pequeno">Pequeno</MenuItem>
-              </Field>
+            <Form style={{ width: "100%" }}>
+              <Box sx={{ width: "200px", margin: "auto" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography>Tamanho:</Typography>
+                  <Field
+                    labelId="select-size-label"
+                    name="size"
+                    variant="outlined"
+                    sx={{
+                      color: "white",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        borderWidth: "1px",
+                        borderColor: "#FFCC33",
+                      },
 
-              <Field
-                name="border"
-                label="Borda"
-                size="large"
-                type="checkbox"
-                sx={{
-                  color: "white",
-                }}
-                as={Checkbox}
-                variant="outlined"
-                margin="dense"
-              />
-              <Field
-                name="quantity"
-                label="Quantidade"
-                type="number"
-                // variant="outlined"
-                margin="dense"
-                fullWidth
-                helperText={<ErrorMessage name="quantity" />}
-                error={props.errors.quantity}
-                sx={{
-                  color: "white",
-                  borderColor: "white",
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderWidth: "1px",
+                        borderColor: "#FFCC33",
+                      },
+                    }}
+                    as={Select}
+                  >
+                    <MenuItem value="médio">Médio</MenuItem>
+                    <MenuItem value="grande">Grande</MenuItem>
+                    <MenuItem value="pequeno">Pequeno</MenuItem>
+                  </Field>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography>Com borda:</Typography>
+                  <Field
+                    name="border"
+                    size="medium"
+                    type="checkbox"
+                    sx={{
+                      color: "#FFCC33",
+                      marginBottom: "10px",
+                    }}
+                    as={Checkbox}
+                  />
+                </Box>
 
-                  "& input:valid + fieldset": {
-                    borderColor: "white",
-                    borderWidth: 2,
-                  },
-                }}
-                as={TextField}
-                InputProps={{
-                  style: { color: "white", borderColor: "white" },
-                  inputProps: {
-                    min: 1,
-                  },
-                }}
-              />
-              <Button color="primary" variant="contained" type="submit">
-                Editar
-              </Button>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Typography>Quantidade:</Typography>
+                  <Field
+                    name="quantity"
+                    variant="outlined"
+                    type="number"
+                    helperText={<ErrorMessage name="quantity" />}
+                    error={props.errors.quantity}
+                    sx={{
+                      mb: 2,
+                      ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                        {
+                          borderColor: "#FFCC33",
+                          color: "white",
+                        },
+                      "label, input ": {
+                        color: "white",
+                      },
+                      ".MuiOutlinedInput-root:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+                        {
+                          borderColor: "#FFCC33",
+                        },
+                      width: "80px",
+                    }}
+                    as={TextField}
+                    InputProps={{
+                      inputProps: {
+                        min: 1,
+                      },
+                      disableUnderline: true,
+                    }}
+                  />
+                </Box>
+
+                <Button
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  type="submit"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Editar
+                </Button>
+              </Box>
             </Form>
           )}
         </Formik>

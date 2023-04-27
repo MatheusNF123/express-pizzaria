@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { useContext, useState } from "react";
-import { Box, Button, Card, Container, Divider, Typography } from "@mui/material";
+import { Box, Button, Card, Container, Typography } from "@mui/material";
 
 import CartCard from "../../src/components/CartCard";
 import Layout from "../../src/components/layout";
@@ -10,6 +10,7 @@ import setApiHeaders from "../../src/services/setApiHeaders";
 import { userContext } from "../../src/context/userProvider";
 import { Cart as CartType } from "../../src/Types";
 import getCartData from "../../src/services/getCartData";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 type CartProps = {
   cart: CartType | null;
@@ -18,7 +19,7 @@ type CartProps = {
 export default function Cart(props: CartProps) {
   const router = useRouter();
   const [cart, setCart] = useState<CartType | null>(props.cart);
-  const { handleCartQuantity } = useContext(userContext);
+  const { handleCartQuantity, cartQuantity } = useContext(userContext);
 
   const handleCartReload = async () => {
     const { quantity, data } = await getCartData();
@@ -27,18 +28,21 @@ export default function Cart(props: CartProps) {
   };
 
   const handlePurchaseFinished = async () => {
-    const pizzas = cart?.cartPizzas.map(({ pizza, border, quantity, size }) => (
-      { pizzaId: pizza.id, border, quantity, size }
-    ));
+    const pizzas = cart?.cartPizzas.map(
+      ({ pizza, border, quantity, size }) => ({
+        pizzaId: pizza.id,
+        border,
+        quantity,
+        size,
+      })
+    );
     setApiHeaders();
-    await postRequest(
-      "/order",
-      {
-        cartId: cart?.id,
-        pizzas,
-      });
+    await postRequest("/order", {
+      cartId: cart?.id,
+      pizzas,
+    });
 
-    await handleCartReload()
+    await handleCartReload();
   };
 
   return (
@@ -56,36 +60,75 @@ export default function Cart(props: CartProps) {
             sx={{
               color: "white",
               display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              padding: "20px",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "center", md: "normal" },
+              gap: "30px",
+              margin: "30px 0",
               width: "100%",
             }}
           >
-            <Typography
-              sx={{ display: "flex", m: 1, fontWeight: "bold" }}
-              component="span"
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                width: { xs: "100%", md: "70%" },
+              }}
             >
-              <Typography>Total R$: </Typography> {cart?.totalPrice}
-            </Typography>
-            {cart?.cartPizzas.map((item) => (
-              <CartCard
-                info={item}
-                cartId={props.cart?.id}
-                handleCartReload={handleCartReload}
-                key={item.id}
-              />
-            ))}
-            <Button
-              // sx={{
-              //   width: "70%",
-              // }}
-              variant="contained"
-              onClick={handlePurchaseFinished}
+              {cart?.cartPizzas.map((item) => (
+                <CartCard
+                  info={item}
+                  cartId={props.cart?.id}
+                  handleCartReload={handleCartReload}
+                  key={item.id}
+                />
+              ))}
+            </Box>
+            <Box
+              sx={{
+                backgroundColor: "#0000005c",
+                borderRadius: "5px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                height: "265px",
+                justifyContent: "space-evenly",
+                padding: "20px",
+                width: { xs: "60%", md: "30%" },
+              }}
             >
-              Finalizar compra
-            </Button>
-            {/* <Divider color="white" /> */}
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography sx={{ fontWeight: "bold" }}>Total:</Typography>
+                <Typography>R$ {cart?.totalPrice}</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography sx={{ fontWeight: "bold" }}>Produtos: </Typography>
+                <Typography>{cartQuantity}</Typography>
+              </Box>
+
+              <Button
+                variant="contained"
+                onClick={() => router.push("/pizzas")}
+                sx={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Continuar comprando
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={handlePurchaseFinished}
+                sx={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Finalizar compra
+              </Button>
+            </Box>
           </Box>
         ) : (
           <Box
@@ -100,31 +143,57 @@ export default function Cart(props: CartProps) {
             <Card
               sx={{
                 alignItems: "center",
-                backgroundColor: "inherit",
-                border: "1px solid white",
+                backgroundColor: "#0000005c",
                 color: "white",
                 display: "flex",
                 flexDirection: "column",
-                height: "300px",
+                height: "350px",
                 justifyContent: "space-around",
-                width: "500px",
+                padding: "20px",
+                width: "550px",
               }}
             >
               <Typography
-                sx={{ display: "flex", fontSize: "2rem", fontWeight: "bold" }}
+                sx={{ fontSize: "2rem", fontWeight: "bold" }}
                 component="h1"
               >
                 Carrinho vazio
               </Typography>
-              <Button
+              <ShoppingCartOutlinedIcon
                 sx={{
+                  fontSize: "80px",
+                }}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
                   width: "70%",
                 }}
-                variant="contained"
-                onClick={() => router.push("/pizzas")}
               >
-                Continuar comprando
-              </Button>
+                <Button
+                  sx={{
+                    width: "100%",
+                    fontWeight: "bold",
+                  }}
+                  variant="contained"
+                  onClick={() => router.push("/user/meus_pedidos")}
+                >
+                  Meus Pedidos
+                </Button>
+                <Button
+                  sx={{
+                    width: "100%",
+                    fontWeight: "bold",
+                  }}
+                  variant="contained"
+                  onClick={() => router.push("/pizzas")}
+                >
+                  Continuar comprando
+                </Button>
+              </Box>
             </Card>
           </Box>
         )}
@@ -134,10 +203,10 @@ export default function Cart(props: CartProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  try {    
+  try {
     setApiHeaders(ctx);
     const { data, status } = await getRequest<CartType>("/cart");
-    
+
     if (status === 401)
       return {
         redirect: {

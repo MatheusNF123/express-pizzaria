@@ -4,22 +4,45 @@ import {
   Button,
   Avatar,
   TextField,
+  styled,
+  Typography,
+  InputAdornment,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-} from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import {
   validationPizza,
   validationFieldIngredient,
 } from "../utils/schemas/formValidations";
 import { Pizza } from "../Types";
+
+const StyledField = styled(TextField)(({ theme }) => ({
+  ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    color: "white",
+  },
+  "label, input ": {
+    color: "white",
+  },
+
+  ".MuiOutlinedInput-root:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+    {
+      borderColor: "white",
+    },
+}));
+
+const StyledRadio = styled(Radio)(({ theme }) => ({
+  color: "white",
+  "&.Mui-checked": {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,23 +51,23 @@ const style = {
   transform: "translate(-50%, -50%)",
   height: "80%",
   overflow: "auto",
-  width: 400,
+  width: { xs: 350, sm: 400 },
   color: "white",
-  bgcolor: "inherit",
+  bgcolor: "#000000d6",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  '&::-webkit-scrollbar': {
-    width: '0.4em',
+  "&::-webkit-scrollbar": {
+    width: "0.4em",
   },
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: 'transparent',
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
   },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: '#00407c',
-    borderRadius: "10px"
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#FFCC33",
+    borderRadius: "10px",
   },
-}
+};
 
 type PizzaUpdateModalFormProps = {
   open: boolean;
@@ -59,7 +82,6 @@ export default function PizzaUpdateModalForm({
   handlePizzaUpdate,
   info: { flavor, type, price, ingredients, img },
 }: PizzaUpdateModalFormProps) {
-
   const handleIngredientsAddition = async (
     oddIngredients: string[],
     newValue: string,
@@ -94,14 +116,23 @@ export default function PizzaUpdateModalForm({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+        <Button
+          onClick={handleClose}
+          sx={{ position: "absolute", top: 10, right: 5, color: "white" }}
+        >
+          <CloseIcon />
+        </Button>
         <Avatar
           sx={{
-            width: "100px",
-            height: "100px",
+            width: 140,
+            height: 140,
             backgroundColor: "#e5e5e5",
             transition: ".2s",
+            margin: "auto",
+            mb: 2,
+            border: "2px solid #FFCC33",
           }}
-          alt="Pizza image"
+          title={`Pizza de ${flavor}`}
           src={img}
         />
         <Formik
@@ -116,7 +147,7 @@ export default function PizzaUpdateModalForm({
           }}
           onSubmit={async ({ ingredient, ...fields }) => {
             console.log(fields);
-            await handlePizzaUpdate(fields);
+            await handlePizzaUpdate({ ...fields, price: +fields.price });
           }}
           validationSchema={validationPizza}
         >
@@ -126,7 +157,7 @@ export default function PizzaUpdateModalForm({
                 name="flavor"
                 label="Nome"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -134,81 +165,132 @@ export default function PizzaUpdateModalForm({
                 helperText={<ErrorMessage name="flavor" />}
                 error={props.errors.flavor}
               />
-              <Field
-                name="type"
-                label="Categoria"
-                type="text"
-                as={TextField}
-                variant="outlined"
-                margin="dense"
-                fullWidth
-                placeholder="Digite a categoria"
-                helperText={<ErrorMessage name="type" />}
-                error={props.errors.type}
-              />
+
+              <Box sx={{ border: "1px solid white", borderRadius: "4px" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "22px",
+                    textAlign: "center",
+                    mb: "0.9px",
+                  }}
+                >
+                  Categoria
+                </Typography>
+
+                <RadioGroup
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                  aria-label="Categoria"
+                  value={props.values.type}
+                  onChange={({ target }) => {
+                    props.setFieldValue("type", target.value);
+                  }}
+                >
+                  <FormControlLabel
+                    value="Salgado"
+                    control={<StyledRadio />}
+                    label="Salgado"
+                  />
+                  <FormControlLabel
+                    value="Doce"
+                    control={<StyledRadio />}
+                    label="Doce"
+                  />
+                </RadioGroup>
+              </Box>
+
               <Field
                 name="price"
                 label="Preço"
                 type="number"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
-                fullWidth                
+                fullWidth
                 placeholder="Digite o preço"
                 error={props.errors.price}
               />
-                <ErrorMessage name="price" />
+              <ErrorMessage name="price" />
+
+              <Box sx={{ border: "1px solid white", p: 2 }}>
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "22px",
+                    textAlign: "center",
+                    mb: "0.9px",
+                  }}
+                >
+                  Ingredientes
+                </Typography>
+
+                <ul style={{ padding: "5px 10px 10px 10px", margin: "0px" }}>
+                  {props.values.ingredients.map((ingredient, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {ingredient}
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          handleIngredientDeletion(
+                            props.values.ingredients,
+                            i,
+                            props.setFieldValue
+                          )
+                        }
+                      >
+                        <CloseIcon />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
               <Field
                 name="ingredient"
                 label="Ingrediente"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
                 placeholder="Digite o ingrediente"
                 helperText={<ErrorMessage name="ingredient" />}
                 error={props.errors.ingredient}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          handleIngredientsAddition(
+                            props.values.ingredients,
+                            props.values.ingredient,
+                            props.setFieldValue,
+                            props.setFieldError
+                          )
+                        }
+                      >
+                        Adicionar
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <ul>
-                {props.values.ingredients.map((ingredient, i) => (
-                  <li key={i} style={{
-                    "alignItems": "center",
-                    "display": "flex",
-                    "justifyContent": "space-between"
-                  }}>
-                    {ingredient}
-                    <Button
-                    type="submit"
-                      onClick={() =>
-                        handleIngredientDeletion(
-                          props.values.ingredients,
-                          i,
-                          props.setFieldValue
-                        )
-                      }
-                    >
-                      <CloseIcon />
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                type="submit"
-                onClick={() => handleIngredientsAddition(
-                  props.values.ingredients,
-                  props.values.ingredient,
-                  props.setFieldValue,
-                  props.setFieldError
-                )}
-              >
-                Adicionar
-              </Button>
               <Field
                 name="img"
                 label="URL da imagem"
                 type="text"
-                as={TextField}
+                as={StyledField}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -224,6 +306,6 @@ export default function PizzaUpdateModalForm({
           )}
         </Formik>
       </Box>
-    </Modal >
+    </Modal>
   );
 }

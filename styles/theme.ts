@@ -1,19 +1,24 @@
-import { Roboto } from "@next/font/google";
+import { Alumni_Sans, Bungee_Inline } from "@next/font/google";
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
-export const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
+export const bungeeInline = Bungee_Inline({
+  weight: ["400"],
   subsets: ["latin"],
   display: "swap",
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
-// Create a theme instance.
+export const alumniSans = Alumni_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  fallback: ["Helvetica", "Arial", "sans-serif"],
+});
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#556cd6",
+      main: "#FFCC33",
     },
     secondary: {
       main: "#19857b",
@@ -26,7 +31,8 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    fontSize: 18,
+    fontFamily: alumniSans.style.fontFamily,
   },
 });
 

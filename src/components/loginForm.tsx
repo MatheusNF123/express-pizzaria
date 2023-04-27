@@ -9,6 +9,7 @@ import {
   Paper,
   InputAdornment,
   IconButton,
+  styled,
 } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { setCookie } from "nookies";
@@ -23,6 +24,21 @@ interface MyFormValues {
   email: string;
   password: string;
 }
+
+const StyledField = styled(TextField)(({ theme }) => ({
+  ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    color: "white",
+  },
+  "label, input ": {
+    color: "white",
+  },
+
+  ".MuiOutlinedInput-root:not(.Mui-focused):hover .MuiOutlinedInput-notchedOutline":
+    {
+      borderColor: "white",
+    },
+}));
 
 export default function LoginForm() {
   const { handleLogin } = useContext(userContext);
@@ -40,7 +56,8 @@ export default function LoginForm() {
         status,
       } = await postRequest<Login>("login", { email, password });
       if (status !== 200) return alert(`${message}`);
-
+      console.log('HHH');
+      
       setCookie(undefined, "pizzeria.token", token, {
         path: "/",
         maxAge: 60 * 60 * 20, // 20 hours
@@ -69,13 +86,14 @@ export default function LoginForm() {
         justifyContent: "center",
       }}
     >
-      <Paper elevation={3}>
+      <Paper elevation={3} sx={{ backgroundColor: "#0000005c" }}>
         <Box
           m={5}
           p={3}
           sx={{
             display: "flex",
             flexDirection: "column",
+            color: "white",
           }}
         >
           <Formik
@@ -85,13 +103,20 @@ export default function LoginForm() {
           >
             {(props) => {
               return (
-                <Form>
-                  <Typography variant="h4">Login</Typography>
+                <Form
+                  style={{
+                    color: "white",
+                    borderColor: "white",
+                  }}
+                >
+                  <Typography variant="h4" color="#FFCC33">
+                    Login
+                  </Typography>
                   <Field
                     name="email"
                     type="email"
                     label="Email"
-                    as={TextField}
+                    as={StyledField}
                     placeholder="Digite seu email"
                     variant="outlined"
                     margin="dense"
@@ -104,7 +129,7 @@ export default function LoginForm() {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     label="Password"
-                    as={TextField}
+                    as={StyledField}
                     placeholder="Digite sua senha"
                     margin="dense"
                     fullWidth
@@ -114,6 +139,7 @@ export default function LoginForm() {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
+                            sx={{ color: "white" }}
                             onClick={handleClickShowPassword}
                             edge="end"
                           >
@@ -123,10 +149,10 @@ export default function LoginForm() {
                       ),
                     }}
                   />
-                  <Typography style={{ color: "#757575" }} mt={1} mb={2}>
+                  <Typography mt={1} mb={2}>
                     Não tem uma conta?
                     <Link
-                      style={{ textDecoration: "none", color: "#1769aa" }}
+                      style={{ textDecoration: "none", color: "#FFCC33" }}
                       href="/register"
                     >
                       {" "}
@@ -138,6 +164,10 @@ export default function LoginForm() {
                     variant="contained"
                     fullWidth
                     type="submit"
+                    sx={{
+                      fontSize: "25px",
+                      fontWeight: "bold",
+                    }}
                   >
                     Login
                   </Button>

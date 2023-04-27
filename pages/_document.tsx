@@ -1,17 +1,19 @@
 import * as React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
-import theme, { roboto } from "../styles/theme";
+import theme, { alumniSans, bungeeInline } from "../styles/theme";
 import createEmotionCache from "../src/utils/createEmotionCache";
 
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en" className={roboto.className}>
+      <Html
+        lang="en"
+        className={`${alumniSans.className} ${bungeeInline.className}`}
+      >
         <Head>
-          {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/pizza-icon.png" />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
         </Head>

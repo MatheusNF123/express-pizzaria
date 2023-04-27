@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Box } from "@mui/material";
 
 import { getRequest, postRequest } from "../../src/services/api";
 import { Pizza } from "../../src/Types";
@@ -37,13 +37,24 @@ export default function AdminPizzas(props: AdminPizzasProps) {
         maxWidth="xl"
         sx={{
           minHeight: "calc(100vh - 100px)",
-          // width: "100%",
-          // display: "flex",
-          // justifyContent: "center",
           padding: "20px",
         }}
       >
-        <Button onClick={() => setOpenCreateModal(true)}>Criar pizza</Button>
+        <Box
+          sx={{
+            marginBottom: "15px",
+            display: "flex",
+            flexDirection: "row-reverse",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{ width: { xs: "100%", sm: "200px" }, fontWeight: "bold" }}
+            onClick={() => setOpenCreateModal(true)}
+          >
+            Criar pizza
+          </Button>
+        </Box>
         <Grid container spacing={4}>
           {pizzas?.map((pizza) => (
             <AdminPizzaCard
