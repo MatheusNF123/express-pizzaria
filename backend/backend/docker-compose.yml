@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  node:
+    image: node:16.14
+    container_name: pizzaria_backend
+    build: ./
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgresdb
+    ports:
+      - 3001:3001
+    environment:
+      - DB_HOST=postgresdb
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASS=pizzeriapassword
+      - DB_NAME=pizzeria
+      - PORT=3001
+      - TYPEORM_MIGRATIONS=src/Database/Migrations/*ts
+      - TYPEORM_MIGRATIONS_DIR=src/Database/Migrations
+
+  postgresdb:
+    image: postgres:latest
+    container_name: pizzaria_db
+    volumes:
+      - ./:/app
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pizzeriapassword
+      POSTGRES_USER: admin
+      POSTGRES_DB: pizzeria
+
+    ports:
+      - 5432:5432
+
+networks:
+  default:
+    name: pizzaria_net
