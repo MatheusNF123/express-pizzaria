@@ -1,5 +1,8 @@
 # Express Pizzaria
 
+![Captura de tela de 2023-04-25 17-43-16](https://user-images.githubusercontent.com/99821267/234982133-63288d13-c57c-4d02-ba44-b429ffc52ba2.png)
+
+
 Este é um projeto fullstack de uma pizzaria fictícia que tem como objetivo possibilitar a realização de pedidos online de pizzas.
 
 No backend, foi utilizado o TypeScript em conjunto com o framework Express.js para a criação de uma API RESTful. Para acessar e manipular os dados da aplicação, foi utilizado o TypeORM, um ORM que permite a manipulação de bancos de dados relacionais. Além disso, foram utilizadas as bibliotecas Bcrypt.js e JsonWebToken para autenticação e autorização de usuários, e o Cors para habilitar o acesso da aplicação a partir de diferentes origens. Para garantir a segurança da aplicação, as variáveis de ambiente foram configuradas utilizando o Dotenv e as validações de dados foram realizadas utilizando a biblioteca Zod.
