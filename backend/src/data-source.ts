@@ -13,7 +13,7 @@ const op: DataSourceOptions & SeederOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: ["./src/Database/Entities/**/*.ts"],
+  entities: [`${__dirname}/**/Database/Entities/**/*.{ts,js}`],
   migrations: [`${__dirname}/**/Database/Migrations/*.{ts,js}`],
   seeds: [MainSeeder],
 }
