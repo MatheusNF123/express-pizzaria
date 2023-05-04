@@ -3,12 +3,9 @@ import axios from "axios";
 import { ApiReturnMessage } from "../Types";
 
 export const api = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/",
 });
 
-// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ0OWU0YWU4LTYyOTktNDA5NC04MmY3LTQyOGNhMzMyOGU5YSIsImVtYWlsIjoicHl0aG9uQHNjcmlwdC5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE2NzQ2ODUyODksImV4cCI6MTY3NDc1NzI4OX0.sbOPnFUOJVIW-mgcNjLfn5wkkzDLGmswyqcU4OapKGY";
-
-// api.defaults.headers.common['Authorization'] = token;
 
 type ApiResponse<T> = {
   data: T & Partial<ApiReturnMessage>;
