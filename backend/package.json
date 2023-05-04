@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "typeorm": "ts-node-dev node_modules/.bin/typeorm",
     "build": "tsc",
-    "prestart": "npm run build && npm run migration:run && npm run seed",
+    "prestart": "npm run migration:run && npm run seed",
     "start": "node dist/server.js"
   },
   "repository": {
