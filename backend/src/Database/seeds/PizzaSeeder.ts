@@ -91,14 +91,7 @@ export class PizzaSeeder implements Seeder {
           "pedaços de bombom Sonho de Valsa",
         ],
         img: `${BASE_URL}/images/pizza-sonho-de-valsa.jpg`,
-      },
-      {
-        flavor: "Banana com canela",
-        type: "Doce",
-        price: 28.90,
-        ingredients: ["banana", "canela", "licor de cacau"],
-        img: `${BASE_URL}/images/pizza-banana-canela.webp`,
-      },
+      },     
     ];
 
     await pizzaRepository
