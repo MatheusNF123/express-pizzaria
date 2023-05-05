@@ -3,6 +3,7 @@ import "express-async-errors";
 import MiddleError from "./Middleware/ErrorMiddleware";
 import routes from "./Routes";
 import cors from "cors";
+import path from "path";
 
 class App {
   public app: express.Express;
@@ -17,6 +18,7 @@ class App {
   private config(): void {
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(express.static(path.join(__dirname, 'public')));
   }
 
   private routers(): void {
@@ -24,7 +26,7 @@ class App {
       res.status(200).json({ ok: true })
     );
 
-    this.app.use(express.static(`${__dirname}/public/`));
+    
     this.router(this.app);
     this.app.use(MiddleError.errorMiddleware);
   }
