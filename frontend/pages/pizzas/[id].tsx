@@ -52,6 +52,7 @@ export default function PizzaDetails({
           >
             <Image
               src={img}
+              loader={() => img}
               alt={`Pizza de ${flavor}`}              
               width={400}
               height={400}
