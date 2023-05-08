@@ -10,14 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import {
-  Formik,
-  Form,
-  Field,
-  FormikHelpers,
-  ErrorMessage,
-  useFormikContext,
-} from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { validationEditCartItem } from "../utils/schemas/formValidations";
@@ -95,7 +88,6 @@ export default function CartItemModalForm({
             quantity: info.quantity,
           }}
           onSubmit={async (values) => {
-            console.log(values);
             await handleCartItemUpdate(values);
           }}
           validationSchema={validationEditCartItem}

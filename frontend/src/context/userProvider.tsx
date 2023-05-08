@@ -6,7 +6,6 @@ import { User, PurchaseItem } from "../Types";
 import createOrAddItemToCart from "../services/createOrAddItemToCart";
 import verifyCookie from "../services/verifyCookie";
 import getCartData from "../services/getCartData";
-import getUser from "../services/getUser";
 import useFetch from "./hooks/useFetch";
 
 type UserContextValues = {
@@ -40,15 +39,16 @@ const customerMenu = [
   { option: "Sair", endPoint: "/pizzas" },
 ];
 
-const loggedOutMenu = [{ option: "Login", endPoint: "/login" }];
-
-// const initialMenuOptions = verifyCookie() ? customerMenu : loggedOutMenu;
+const loggedOutMenu = [
+  { option: "Login", endPoint: "/login" },
+  { option: "Cadastre-se", endPoint: "/register" },
+];
 
 export default function UserProvider({ children }: UserProviderProps) {
   const { user, setUser, cartQuantity, setCartQuantity } = useFetch();
   const [menuOptions, setMenuOptions] = useState(loggedOutMenu);
   const router = useRouter();
-
+  
   useEffect(() => {
     if (verifyCookie()) {
       setMenuOptions(user?.role === "admin" ? adminMenu : customerMenu);
@@ -75,7 +75,6 @@ export default function UserProvider({ children }: UserProviderProps) {
     setCartQuantity(0);
     setMenuOptions(loggedOutMenu);
     setUser(null);
-    console.log("OFF", verifyCookie());
   };
 
   const handleUser = (user: User) => {

@@ -146,7 +146,6 @@ export default function PizzaUpdateModalForm({
             img,
           }}
           onSubmit={async ({ ingredient, ...fields }) => {
-            console.log(fields);
             await handlePizzaUpdate({ ...fields, price: +fields.price });
           }}
           validationSchema={validationPizza}

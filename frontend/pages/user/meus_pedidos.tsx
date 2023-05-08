@@ -5,7 +5,6 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -48,7 +47,7 @@ export default function MyOrders(props: OrderProps) {
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          padding: "20px",
+          padding: orders.length ? "20px" : "0",
         }}
       >
         {orders.length ? (
@@ -67,37 +66,41 @@ export default function MyOrders(props: OrderProps) {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              padding: "20px",
-              backgroundColor: "white",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Card sx={{ display: "flex", justifyContent: "center" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <CardContent sx={{ flex: "1 0 auto" }}>
-                  <Typography variant="body2" sx={{ fontSize: "26px" }}>
-                    Não possui nenhuma compra
-                  </Typography>
-                </CardContent>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+            <Card
+              sx={{
+                alignItems: "center",
+                backgroundColor: "#0000005c",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                height: { xs: "200px", sm: "250px" },
+                justifyContent: "center",
+                padding: "20px",
+                width: { xs: "350px", sm: "450px" },
+              }}
+            >
+              <CardContent>
+                <Typography
+                  component="h3"
+                  variant="h3"
+                  sx={{ fontSize: "30px", fontWeight: "bold" }}
                 >
-                  <Button
-                    sx={{ fontSize: "14px" }}
-                    variant="contained"
-                    onClick={() => router.push(`/pizzas`)}
-                  >
-                    comprar
-                  </Button>
-                </Box>
-              </Box>
+                  Não possui nenhuma compra
+                </Typography>
+              </CardContent>
+              <Button
+                sx={{ fontSize: "18px", fontWeight: "bold", width: "50%" }}
+                variant="contained"
+                fullWidth
+                onClick={() => router.push(`/pizzas`)}
+              >
+                comprar
+              </Button>
             </Card>
           </Container>
         )}
@@ -110,7 +113,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     setApiHeaders(ctx);
     const { data, status } = await getRequest<Order[]>("order");
-
+    
     if (status !== 200)
       return {
         redirect: {

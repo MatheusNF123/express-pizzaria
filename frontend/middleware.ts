@@ -4,12 +4,10 @@ import { NextResponse } from "next/server";
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
-  console.log("Middleware");
-
-  // if (!req.cookies.get('pizzeria.token')) {
-  //   url.pathname = '/login';
-  //   return NextResponse.redirect(url);
-  // }
+  if (!req.cookies.get('pizzeria.token')) {
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
 
   return NextResponse.next();
 }

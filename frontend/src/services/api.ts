@@ -20,8 +20,6 @@ api.interceptors.response.use(
       return error.response;
     }
 
-    console.log("error");
-
     return Promise.reject(error);
   }
 );

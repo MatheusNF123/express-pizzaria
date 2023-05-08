@@ -36,7 +36,7 @@ export default function CardMyPurchase({
     } catch {
       return alert(`Erro interno, volte mais tarde :)`);
     }
-  };
+  };  
 
   return (
     <Container>

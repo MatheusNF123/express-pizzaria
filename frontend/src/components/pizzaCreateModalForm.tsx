@@ -133,7 +133,6 @@ export default function PizzaCreateModalForm({
             img: "",
           }}
           onSubmit={async ({ ingredient, ...fields }) => {
-            console.log(fields);
             await handlePizzaCreate({ ...fields, price: +fields.price });
           }}
           validationSchema={validationPizza}

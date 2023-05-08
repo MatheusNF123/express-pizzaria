@@ -12,7 +12,7 @@ import {
   styled,
 } from "@mui/material";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
-import { setCookie } from "nookies";
+import { destroyCookie, setCookie } from "nookies";
 
 import { postRequest } from "../services/api";
 import { validationRegister } from "../utils/schemas/formValidations";
@@ -102,14 +102,19 @@ export default function RegisterForm() {
       });
       if (status !== 201) return alert(`${message}`);
 
+      destroyCookie(undefined, "pizzeria.token", {
+        path: "/",
+      });
+
       setCookie(undefined, "pizzeria.token", token, {
+        path: "/",
         maxAge: 60 * 60 * 20, // 20 hours
       });
 
       await handleLogin(user);
 
       actions.resetForm();
-      router.push("/");
+      router.push("/pizzas");
     } catch (err) {
       return alert(`Erro interno, volte mais tarde :)`);
     }
@@ -258,14 +263,30 @@ export default function RegisterForm() {
                   helperText={<ErrorMessage name="address" />}
                   error={props.errors.address && props.touched.address}
                 />
-                <Typography mt={1} mb={2}>
+
+                <Box
+                  sx={{
+                    mt: 1,
+                    mb: 2,
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    justifyContent: "space-between",
+                    alignItems: { xs: "flex-start", sm: "center" },
+                  }}
+                >
                   <Link
                     style={{ textDecoration: "none", color: "#FFCC33" }}
                     href="/login"
                   >
                     Já tem uma conta?
                   </Link>
-                </Typography>
+                  <Link
+                    style={{ textDecoration: "none", color: "#FFCC33" }}
+                    href="/pizzas"
+                  >
+                    Ir para o site
+                  </Link>
+                </Box>
                 <Button
                   color="primary"
                   variant="contained"

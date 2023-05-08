@@ -7,13 +7,8 @@ import {
   Typography,
   Box,
   Container,
-  Divider,
-  Tooltip,
-  IconButton,
   Button,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import { CartPizzas, PurchaseInfo } from "../Types";
 import CartItemModalForm from "./cartItemModalForm";
