@@ -53,7 +53,7 @@ export default function PizzaDetails({
             <Image
               src={img}
               loader={() => img}
-              alt={`Pizza de ${flavor}`}              
+              alt={`Pizza de ${flavor}`}
               width={400}
               height={400}
               style={{ borderRadius: "10px", border: "1px solid #FFCC33" }}
@@ -157,7 +157,15 @@ export default function PizzaDetails({
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data } = await getRequest(`pizzas/${ctx.query.id}`);
+  const { data, status } = await getRequest(`pizzas/${ctx.query.id}`);
+
+  if (status !== 200)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
 
   return {
     props: { pizza: data },

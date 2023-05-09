@@ -26,7 +26,8 @@ const pages = [
 ];
 
 function Header() {
-  const { cartQuantity, menuOptions, handleLogout } = useContext(userContext);
+  const { cartQuantity, menuOptions, handleLogout, user } =
+    useContext(userContext);
   const router = useRouter();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -64,7 +65,6 @@ function Header() {
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             {pages.map(({ page, endPoint }) => (
               <Button
-                // box home e menu tela grande
                 key={page}
                 onClick={() => router.push(endPoint)}
                 sx={{ my: 2, color: "#FFCC33", display: "block" }}
@@ -91,13 +91,40 @@ function Header() {
             </Tooltip>
           </Badge>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              border: user?.name ? "1px solid white" : "none",
+              borderRadius: "9999px",
+              maxWidth: "150px",
+              width: { xs: "40px", sm: user?.name ? "auto" : "40px" },
+              overflow: "hidden",
+              transition: ".5s",
+            }}
+          >
+            <Typography
+              sx={{
+                display: { xs: "none", sm: "block" },
+                px: user?.name ? "5px" : "0px",
+                transition: ".5s",
+                fontSize: "20px",
+                color: "white",
+                maxWidth: "110px",
+                textOverflow: "ellipsis",
+                width: user?.name ? "auto" : "0px",
+                transform: user?.name ? "translateX(0em)" : "translateX(150px)",
+                overflow: "hidden",
+              }}
+            >
+              {user?.name.split(" ")[0] ?? ""}
+            </Typography>
             <Tooltip title="Abrir configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   sx={{ backgroundColor: "white" }}
                   alt="Remy Sharp"
-                  src=""
+                  src={user?.img ?? ""}
                 />
               </IconButton>
             </Tooltip>

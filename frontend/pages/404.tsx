@@ -61,7 +61,7 @@ export default function NotFound() {
             mt: 4,
             mb: 8
           }}
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/pizzas")}
           variant="contained"
         >
           Voltar para a página inicial
