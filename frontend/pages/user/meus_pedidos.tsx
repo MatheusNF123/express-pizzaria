@@ -113,7 +113,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     setApiHeaders(ctx);
     const { data, status } = await getRequest<Order[]>("order");
-    
+
     if (status !== 200)
       return {
         redirect: {

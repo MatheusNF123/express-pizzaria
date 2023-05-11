@@ -48,6 +48,8 @@ function Header() {
     router.push(endPoint);
   };
 
+  let firstName = user?.name.split(" ")[0] ?? "";
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "#0000005c" }}>
       <Container maxWidth="xl">
@@ -94,31 +96,38 @@ function Header() {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              border: user?.name ? "1px solid white" : "none",
+              border: "1px solid white",
               borderRadius: "9999px",
-              maxWidth: "150px",
-              width: { xs: "40px", sm: user?.name ? "auto" : "40px" },
-              overflow: "hidden",
-              transition: ".5s",
+              justifyContent: "space-between",
+              height: "40px",
+              transition: "1s",
+              width: { xs: "40px", sm: user?.name ? "150px" : "40px" },
             }}
           >
-            <Typography
+            <Box
               sx={{
-                display: { xs: "none", sm: "block" },
-                px: user?.name ? "5px" : "0px",
-                transition: ".5s",
-                fontSize: "20px",
-                color: "white",
-                maxWidth: "110px",
-                textOverflow: "ellipsis",
-                width: user?.name ? "auto" : "0px",
-                transform: user?.name ? "translateX(0em)" : "translateX(150px)",
+                alignItems: "center",
+                justifyContent: "center",
                 overflow: "hidden",
+                flex: 1,
+                width: user?.name ? "100px" : "0",
+                display: "flex",
+                height: "100%",
               }}
             >
-              {user?.name.split(" ")[0] ?? ""}
-            </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "white",
+                  maxWidth: "90px",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                }}
+                title={firstName}
+              >
+                {firstName}
+              </Typography>
+            </Box>
             <Tooltip title="Abrir configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
